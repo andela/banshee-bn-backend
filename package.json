@@ -4,19 +4,20 @@
   "description": "A travel and accomodation application",
   "main": "app.js",
   "scripts": {
-    "start": "node ./build/index.js",
-    "postinstall": "npm run build",
-    "clean": "rm -rf build && mkdir build",
     "build-babel": "babel -d ./build ./src -s",
     "build": "npm run clean && npm run build-babel",
+    "clean": "rm -rf build .nyc_output coverage && mkdir build",
     "devstart": "nodemon --exec babel-node src/index.js",
     "lint": "eslint --fix ./src/**/*.js",
+    "postinstall": "npm run build",
+    "start": "node ./build/index.js",
     "test": "nyc mocha --require @babel/register --require @babel/polyfill --timeout 1000 --exit"
   },
   "author": "Andela Simulations Programme",
   "license": "MIT",
   "dependencies": {
     "cors": "^2.8.4",
+    "debug": "^4.1.1",
     "dotenv": "^6.0.0",
     "ejs": "^2.6.1",
     "errorhandler": "^1.5.0",
