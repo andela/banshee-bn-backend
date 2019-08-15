@@ -4,13 +4,13 @@
   "description": "A Social platform for the creative at heart",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "nyc mocha --require @babel/register --require @babel/polyfill --timeout 1000 --exit"
   },
   "author": "Andela Simulations Programme",
   "license": "MIT",
   "dependencies": {
-    "body-parser": "^1.18.3",
     "cors": "^2.8.4",
+    "debug": "^4.1.1",
     "dotenv": "^6.0.0",
     "ejs": "^2.6.1",
     "errorhandler": "^1.5.0",
@@ -26,5 +26,19 @@
     "passport-local": "^1.0.0",
     "request": "^2.87.0",
     "underscore": "^1.9.1"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.5.5",
+    "@babel/core": "^7.5.5",
+    "@babel/polyfill": "^7.4.4",
+    "@babel/preset-env": "^7.5.5",
+    "@babel/register": "^7.5.5",
+    "chai": "^4.2.0",
+    "chai-http": "^4.3.0",
+    "eslint": "^6.1.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.18.2",
+    "mocha": "^6.2.0",
+    "nyc": "^14.1.1"
   }
 }
