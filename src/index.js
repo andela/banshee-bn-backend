@@ -7,7 +7,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.get('/', (req, res) => {
-  res.status(200).json('Welcome to Barefoot-Nomad API');
+  return res.status(200).json({
+    status: 200,
+    message: 'Welcome to Barefoot-Nomad API'
+  });
 });
 
 app.use('/api/v1', router);
