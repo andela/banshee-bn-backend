@@ -17,6 +17,7 @@
   "license": "MIT",
   "dependencies": {
     "cors": "^2.8.4",
+    "debug": "^4.1.1",
     "dotenv": "^6.0.0",
     "ejs": "^2.6.1",
     "errorhandler": "^1.5.0",
