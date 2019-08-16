@@ -1,0 +1,27 @@
+version: "3"
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Docker/dev/node.dockerfile
+    depends_on:
+      - postgres
+    environment:
+      DATABASE_URL: ${DB_TEST_URL}
+      NODE_ENV: ${NODE_ENV}
+      PORT: ${PORT}
+    ports:
+      - "${PORT}:${PORT}"
+    command: npm run devstart
+    volumes:
+      - .:/app/
+      - /app/node_modules
+
+  postgres:
+    image: postgres:latest
+    ports:
+      - "${DB_PORT}:${DB_PORT}"
+    environment:
+      POSTGRES_USER: ${DB_USER_NAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_DEV_NAME}
