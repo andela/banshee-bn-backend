@@ -1,7 +1,7 @@
 {
   "name": "barefoot-normad",
   "version": "1.0.0",
-  "description": "A Social platform for the creative at heart",
+  "description": "A travel and accomodation application",
   "main": "app.js",
   "scripts": {
     "clean": "rm -rf build && mkdir build",
