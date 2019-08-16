@@ -4,12 +4,14 @@
   "description": "A travel and accomodation application",
   "main": "app.js",
   "scripts": {
+    "start": "node ./build/index.js",
+    "postinstall": "npm run build",
     "clean": "rm -rf build && mkdir build",
     "build-babel": "babel -d ./build ./src -s",
     "build": "npm run clean && npm run build-babel",
-    "devstart": "babel-node src/index.js",
-    "start": "node ./build/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "devstart": "nodemon --exec babel-node src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint --fix ./src/**/*.js"
   },
   "author": "Andela Simulations Programme",
   "license": "MIT",
@@ -36,6 +38,7 @@
     "babel-preset-env": "^1.7.0",
     "eslint": "^6.1.0",
     "eslint-config-airbnb-base": "^14.0.0",
-    "eslint-plugin-import": "^2.18.2"
+    "eslint-plugin-import": "^2.18.2",
+    "nodemon": "^1.19.1"
   }
 }
