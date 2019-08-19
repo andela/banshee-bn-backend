@@ -3,6 +3,20 @@
   "version": "1.0.0",
   "description": "A travel and accomodation application",
   "main": "app.js",
+  "nyc": {
+    "all": true,
+    "sourceMap": false,
+    "instrument": false,
+    "include": [
+      "src/"
+    ],
+    "exclude": [
+      "src/database/",
+      "src/config/",
+      "src/models/",
+      "src/index.js"
+    ]
+  },
   "scripts": {
     "start": "node ./build/index.js",
     "postinstall": "npm run build",
@@ -11,7 +25,8 @@
     "build": "npm run clean && npm run build-babel",
     "devstart": "nodemon --exec babel-node src/index.js",
     "lint": "eslint --fix ./src/**/*.js",
-    "test": "nyc mocha --require @babel/register --require @babel/polyfill --timeout 1000 --exit"
+    "test": "cross-env NODE_ENV=test nyc mocha --require @babel/register --require @babel/polyfill --exit",
+    "coverage": "nyc report --reporter=text-lcov | coveralls"
   },
   "author": "Andela Simulations Programme",
   "license": "MIT",
@@ -41,8 +56,11 @@
     "@babel/preset-env": "^7.5.5",
     "@babel/register": "^7.5.5",
     "@babel/runtime": "^7.0.0-beta.55",
+    "babel-plugin-istanbul": "^5.2.0",
     "chai": "^4.2.0",
     "chai-http": "^4.3.0",
+    "coveralls": "^3.0.6",
+    "cross-env": "^5.2.0",
     "eslint": "^6.1.0",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-import": "^2.18.2",
