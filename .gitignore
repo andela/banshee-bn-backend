@@ -95,6 +95,7 @@ typings/
 
 # End of https://www.gitignore.io/api/node
 
+application port
 notes.md
 package-lock.json
 .editorconfig
