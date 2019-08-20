@@ -1,0 +1,48 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Barefoot Nomad API",
+    "description": "Barefoot Nomad makes company global travel and accommodation easy and convenient for the strong workforce of savvy members of staff, by leveraging the modern web.",
+    "contact": {
+      "email": "team-banshee@barefoot-nomad.com"
+    },
+    "version": "1.0.0"
+  },
+  "externalDocs": {
+    "description": "The Github Repository",
+    "url": "https://github.com/andela/banshee-bn-backend"
+  },
+  "servers": [
+    {
+      "url": "/api/v1"
+    },
+    {
+      "url": "/"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Welcome",
+      "description": "The root endpoint"
+    },
+    {
+      "name": "Users",
+      "description": "Operations related to Users authentication"
+    }
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "tags": [
+          "Welcome"
+        ],
+        "summary": "The root endpoint",
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    }
+  }
+}

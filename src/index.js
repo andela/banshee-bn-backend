@@ -1,6 +1,8 @@
 import express from 'express';
 import dotenv from 'dotenv';
+import swaggerUi from 'swagger-ui-express';
 import router from './routes';
+import swaggerDoc from '../swagger.json';
 
 const app = express();
 dotenv.config();
@@ -14,6 +16,10 @@ app.get('/', (req, res) => {
   });
 });
 
+/**
+ * Tip from: https://blog.cloudboost.io/adding-swagger-to-existing-node-js-project-92a6624b855b
+ */
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDoc));
 app.use('/api/v1', router);
 
 const port = process.env.PORT || 3000;
