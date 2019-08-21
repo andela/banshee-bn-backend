@@ -29,23 +29,30 @@ class Auth {
         password: hashedPassword,
         gender,
         dob,
-        companyId
+        companyId,
       });
 
-      const {
-        id,
-        role
-      } = user;
+      const { id, role } = user;
       const token = jwtHelper.generateToken({
         id,
         email,
         role,
-        companyId
+        companyId,
       });
-      const response = new Response(true, 200, 'User signup successfully', { user: { email, token } });
+      const response = new Response(
+        true,
+        201,
+        'User signup successfully',
+        { user: { email, token }, }
+      );
+
       return res.status(response.code).json(response);
     } catch (err) {
-      const response = new Response(false, 500, 'Server error, Please try again later');
+      const response = new Response(
+        false,
+        500,
+        'Server error, Please try again later',
+      );
       return res.status(response.code).json(response);
     }
   }

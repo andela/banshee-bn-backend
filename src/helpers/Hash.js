@@ -5,7 +5,7 @@ class Hash {
 /**
    * @description - hash password method
    * @param {string} password
-   * @return {string} hased password
+   * @return {string} hashed password
    */
   static hashPassword(password) {
     return bcrypt.hashSync(password, bcrypt.genSaltSync(8));
@@ -15,7 +15,7 @@ class Hash {
    * @description - this method compares password
    * @param {string} hashPassword
    * @param {string} password
-   * @return {string} hased password
+   * @return {string} hashed password
    */
   static comparePassword(hashPassword, password) {
     return bcrypt.compareSync(password, hashPassword);

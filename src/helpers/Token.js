@@ -33,7 +33,7 @@ class Token {
     if (!token) {
       return res.status(401).json({
         status: 401,
-        message: 'Unathorized, You did not provide a token',
+        message: 'Unauthorized, You did not provide a token',
       });
     }
     try {
@@ -44,7 +44,7 @@ class Token {
     } catch (err) {
       return res.status(401).json({
         status: 401,
-        message: 'Unathorized, Your token is invalid or expired',
+        message: 'Unauthorized, Your token is invalid or expired',
       });
     }
   }
