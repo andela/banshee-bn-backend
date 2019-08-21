@@ -191,12 +191,59 @@ const invalidCode = {
   companyCode: '122dssdd'
 };
 
+const credentials = {
+  email: 'ogedengbe123@gmail.com',
+  password: 'malcomX123',
+  code: 'NOM-0024'
+};
+
+const credentialsWithIncorrectCode = {
+  email: 'ogedengbe123@gmail.com',
+  password: 'malcomX123',
+  code: 'BOM-0025'
+};
+
+const credentialsWithIncorrectPassword = {
+  email: 'ogedengbe123@gmail.com',
+  password: 'malcomX1',
+  code: 'NOM-0024'
+};
+
+const credentialsWithIncorrectEmail = {
+  email: 'ogedengbe12@gmail.com',
+  password: 'malcomX123',
+  code: 'NOM-0024'
+};
+
+const credentialsWithoutEmail = {
+  password: 'malcomX123',
+  code: 'NOM-0024'
+};
+
+const credentialsWithoutCode = {
+  email: 'ogedengbe123@gmail.com',
+  password: 'malcomX123'
+};
+
+const credentialsWithInvalidEmail = {
+  email: '',
+  password: 'malcomX123',
+  code: 'NOM-0024'
+};
+
 const users = {
   user6,
   user1,
   user2,
   user3,
   user4,
+  credentials,
+  credentialsWithInvalidEmail,
+  credentialsWithIncorrectCode,
+  credentialsWithoutCode,
+  credentialsWithoutEmail,
+  credentialsWithIncorrectEmail,
+  credentialsWithIncorrectPassword,
   invalidLastname,
   undefinedLastname,
   undefinedFirstname,

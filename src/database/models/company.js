@@ -7,11 +7,6 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   Company.associate = (models) => {
     // associations can be defined here
-    Company.hasMany(models.User, {
-      foreignKey: 'companyId',
-      onDelete: 'CASCADE',
-      onUpdate: 'CASCADE'
-    });
   };
   return Company;
 };

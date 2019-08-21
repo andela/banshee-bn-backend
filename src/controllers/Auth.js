@@ -2,6 +2,7 @@ import db from '../database/models';
 import jwtHelper from '../helpers/Token';
 import hashHelper from '../helpers/Hash';
 import Response from '../helpers/Response';
+import SearchDb from '../helpers/SearchDatabase';
 
 const { User, Company } = db;
 const { hashPassword } = hashHelper;
@@ -132,6 +133,64 @@ class Auth {
       return res.status(response.code).json(response);
     }
   }
-}
 
+  /**
+   * @description - this method login user
+   *
+   * @param {object} req - the request sent to the router
+   * @param {object} res  - the request sent back from the controller
+   * @returns {object} - object
+   */
+  static async login(req, res) {
+    const { email, password, code } = req.body;
+    const company = await SearchDb.findCompany(code);
+    const unauthorizedCode = 401;
+    if (!company) {
+      const response = new Response(
+        false,
+        unauthorizedCode,
+        'Incorrect company code',
+        {}
+      );
+      return res.status(response.code).json(response);
+    }
+    const companyId = company.id;
+    const user = await User.findOne({ where: { email, companyId } });
+    if (!user) {
+      const response = new Response(
+        false,
+        unauthorizedCode,
+        'Incorrect email or password',
+        {}
+      );
+      return res.status(response.code).json(response);
+    }
+    const hash = user.password;
+    const result = hashHelper.comparePassword(hash, password);
+    if (result) {
+      const {
+        id, role
+      } = user;
+      const token = jwtHelper.generateToken({
+        id,
+        email,
+        role,
+        companyId
+      });
+      const response = new Response(
+        true,
+        200,
+        'user logged in sucessfully',
+        { user: { email, token }, }
+      );
+      return res.status(response.code).json(response);
+    }
+    const response = new Response(
+      false,
+      unauthorizedCode,
+      'Incorrect email or password'
+    );
+    return res.status(response.code).json(response);
+  }
+}
 export default Auth;

@@ -17,7 +17,6 @@ class Token {
     const token = jwt.sign({ payload }, secret, { expiresIn: expires });
     return token;
   }
-
   /**
    * Verfify Token Method
    * @static
@@ -26,7 +25,7 @@ class Token {
    * @param {object} next
    * @returns {object} returns the token object payload
    * @memberof Token
-   */
+  */
   static async verifyToken(req, res, next) {
     const token = req.headers.authorization
       || req.headers['x-access-token'] || req.query.token || req.body.token;
