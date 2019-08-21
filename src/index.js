@@ -1,12 +1,13 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import swaggerUi from 'swagger-ui-express';
+import logger from 'morgan';
 import router from './routes';
 import swaggerDoc from '../swagger.json';
 
 const app = express();
 dotenv.config();
-
+app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 

@@ -93,8 +93,36 @@ const loginSchema = [
     .isLength({ min: 5, max: 15 }),
 ];
 
+const forgotPasswordSchema = [
+  check('email')
+    .not().isEmpty({ ignore_whitespace: true })
+    .withMessage('Email is required')
+    .trim()
+    .isEmail()
+    .withMessage('Invalid email format'),
+];
+
+const resetPasswordSchema = [
+  check('password')
+    .not().isEmpty({ ignore_whitespace: true })
+    .withMessage('Password is required')
+    .trim()
+    .isLength({ min: 8, max: 32 })
+    .withMessage('Password should be between 8 to 32 characters'),
+  check('confirmPassword')
+    .custom((value, { req }) => {
+      const { password } = req.body;
+      if (value !== password) {
+        throw new Error('Password confirmation does not match password');
+      }
+      return true;
+    }),
+];
+
 export {
   signupSchema,
   companySignupSchema,
-  loginSchema
+  loginSchema,
+  forgotPasswordSchema,
+  resetPasswordSchema
 };

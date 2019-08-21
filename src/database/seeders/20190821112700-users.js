@@ -38,6 +38,18 @@ module.exports = {
       status: 'active',
       role: 'staff'
     },
+    {
+      id: 'd7c0b7a9-e2cc-4b2c-9c15-dfd4920c60ff',
+      firstName: 'ola1',
+      lastName: 'tester',
+      email: 'max@gmail.com',
+      password: hashHelper.hashPassword('testing222'),
+      gender: 'female',
+      dob: '2012-09-12',
+      companyId: 'a6e35eb9-8c59-4c7d-b8d4-ae724aa7fb61',
+      role: 'staff',
+      status: 'active'
+    }
   ]),
   down: queryInterface => queryInterface.bulkDelete('Users', null, {})
 };
