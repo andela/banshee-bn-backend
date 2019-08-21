@@ -25,10 +25,11 @@
     "build": "npm run clean && npm run build-babel",
     "devstart": "nodemon --exec babel-node src/index.js",
     "lint": "eslint --fix ./src/**/*.js",
-    "test": "cross-env NODE_ENV=test nyc mocha --require @babel/register --require @babel/polyfill --exit",
+    "test": "cross-env NODE_ENV=test npm run db:reset && cross-env NODE_ENV=test nyc mocha --require @babel/register --require @babel/polyfill --exit",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "migrate": "sequelize db:migrate",
     "migrate:undo": "sequelize db:migrate:undo:all",
+    "migrate-test": "cross-env NODE_ENV=test npm run migrate:undo && cross-env NODE_ENV=test npm run migrate",
     "seed": "sequelize db:seed:all",
     "db:reset": "npm run migrate:undo && npm run migrate && npm run seed"
   },

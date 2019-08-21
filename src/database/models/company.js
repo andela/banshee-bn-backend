@@ -1,22 +1,9 @@
 module.exports = (sequelize, DataTypes) => {
   const Company = sequelize.define('Company', {
-    name: {
-      allowNull: false,
-      type: DataTypes.STRING
-    },
-    address: {
-      allowNull: false,
-      type: DataTypes.STRING
-    },
-    code: {
-      allowNull: false,
-      unique: true,
-      type: DataTypes.STRING
-    },
-    owner: {
-      allowNull: false,
-      type: DataTypes.STRING
-    }
+    name: DataTypes.STRING,
+    address: DataTypes.STRING,
+    code: DataTypes.STRING,
+    owner: DataTypes.STRING
   }, {});
   Company.associate = (models) => {
     // associations can be defined here

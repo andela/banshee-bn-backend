@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 
 dotenv.config();
-const envSecret = process.env.SECRET;
+const envSecret = process.env.TOKEN_SECRET;
 
 /** Token Helper Class */
 class Token {
