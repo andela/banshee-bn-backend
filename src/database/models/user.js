@@ -2,48 +2,15 @@ module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define(
     'User',
     {
-      firstName: {
-        allowNull: false,
-        type: DataTypes.STRING
-      },
-      lastName: {
-        allowNull: false,
-        type: DataTypes.STRING
-      },
-      email: {
-        allowNull: false,
-        unique: true,
-        type: DataTypes.STRING
-      },
-      password: {
-        allowNull: false,
-        type: DataTypes.STRING
-      },
-      gender: {
-        allowNull: false,
-        type: DataTypes.ENUM('male', 'female'),
-        values: ['male', 'female']
-      },
-      dob: {
-        allowNull: false,
-        type: DataTypes.DATEONLY
-      },
-      role: {
-        allowNull: false,
-        type: DataTypes.ENUM('owner', 'admin', 'staff'),
-        values: ['owner', 'admin', 'staff'],
-        defaultValue: 'staff'
-      },
-      status: {
-        allowNull: false,
-        type: DataTypes.ENUM('active', 'inactive'),
-        values: ['active', 'inactive'],
-        defaultValue: 'active'
-      },
-      companyId: {
-        allowNull: false,
-        type: DataTypes.UUID
-      }
+      firstName: DataTypes.STRING,
+      lastName: DataTypes.STRING,
+      email: DataTypes.STRING,
+      password: DataTypes.STRING,
+      gender: DataTypes.ENUM('male', 'female'),
+      dob: DataTypes.DATEONLY,
+      role: DataTypes.ENUM('owner', 'admin', 'staff'),
+      status: DataTypes.ENUM('active', 'inactive'),
+      companyId: DataTypes.UUID
     },
     {}
   );
