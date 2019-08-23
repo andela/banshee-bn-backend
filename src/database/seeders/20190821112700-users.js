@@ -7,7 +7,7 @@ module.exports = {
       companyId: 'a6e35eb9-8c59-4c7d-b8d4-ae724aa7fb61',
       firstName: 'Femi',
       lastName: 'Tijani',
-      email: 'tjhakeemus@gmail.com',
+      email: 'tjhakeemus1@gmail.com',
       password: '12345678',
       dob: '2012-09-12',
       gender: 'male',

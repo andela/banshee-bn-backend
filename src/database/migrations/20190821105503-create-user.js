@@ -48,8 +48,8 @@ module.exports = {
     },
     status: {
       allowNull: false,
-      type: Sequelize.ENUM('active', 'inactive'),
-      defaultValue: 'active'
+      type: Sequelize.ENUM('active', 'inactive', 'unverified'),
+      defaultValue: 'unverified'
     },
     createdAt: {
       allowNull: false,

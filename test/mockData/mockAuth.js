@@ -72,6 +72,19 @@ const user7 = {
   companyId: 'a6e35eb9-8c59-4c7d-b8d4-ae724aa7fb61'
 };
 
+const user8 = {
+  firstName: 'lanre',
+  lastName: 'Daniels',
+  email: 'lanre@gmail.com',
+  password: 'testing222',
+  gender: 'male',
+  dob: '2001-04-30',
+  companyCode: '122dssdd',
+  companyName: 'PWC',
+  address: '4th, saint john str',
+  code: 'PWC123'
+};
+
 const undefinedLastname = {
   firstName: 'Sonny',
   lastName: '',
@@ -243,12 +256,14 @@ const credentialsWithInvalidEmail = {
 };
 
 const users = {
-  user7,
-  user6,
   user1,
   user2,
   user3,
   user4,
+  user5,
+  user6,
+  user7,
+  user8,
   credentials,
   credentialsWithInvalidEmail,
   credentialsWithIncorrectCode,
@@ -268,8 +283,7 @@ const users = {
   invalidDOB,
   undefinedGender,
   invalidGender,
-  invalidCode,
-  user5
+  invalidCode
 };
 
 export default users;
