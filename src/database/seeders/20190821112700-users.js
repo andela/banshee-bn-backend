@@ -24,5 +24,6 @@ module.exports = {
       status: 'active',
       role: 'staff'
     },
-  ])
+  ]),
+  down: queryInterface => queryInterface.bulkDelete('Users', null, {})
 };

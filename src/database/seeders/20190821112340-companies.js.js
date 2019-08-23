@@ -7,5 +7,6 @@ module.exports = {
       code: '4RHJHJJKSK',
       owner: 'Rakuten'
     },
-  ])
+  ]),
+  down: queryInterface => queryInterface.bulkDelete('Companies', null, {})
 };
