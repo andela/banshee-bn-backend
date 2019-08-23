@@ -12,7 +12,7 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-app.get('/', (req, res) => {
+app.get('/api/v1', (req, res) => {
   res.status(200).json({
     status: 200,
     message: 'Welcome to Barefoot-Nomad'

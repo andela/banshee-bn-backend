@@ -10,7 +10,7 @@ describe('Handle incoming requests on routes', () => {
   it('should return 200 and success message for the / route', (done) => {
     chai
       .request(app)
-      .get('/')
+      .get('/api/v1')
       .end((err, res) => {
         expect(res).to.have.status(200);
         expect(res.body).to.be.an('object');
