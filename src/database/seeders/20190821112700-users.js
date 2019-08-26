@@ -17,7 +17,7 @@ module.exports = {
       companyId: 'a6e35eb9-8c59-4c7d-b8d4-ae724aa7fb61',
       firstName: 'Desmond',
       lastName: 'Edem',
-      email: 'kukiito@gmail.com',
+      email: 'kukiito219@gmail.com',
       password: '12345678',
       gender: 'male',
       dob: '2012-09-12',

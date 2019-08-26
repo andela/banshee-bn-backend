@@ -16,7 +16,7 @@ describe('Handle incoming requests on routes', () => {
         expect(res.body).to.be.an('object');
         expect(res.body).to.have.property('status');
         expect(res.body.status).to.equal(200);
-        expect(res.body.message).to.equal('Welcome to Barefoot-Nomad API');
+        expect(res.body.message).to.equal('Welcome to Barefoot-Nomad');
         done(err);
       });
   });

@@ -3,7 +3,6 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const { DB_DEV_NAME, DB_USER_NAME, DB_PASSWORD } = process.env;
-
 const dialect = 'postgres';
 
 module.exports = {

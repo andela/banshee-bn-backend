@@ -1,11 +1,20 @@
-import express from 'express';
+import { Router } from 'express';
+
 import Auth from '../controllers/Auth';
 import AuthMiddlewares from '../middlewares/AuthMiddlewares';
+import Schemas from '../validation/auth';
+import validator from '../middlewares/validator';
 
-const authRoute = express.Router();
+const {
+  signupSchema
+} = Schemas;
+
+const authRoute = Router();
 
 authRoute.post(
   '/signup',
+  validator(signupSchema),
+  AuthMiddlewares.checkExistingUser,
   AuthMiddlewares.signUpValidator,
   Auth.signup
 );
