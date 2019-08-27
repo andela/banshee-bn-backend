@@ -7,6 +7,13 @@ module.exports = {
       code: '4RHJHJJKSK',
       owner: 'Rakuten'
     },
+    {
+      id: 'a6e35eb9-8c59-4c7d-b8d4-ae724aa7fb62',
+      name: 'Spanish Premier League',
+      address: 'Villareal Road, spaiard',
+      code: 'NOM-0024',
+      owner: 'Raul'
+    },
   ]),
   down: queryInterface => queryInterface.bulkDelete('Companies', null, {})
 };

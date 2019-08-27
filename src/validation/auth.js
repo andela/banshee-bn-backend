@@ -36,9 +36,7 @@ const signupSchema = [
     .isLength({ min: 8, })
     .withMessage('Password must be alphanumeric and not be less than 8 characters')
     .isAlphanumeric()
-    .withMessage(
-      'Password must be alphanumeric and not be less than 8 characters'
-    ),
+    .withMessage('Password must be alphanumeric and not be less than 8 characters'),
 
   check('dob')
     .exists()
@@ -83,7 +81,20 @@ const companySignupSchema = [
     .withMessage('Company code should be between 5 to 15 characters')
 ];
 
+const loginSchema = [
+  check('email', 'must be an email address')
+    .isEmail(),
+  check('password', 'passwords must be at least 8 chars long and contain one number')
+    .isLength({ min: 8 }),
+  check('code', 'Invalid company code')
+    .exists()
+    .not()
+    .isEmpty()
+    .isLength({ min: 5, max: 15 }),
+];
+
 export {
   signupSchema,
-  companySignupSchema
+  companySignupSchema,
+  loginSchema
 };

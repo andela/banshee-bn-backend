@@ -1,8 +1,9 @@
 import { Router } from 'express';
 import Auth from '../controllers/Auth';
 import AuthMiddlewares from '../middlewares/AuthMiddlewares';
-import { signupSchema, companySignupSchema } from '../validation/auth';
+import { signupSchema, companySignupSchema, loginSchema } from '../validation/auth';
 import validator from '../middlewares/validator';
+import checkValidationResult from '../middlewares/validationChecker';
 
 const authRoute = Router();
 
@@ -20,4 +21,10 @@ authRoute.post(
   Auth.companySignup
 );
 
+authRoute.post(
+  '/login',
+  loginSchema,
+  checkValidationResult,
+  Auth.login,
+);
 export default authRoute;

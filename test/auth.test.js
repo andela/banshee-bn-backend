@@ -14,8 +14,11 @@ const {
   invalidEmail, user6,
   undefinedDOB, invalidDOB,
   undefinedGender, invalidGender,
-  invalidCode,
-  user1, user2, user3, user4, user5
+  invalidCode, user1, user2,
+  user3, user4, user5, credentials,
+  credentialsWithIncorrectCode, credentialsWithIncorrectPassword,
+  credentialsWithIncorrectEmail, credentialsWithoutEmail,
+  credentialsWithoutCode, credentialsWithInvalidEmail,
 } = users;
 
 describe('Auth Routes', () => {
@@ -55,6 +58,8 @@ describe('Auth Routes', () => {
           done(err);
         });
     });
+  });
+  describe('Signup route validation', () => {
     specify('error if FirstName is undefined (not provided)', (done) => {
       chai
         .request(app)
@@ -279,6 +284,92 @@ describe('Auth Routes', () => {
         .end((err, res) => {
           expect(res).to.have.status(400);
           done();
+        });
+    });
+  });
+  describe('User Login', () => {
+    it('should login with correct email, password and company code', (done) => {
+      chai
+        .request(app)
+        .post('/api/v1/auth/login')
+        .send(credentials)
+        .end((err, res) => {
+          expect(res.body).to.be.an('object');
+          expect(res.body.code).to.equal(200);
+          expect(res.body.message).to.equal('user logged in sucessfully');
+          done(err);
+        });
+    });
+    it('should not login with incorrect company code', (done) => {
+      chai
+        .request(app)
+        .post('/api/v1/auth/login')
+        .send(credentialsWithIncorrectCode)
+        .end((err, res) => {
+          expect(res.body).to.be.an('object');
+          expect(res.body.code).to.equal(401);
+          expect(res.body.message).to.equal('Incorrect company code');
+          done(err);
+        });
+    });
+    it('should not login user if password is incorrect', (done) => {
+      chai
+        .request(app)
+        .post('/api/v1/auth/login')
+        .send(credentialsWithIncorrectPassword)
+        .end((err, res) => {
+          expect(res.body).to.be.an('object');
+          expect(res.body.code).to.equal(401);
+          expect(res.body.message).to.equal('Incorrect email or password');
+          done(err);
+        });
+    });
+    it('should not login if email is incorrect', (done) => {
+      chai
+        .request(app)
+        .post('/api/v1/auth/login')
+        .send(credentialsWithIncorrectEmail)
+        .end((err, res) => {
+          expect(res.body).to.be.an('object');
+          expect(res.body.code).to.equal(401);
+          expect(res.body.message).to.equal('Incorrect email or password');
+          done(err);
+        });
+    });
+    it('should not login without email', (done) => {
+      chai
+        .request(app)
+        .post('/api/v1/auth/login')
+        .send(credentialsWithoutEmail)
+        .end((err, res) => {
+          expect(res.body).to.be.an('object');
+          expect(res.status).to.equal(400);
+          expect(res.body.data.errors[0].msg).to.equal('must be an email address');
+          done(err);
+        });
+    });
+    it('should not login if email is empty or invalid', (done) => {
+      chai
+        .request(app)
+        .post('/api/v1/auth/login')
+        .send(credentialsWithInvalidEmail)
+        .end((err, res) => {
+          expect(res.body).to.be.an('object');
+          expect(res.status).to.equal(400);
+          expect(res.body.data.errors[0].msg).to.equal('must be an email address');
+          done(err);
+        });
+    });
+    it('should not login without invalid company code', (done) => {
+      chai
+        .request(app)
+        .post('/api/v1/auth/login')
+        .send(credentialsWithoutCode)
+        .end((err, res) => {
+          expect(res.body).to.be.an('object');
+          expect(res.status).to.equal(400);
+          expect(res.body.data.errors[0].msg).to.equal('Invalid company code');
+          done(err);
         });
     });
   });

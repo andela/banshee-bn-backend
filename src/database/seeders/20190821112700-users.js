@@ -1,3 +1,5 @@
+import hashHelper from '../../helpers/Hash';
+
 module.exports = {
   up: queryInterface => queryInterface.bulkInsert('Users', [
     {
@@ -19,6 +21,18 @@ module.exports = {
       lastName: 'Edem',
       email: 'kukiito219@gmail.com',
       password: '12345678',
+      gender: 'male',
+      dob: '2012-09-12',
+      status: 'active',
+      role: 'staff'
+    },
+    {
+      id: '91542e6f-94bc-4e80-a667-586fb0752f24',
+      companyId: 'a6e35eb9-8c59-4c7d-b8d4-ae724aa7fb62',
+      firstName: 'Babatunde',
+      lastName: 'Ogedengbe',
+      email: 'ogedengbe123@gmail.com',
+      password: hashHelper.hashPassword('malcomX123'),
       gender: 'male',
       dob: '2012-09-12',
       status: 'active',

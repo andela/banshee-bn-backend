@@ -12,6 +12,7 @@ module.exports = {
     database: DB_DEV_NAME,
     host: '127.0.0.1',
     port: process.env.DB_PORT,
+    logging: false,
     dialect
   },
   test: {
@@ -20,6 +21,7 @@ module.exports = {
     database: process.env.DB_TEST_NAME,
     host: process.env.DB_HOST,
     port: process.env.DB_PORT,
+    logging: false,
     dialect
   },
   production: {
@@ -28,6 +30,7 @@ module.exports = {
     database: process.env.PRODUCTION_DATABASE,
     host: process.env.PRODUCTION_HOST,
     port: process.env.PRODUCTION_PORT,
+    logging: false,
     dialect,
     ssl: true
   }
