@@ -38,7 +38,7 @@ class AuthMiddlewares {
    */
   static async checkExistingUser(req, res, next) {
     const { email } = req.body;
-    const existingUser = await UserService.getAUser(email);
+    const existingUser = await UserService.getUserByEmail(email);
 
     if (existingUser) {
       const response = new Response(

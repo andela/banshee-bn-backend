@@ -11,7 +11,7 @@ class UserService {
    * @param {object} email request object containing user email
    * @returns {object} response object
    */
-  static async getAUser(email) {
+  static async getUserByEmail(email) {
     const user = await User.findOne({
       where: { email },
     });
@@ -23,7 +23,7 @@ class UserService {
    * @param {object} id user id
    * @returns {object} response object
    */
-  static async getUserId(id) {
+  static async getUserById(id) {
     const user = await User.findOne({
       where: { id },
     });

@@ -10,19 +10,28 @@ class UserTrip {
    * @param {object} res - the response
    * @returns {object} - user information
    */
-  static async travelRequest(req, res) {
-    // Check user table and find out if preference is saved or not
-    const { id } = req.params;
+  static async requestTravel(req, res) {
+    const { params: { id } } = req;
     try {
-      const user = await UserService.getUserId(id);
-      return res.status(200).json(user);
+      const user = await UserService.getUserById(id);
+      if (!user) {
+        return res.status(404).json({ error: 'User not found!' });
+      }
+      if (user.role === 'staff') {
+        return res.status(200).json(user);
+      }
+
+      const travelRequest = { ...req.body };
+
+      // const travelData = await Trips.create({ });
+
+      return res.status(403).json({
+        status: 'User not authorized',
+        data: travelRequest,
+      });
     } catch (error) {
       return res.status(500).json(error);
     }
-    // if preference is checked, retrieve user's personal information
-
-    // else
-    //  ask for user details including the option to save (type: boolean)
   }
 }
 
