@@ -1,6 +1,7 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
-import app from '../src';
+import app from '../src/index';
+import jwtHelper from '../src/helpers/Token';
 import users from './mockData/mockAuth';
 
 const { expect } = chai;
@@ -11,7 +12,7 @@ const {
   invalidFirstname, undefinedFirstname,
   undefinedLastname, invalidLastname,
   invalidPassword, undefinedPassword,
-  invalidEmail, user6,
+  invalidEmail, user6, user8,
   undefinedDOB, invalidDOB,
   undefinedGender, invalidGender,
   invalidCode, user1, user2,
@@ -276,6 +277,26 @@ describe('Auth Routes', () => {
           done();
         });
     });
+    it('Company Signup - should return a token on successful signup registration', (done) => {
+      chai
+        .request(app)
+        .post(`${baseURL}/register/company`)
+        .send(user5)
+        .end((err, res) => {
+          expect(res).to.have.status(409);
+          done();
+        });
+    });
+    it('Company Signup - should return a token on successful signup registration', (done) => {
+      chai
+        .request(app)
+        .post(`${baseURL}/register/company`)
+        .send(user8)
+        .end((err, res) => {
+          expect(res).to.have.status(409);
+          done();
+        });
+    });
     it('Company Signup - should return a db error', (done) => {
       chai
         .request(app)
@@ -372,5 +393,59 @@ describe('Auth Routes', () => {
           done(err);
         });
     });
+  });
+});
+
+describe('EMAIL VERIFICATION TEST', () => {
+  const token = jwtHelper.generateToken({ email: 'mrtest@gmail.com' });
+  it('should verify a user', (done) => {
+    chai
+      .request(app)
+      .patch(`${baseURL}/verify?token=${token}`)
+      .end((err, res) => {
+        expect(res).to.have.status(200);
+        expect(res.body).to.be.an('object');
+        expect(res.body).to.have.key('success', 'code', 'message');
+        done();
+      });
+  });
+  it('should return an error message if a user is verified', (done) => {
+    chai
+      .request(app)
+      .patch(`${baseURL}/verify?token=${token}`)
+      .end((err, res) => {
+        const { message } = res.body;
+        expect(res).to.have.status(403);
+        expect(res.body).to.be.an('object');
+        expect(res.body).to.have.keys('success', 'code', 'message');
+        expect(message).to.be.equal('Your account has already been verified');
+        done();
+      });
+  });
+  it('should return an error message if token is missing', (done) => {
+    chai
+      .request(app)
+      .patch(`${baseURL}/verify?token=`)
+      .end((err, res) => {
+        const { message } = res.body;
+        expect(res).to.have.status(401);
+        expect(res.body).to.be.an('object');
+        expect(res.body).to.have.keys('success', 'code', 'message');
+        expect(message).to.be.equal('Unathorized, You did not provide a token');
+        done();
+      });
+  });
+  it('should return an error message if token is invalid', (done) => {
+    chai
+      .request(app)
+      .patch(`${baseURL}/verify?token=28282328329dwdsd`)
+      .end((err, res) => {
+        const { message } = res.body;
+        expect(res).to.have.status(401);
+        expect(res.body).to.be.an('object');
+        expect(res.body).to.have.keys('success', 'code', 'message');
+        expect(message).to.be.equal('Unathorized, Your token is invalid or expired');
+        done();
+      });
   });
 });

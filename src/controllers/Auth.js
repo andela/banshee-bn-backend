@@ -48,6 +48,9 @@ class Auth {
         role,
         companyId,
       });
+      const verificationToken = jwtHelper.generateToken({ email });
+      const verificationLink = `http://${req.headers.host}/api/v1/auth/verify?token=${verificationToken}`;
+      await EmailNotifications.signupEmail(email, verificationLink, firstName);
 
       const response = new Response(
         true,
@@ -120,6 +123,10 @@ class Auth {
         role,
         companyId
       });
+      const verificationToken = jwtHelper.generateToken({ email });
+      const verificationLink = `${req.hostname}?token=${verificationToken}`;
+      await EmailNotifications.signupEmail(email, verificationLink, firstName);
+
       const response = new Response(
         true,
         201,
@@ -273,7 +280,45 @@ class Auth {
     );
     return res.status(response.code).json(response);
   }
-}
 
+  /**
+   * @description - this method Verifies a user
+   *
+   * @param {object} req - The request payload sent to the router
+   * @param {object} res - The response payload sent back from the controller
+   *
+   * @returns {object} - object
+   */
+  static async verifyEmail(req, res) {
+    try {
+      const { payload } = req.payload;
+      const { email } = payload;
+      const user = await User.findOne({ where: { email } });
+      if (user.status === 'active') {
+        const response = new Response(
+          false,
+          403,
+          'Your account has already been verified'
+        );
+        return res.status(response.code).json(response);
+      }
+      const updateStatus = { status: 'active' };
+      await user.update(updateStatus);
+      const response = new Response(
+        true,
+        200,
+        'Account verification was successful'
+      );
+      return res.status(response.code).json(response);
+    } catch (err) {
+      const response = new Response(
+        false,
+        500,
+        'Server error, Please try again later'
+      );
+      return res.status(response.code).json(response);
+    }
+  }
+}
 
 export default Auth;

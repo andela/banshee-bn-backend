@@ -1,5 +1,6 @@
-import Mailer from './Mailer';
+import mailer from './Mailer';
 import template from './emailTemplate';
+
 /**
  * @class EmailNotifications
  */
@@ -22,7 +23,23 @@ class EmailNotifications {
         Reset password
       </a>`;
     const content = template(subject, emailBody);
-    Mailer.sendMail(user.email, subject, content);
+    mailer.sendMail(user.email, subject, content);
+  }
+
+  /**
+   * @param {*} email
+   * @param {*} link
+   * @param {*} name
+   * @returns {*} sends an email to a new user
+   */
+  static signupEmail(email, link, name) {
+    const title = 'Welcome to Barefoot Nomad';
+    const body = `<p>Dear ${name},</p>
+    <p class="message">We are thrilled to have you.</p>
+    <p class="message">Click the link below to confirm your registration</p>
+        <a class="btn" href="${link}">Confirm email</a>`;
+    const message = template(title, body);
+    mailer.sendMail(email, title, message);
   }
 }
 

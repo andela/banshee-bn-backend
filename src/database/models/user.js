@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
       gender: DataTypes.ENUM('male', 'female'),
       dob: DataTypes.DATEONLY,
       role: DataTypes.ENUM('owner', 'admin', 'staff'),
-      status: DataTypes.ENUM('active', 'inactive'),
+      status: DataTypes.ENUM('active', 'inactive', 'unverified'),
       companyId: DataTypes.UUID
     },
     {}

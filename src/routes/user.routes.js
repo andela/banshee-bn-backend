@@ -10,6 +10,7 @@ import {
 } from '../validation/authSchema';
 import validator from '../middlewares/validator';
 import checkValidationResult from '../middlewares/validationChecker';
+import TokenHelper from '../helpers/Token';
 
 
 const { forgotPassword, resetPassword } = Auth;
@@ -27,6 +28,8 @@ authRoute.post(
 authRoute.post(
   '/register/company',
   validator(companySignupSchema),
+  AuthMiddlewares.checkExistingUser,
+  AuthMiddlewares.checkExistingCompany,
   Auth.companySignup
 );
 
@@ -47,6 +50,12 @@ authRoute.post(
   '/reset_password/:resetToken',
   validator(resetPasswordSchema),
   resetPassword
+);
+
+authRoute.patch(
+  '/verify',
+  TokenHelper.verifyToken,
+  Auth.verifyEmail
 );
 
 export default authRoute;

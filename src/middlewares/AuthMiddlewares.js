@@ -51,6 +51,29 @@ class AuthMiddlewares {
 
     return next();
   }
+
+  /**
+   *
+   * @param {object} req request object
+   * @param {object} res response object
+   * @param {function} next
+   * @returns {void}
+   */
+  static async checkExistingCompany(req, res, next) {
+    const { code } = req.body;
+    const existingCompany = await findCompany(code);
+
+    if (existingCompany) {
+      const response = new Response(
+        false,
+        409,
+        `Company with code: ${code} already exist`
+      );
+      return res.status(response.code).json(response);
+    }
+
+    return next();
+  }
 }
 
 export default AuthMiddlewares;

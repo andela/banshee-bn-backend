@@ -22,7 +22,8 @@
       "name": "Welcome"
     },
     {
-      "name": "Users"
+      "name": "auth",
+      "description": "Operations related to Users authentication"
     }
   ],
   "paths": {
@@ -39,64 +40,108 @@
         }
       }
     },
-    "/auth/signup": {
+    "/auth/register/user": {
       "post": {
         "tags": [
-          "Users"
+          "auth"
         ],
-        "summary": "User authentication",
-        "description": "User on successful signup is issued a token",
+        "summary": "Signup a user",
+        "operationId": "createUser",
+        "requestBody": {
+          "description": "Create a new user",
+          "content": {
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            }
+          },
+          "required": true
+        },
         "responses": {
           "201": {
-            "description": "User created",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "title": "Sample title",
-                  "type": "object",
-                  "properties": {
-                    "status": {
-                      "type": "string",
-                      "example": "success"
-                    }
-                  }
-                }
-              }
-            }
+            "description": "Registration was successfull"
           },
           "400": {
-            "description": "Invalid request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "title": "Sample title",
-                  "type": "object",
-                  "properties": {
-                    "status": {
-                      "type": "string",
-                      "example": "error"
-                    }
-                  }
-                }
+            "description": "Bad request"
+          },
+          "404": {
+            "description": "Company code not found"
+          },
+          "409": {
+            "description": "Email already exists"
+          },
+          "500": {
+            "description": "Server error, please try again later"
+          }
+        }
+      }
+    },
+    "/auth/register/company": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Signup a company",
+        "operationId": "createCompany",
+        "requestBody": {
+          "description": "Create a new user and company",
+          "content": {
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/Company"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Company"
               }
             }
           },
-          "409": {
-            "description": "Conflict",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "title": "Sample title",
-                  "type": "object",
-                  "properties": {
-                    "status": {
-                      "type": "string",
-                      "example": "Conflict"
-                    }
-                  }
-                }
-              }
-            }
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Registration was successfull"
+          },
+          "500": {
+            "description": "Server error, please try again later"
+          }
+        }
+      }
+    },
+    "/auth/verify": {
+      "patch": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "User signup verification",
+        "operationId": "verifyUser",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "token",
+            "schema": {
+              "type": "string"
+            },
+            "description": "verification token",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Account verification was successful"
+          },
+          "403": {
+            "description": "User account has already been verified"
+          },
+          "500": {
+            "description": "Server error, please try again later"
           }
         }
       }
@@ -104,25 +149,26 @@
     "/auth/login": {
       "post": {
         "tags": [
-          "Users"
+          "auth"
         ],
         "summary": "User login",
-        "description": "User login",
         "operationId": "login",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "description": "login user object",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/login"
+        "requestBody": {
+          "description": "login user object",
+          "content": {
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/login"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/login"
+              }
             }
-          }
-        ],
+          },
+          "required": true
+        },
         "responses": {
           "200": {
             "description": "user successfully login",
@@ -176,7 +222,7 @@
     "/auth/forgot_password": {
       "post": {
         "tags": [
-          "Users"
+          "auth"
         ],
         "summary": "Forgot password route",
         "description": "Sends email with reset token upon success",
@@ -248,7 +294,7 @@
     "/auth/reset_password/{resetToken}": {
       "post": {
         "tags": [
-          "Users"
+          "auth"
         ],
         "summary": "Reset password route",
         "description": "Resets user password on success",
@@ -358,18 +404,84 @@
       }
     }
   },
-  "definitions": {
-    "login": {
-      "type": "object",
-      "properties": {
-        "email": {
-          "type": "string"
+  "components": {
+    "schemas": {
+      "User": {
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "gender": {
+            "type": "string"
+          },
+          "dob": {
+            "type": "string"
+          },
+          "companyCode": {
+            "type": "string"
+          }
         },
-        "password": {
-          "type": "string"
+        "xml": {
+          "name": "User"
+        }
+      },
+      "Company": {
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "gender": {
+            "type": "string"
+          },
+          "dob": {
+            "type": "string"
+          },
+          "companyName": {
+            "type": "string"
+          },
+          "address": {
+            "type": "string"
+          },
+          "code": {
+            "type": "string"
+          }
         },
-        "code": {
-          "type": "string"
+        "xml": {
+          "name": "Company"
+        }
+      },
+      "login": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "code": {
+            "type": "string"
+          }
         }
       }
     }
