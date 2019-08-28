@@ -49,7 +49,19 @@ module.exports = {
       companyId: 'a6e35eb9-8c59-4c7d-b8d4-ae724aa7fb61',
       role: 'staff',
       status: 'active'
-    }
+    },
+    {
+      id: '91542e6f-94bc-4e80-a667-586fb0752f25',
+      companyId: 'a6e35eb9-8c59-4c7d-b8d4-ae724aa7fb62',
+      firstName: 'Peter',
+      lastName: 'Tyonum',
+      email: 'withtvpeter@gmail.com',
+      password: hashHelper.hashPassword('password2019'),
+      gender: 'male',
+      dob: '2012-09-10',
+      status: 'active',
+      role: 'staff'
+    },
   ]),
   down: queryInterface => queryInterface.bulkDelete('Users', null, {})
 };

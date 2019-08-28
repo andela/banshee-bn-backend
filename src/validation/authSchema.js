@@ -116,7 +116,34 @@ const resetPasswordSchema = [
         throw new Error('Password confirmation does not match password');
       }
       return true;
-    }),
+    })];
+
+const loginWithCode = [
+  check('id')
+    .exists()
+    .withMessage('Supply user id')
+    .isLength({ min: 32 })
+    .withMessage('Invalid user id'),
+
+  check('email')
+    .trim()
+    .exists()
+    .withMessage('Email address is required')
+    .isEmail()
+    .withMessage('Email address is invalid'),
+
+  check('companyId')
+    .trim()
+    .exists()
+    .withMessage('Supply user id')
+    .isLength({ min: 32, max: 40 })
+    .withMessage('Invalid user id'),
+
+  check('code')
+    .exists()
+    .withMessage('Supply company code')
+    .isLength({ min: 10 })
+    .withMessage('Invalid company login code')
 ];
 
 export {
@@ -124,5 +151,6 @@ export {
   companySignupSchema,
   loginSchema,
   forgotPasswordSchema,
-  resetPasswordSchema
+  resetPasswordSchema,
+  loginWithCode
 };

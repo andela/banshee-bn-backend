@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import passport from 'passport';
 import Auth from '../controllers/Auth';
 import AuthMiddlewares from '../middlewares/AuthMiddlewares';
 import {
@@ -6,15 +7,17 @@ import {
   companySignupSchema,
   loginSchema,
   forgotPasswordSchema,
-  resetPasswordSchema
+  resetPasswordSchema,
+  loginWithCode
 } from '../validation/authSchema';
 import validator from '../middlewares/validator';
 import checkValidationResult from '../middlewares/validationChecker';
 import TokenHelper from '../helpers/Token';
+import Strategy from '../config/passport/Strategy';
 
 
 const { forgotPassword, resetPassword } = Auth;
-
+const allStrategy = new Strategy();
 const authRoute = Router();
 
 authRoute.post(
@@ -57,5 +60,21 @@ authRoute.patch(
   TokenHelper.verifyToken,
   Auth.verifyEmail
 );
+
+authRoute.get(('/google'),
+  passport.authenticate(allStrategy.selectStrategy('google'),
+    { scope: ['openid', 'email', 'profile'] }));
+
+authRoute.get('/google/redirect',
+  passport.authenticate(allStrategy.selectStrategy('google'),
+    { failureRedirect: '/' }), Auth.loginWithGoogle);
+
+authRoute.get('/facebook',
+  passport.authenticate(allStrategy.selectStrategy('facebook')));
+
+authRoute.get('/facebook/redirect',
+  passport.authenticate(allStrategy.selectStrategy('facebook'),
+    { failureRedirect: '/' }), Auth.loginWithFacebook);
+authRoute.post('/code', validator(loginWithCode), Auth.completeLoginWithCode);
 
 export default authRoute;

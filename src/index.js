@@ -3,6 +3,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import swaggerUi from 'swagger-ui-express';
 import logger from 'morgan';
+import passport from 'passport';
 import router from './routes';
 import swaggerDoc from '../swagger.json';
 
@@ -11,6 +12,7 @@ dotenv.config();
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(passport.initialize());
 
 app.get('/', (req, res) => {
   res.status(200).json({

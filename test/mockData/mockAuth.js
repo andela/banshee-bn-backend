@@ -255,15 +255,36 @@ const credentialsWithInvalidEmail = {
   code: 'NOM-0024'
 };
 
+
+const completeLoginWithCode = {
+  id: '91542e6f-94bc-4e80-a667-586fb0752f23',
+  email: 'kukiito219@gmail.com',
+  companyId: 'a6e35eb9-8c59-4c7d-b8d4-ae724aa7fb61',
+  role: 'staff',
+  code: '4RHJHJJKSK'
+};
+const loginWithUnregisteredEmail = {
+  id: '91542e6f-94bc-4e80-a667-586fb0752f23',
+  email: 'jjjohnn@gmail.com',
+  companyId: 'a6e35eb9-8c59-4c7d-b8d4-ae724aa7fb61',
+  role: 'staff',
+  code: '4RHJHJJKSK'
+};
+const completeLoginWithoutCode = {
+  id: '91542e6f-94bc-4e80-a667-586fb0752f23',
+  email: 'kukiito219@gmail.com',
+  companyId: 'a6e35eb9-8c59-4c7d-b8d4-ae724aa7fb61',
+  role: 'staff',
+  code: ''
+};
+
 const users = {
+  user7,
+  user6,
   user1,
   user2,
   user3,
   user4,
-  user5,
-  user6,
-  user7,
-  user8,
   credentials,
   credentialsWithInvalidEmail,
   credentialsWithIncorrectCode,
@@ -283,7 +304,12 @@ const users = {
   invalidDOB,
   undefinedGender,
   invalidGender,
-  invalidCode
+  invalidCode,
+  user8,
+  user5,
+  completeLoginWithCode,
+  completeLoginWithoutCode,
+  loginWithUnregisteredEmail
 };
 
 export default users;
