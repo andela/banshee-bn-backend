@@ -45,7 +45,7 @@ const user4 = {
   password: 'testing222',
   gender: 'female',
   dob: '2001-04-30',
-  companyCode: '122dssdd'
+  companyCode: '122dssdd',
 };
 
 const user5 = {
@@ -59,6 +59,17 @@ const user5 = {
   companyName: 'PWC',
   address: '4th, saint john str',
   code: 'PWC123'
+};
+
+const user7 = {
+  firstName: 'ola1',
+  lastName: 'tester',
+  email: 'max@gmail.com',
+  password: 'testing222',
+  gender: 'female',
+  dob: '2016-01-01T00:00:00-06:00',
+  companyCode: '122dssdd',
+  companyId: 'a6e35eb9-8c59-4c7d-b8d4-ae724aa7fb61'
 };
 
 const undefinedLastname = {
@@ -232,6 +243,7 @@ const credentialsWithInvalidEmail = {
 };
 
 const users = {
+  user7,
   user6,
   user1,
   user2,
