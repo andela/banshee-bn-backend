@@ -246,6 +246,7 @@ class Auth {
     const companyId = company.id;
     const user = await User.findOne({ where: { email, companyId } });
     if (!user) {
+      console.log('user not found');
       const response = new Response(
         false,
         unauthorizedCode,
@@ -274,6 +275,7 @@ class Auth {
       );
       return res.status(response.code).json(response);
     }
+    console.log('password not found');
     const response = new Response(
       false,
       unauthorizedCode,

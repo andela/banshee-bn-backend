@@ -8,12 +8,12 @@ const { User } = database;
 class UserService {
   /**
    * @description method to find user in the database
-   * @param {object} email request object containing user email
+   * @param {object} id request object containing user email
    * @returns {object} response object
    */
-  static async getAUser(email) {
+  static async getUserById(id) {
     const user = await User.findOne({
-      where: { email },
+      where: { id },
     });
     return user;
   }

@@ -218,7 +218,7 @@ const invalidCode = {
 const credentials = {
   email: 'ogedengbe123@gmail.com',
   password: 'malcomX123',
-  code: 'NOM-0024'
+  code: 'NOMP0024'
 };
 
 const credentialsWithIncorrectCode = {
@@ -230,18 +230,18 @@ const credentialsWithIncorrectCode = {
 const credentialsWithIncorrectPassword = {
   email: 'ogedengbe123@gmail.com',
   password: 'malcomX1',
-  code: 'NOM-0024'
+  code: 'NOMP0024'
 };
 
 const credentialsWithIncorrectEmail = {
   email: 'ogedengbe12@gmail.com',
   password: 'malcomX123',
-  code: 'NOM-0024'
+  code: 'NOMP0024'
 };
 
 const credentialsWithoutEmail = {
   password: 'malcomX123',
-  code: 'NOM-0024'
+  code: 'NOMP0024'
 };
 
 const credentialsWithoutCode = {

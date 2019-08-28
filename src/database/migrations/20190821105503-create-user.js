@@ -51,6 +51,16 @@ module.exports = {
       type: Sequelize.ENUM('active', 'inactive', 'unverified'),
       defaultValue: 'unverified'
     },
+    favorites: {
+      allowNull: false,
+      type: Sequelize.BOOLEAN,
+      defaultValue: false,
+      set: (value) => {
+        if (value === 'true') value = true;
+        if (value === 'false') value = false;
+        this.setDataValue('favorites', value);
+      }
+    },
     createdAt: {
       allowNull: false,
       type: Sequelize.DATE,
