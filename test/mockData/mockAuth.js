@@ -79,7 +79,6 @@ const user8 = {
   password: 'testing222',
   gender: 'male',
   dob: '2001-04-30',
-  companyCode: '122dssdd',
   companyName: 'PWC',
   address: '4th, saint john str',
   code: 'PWC123'
@@ -255,7 +254,6 @@ const credentialsWithInvalidEmail = {
   code: 'NOM-0024'
 };
 
-
 const completeLoginWithCode = {
   id: '91542e6f-94bc-4e80-a667-586fb0752f23',
   email: 'kukiito219@gmail.com',
@@ -284,14 +282,34 @@ const credentialsWithInvalidEmail2 = {
   code: 'NOM-0024'
 };
 
+const user9 = {
+  firstName: 'femi',
+  lastName: 'Tijani',
+  email: 'femitj@gmail.com',
+  password: 'testing222',
+  gender: 'male',
+  dob: '2001-04-30',
+  companyName: 'olutiMedia',
+  address: '4th, saint john str',
+  code: 'OTM123'
+};
+
+const userNineLoginDetails = {
+  email: 'femitj@gmail.com',
+  password: 'testing222',
+  code: 'OTM123'
+};
 
 const users = {
-  user7,
-  user6,
   user1,
   user2,
   user3,
   user4,
+  user5,
+  user6,
+  user7,
+  user8,
+  user9,
   credentials,
   credentialsWithInvalidEmail,
   credentialsWithInvalidEmail2,
@@ -313,11 +331,10 @@ const users = {
   undefinedGender,
   invalidGender,
   invalidCode,
-  user8,
-  user5,
   completeLoginWithCode,
   completeLoginWithoutCode,
-  loginWithUnregisteredEmail
+  loginWithUnregisteredEmail,
+  userNineLoginDetails
 };
 
 export default users;

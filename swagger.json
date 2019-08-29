@@ -24,6 +24,10 @@
     {
       "name": "auth",
       "description": "Operations related to Users authentication"
+    },
+    {
+      "name": "Profile",
+      "description": "Operations related to Users profile"
     }
   ],
   "paths": {
@@ -592,6 +596,92 @@
           }
         }
       }
+    },
+    "/profile": {
+      "get": {
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "tags": [
+          "Profile"
+        ],
+        "summary": "Retrieve user profile",
+        "operationId": "getUserProfile",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "token",
+            "schema": {
+              "type": "string"
+            },
+            "description": "user signup token",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User Profile retrieved successfuly"
+          },
+          "401": {
+            "description": "Unathorized, You did not provide a token"
+          },
+          "500": {
+            "description": "Server error, please try again later"
+          }
+        }
+      },
+      "patch": {
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "tags": [
+          "Profile"
+        ],
+        "summary": "Update user profile",
+        "operationId": "patchUserProfile",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "token",
+            "schema": {
+              "type": "string"
+            },
+            "description": "user signup token",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "description": "user object",
+          "content": {
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/Profile"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Profile"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "User Profile updated successfuly"
+          },
+          "401": {
+            "description": "Unathorized, You did not provide a token"
+          },
+          "500": {
+            "description": "Server error, please try again later"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -679,7 +769,43 @@
           "code": {
             "type": "string"
           }
+        },
+        "xml": {
+          "name": "login"
         }
+      },
+      "Profile": {
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "gender": {
+            "type": "string"
+          },
+          "dob": {
+            "type": "string"
+          },
+          "companyName": {
+            "type": "string"
+          },
+          "address": {
+            "type": "string"
+          }
+        },
+        "xml": {
+          "name": "Profile"
+        }
+      }
+    },
+    "securitySchemes": {
+      "ApiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "authorization"
       }
     }
   }
