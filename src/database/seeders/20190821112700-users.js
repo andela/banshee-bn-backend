@@ -36,7 +36,7 @@ module.exports = {
       gender: 'male',
       dob: '2012-09-12',
       status: 'active',
-      role: 'staff'
+      role: 'travel admin'
     },
     {
       id: 'd7c0b7a9-e2cc-4b2c-9c15-dfd4920c60ff',

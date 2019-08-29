@@ -1,4 +1,4 @@
-import { body } from 'express-validator';
+import { body, check } from 'express-validator';
 import { isValid, parseISO } from 'date-fns';
 import models from '../database/models';
 
@@ -27,9 +27,9 @@ const tripRequestSchema = [
   body('departureDate')
     .not().isEmpty({ ignore_whitespace: true })
     .withMessage('Departure date is required')
-    .custom(value => isValid(parseISO(value)))
+    .custom((value) => isValid(parseISO(value)))
     .withMessage('Invalid departure date format')
-    .customSanitizer(value => new Date(value)),
+    .customSanitizer((value) => new Date(value)),
   body('returnDate')
     .trim()
     .custom((value, { req }) => {
@@ -44,7 +44,7 @@ const tripRequestSchema = [
       }
       return true;
     })
-    .customSanitizer(value => new Date(value)),
+    .customSanitizer((value) => new Date(value)),
   body('reason')
     .not().isEmpty({ ignore_whitespace: true })
     .withMessage('Travel reason is required')
@@ -80,4 +80,13 @@ const tripRequestSchema = [
     }),
 ];
 
-export { tripRequestSchema };
+const tripRequestStatusSchema = [
+  check('status')
+    .exists()
+    .withMessage('Trip status is required')
+    .trim()
+    .custom((value) => ['pending', 'approved', 'rejected'].includes(value))
+    .withMessage('Invalid trip status')
+];
+
+export { tripRequestStatusSchema, tripRequestSchema };

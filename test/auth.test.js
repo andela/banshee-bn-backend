@@ -25,7 +25,8 @@ const {
   credentialsWithoutCode, credentialsWithInvalidEmail,
   completeLoginWithCode, completeLoginWithoutCode,
   loginWithWrongCompanyId, credentialsWithInvalidEmail2,
-  credentialsForServerError, credentialsForServerError2
+  credentialsForServerError, credentialsForServerError2,
+  adminAuth, staffAuth, credentials2
 } = users;
 
 describe('Auth Routes', () => {
@@ -345,6 +346,20 @@ describe('Auth Routes', () => {
         .post('/api/v1/auth/login')
         .send(credentials)
         .end((err, res) => {
+          adminAuth.token = res.body.data.user.token;
+          expect(res.body).to.be.an('object');
+          expect(res.body.code).to.equal(200);
+          expect(res.body.message).to.equal('user logged in sucessfully');
+          done(err);
+        });
+    });
+    it('should login as staff with correct email, password and company code', (done) => {
+      chai
+        .request(app)
+        .post('/api/v1/auth/login')
+        .send(credentials2)
+        .end((err, res) => {
+          staffAuth.token = res.body.data.user.token;
           expect(res.body).to.be.an('object');
           expect(res.body.code).to.equal(200);
           expect(res.body.message).to.equal('user logged in sucessfully');

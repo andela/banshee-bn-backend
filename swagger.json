@@ -411,6 +411,165 @@
         }
       }
     },
+    "/trips/{id}": {
+      "patch": {
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "tags": [
+          "Travel Requests"
+        ],
+        "summary": "Modify trip status",
+        "operationId": "Update trip status",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "description": "trip id",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "description": "Trip status object",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/tripStatus"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Trip rejected successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Trip status",
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "UUID",
+                      "example": "ffe25dbe-29ea-4759-8461-ed116f6739df"
+                    },
+                    "type": {
+                      "type": "string",
+                      "example": "oneway"
+                    },
+                    "startlocationId": {
+                      "type": "UUID",
+                      "example": "ffe35dbe-29ea-4759-8461-ed116f6739dd"
+                    },
+                    "userId": {
+                      "type": "UUID",
+                      "example": "ffe35dbe-29ea-4759-8461-ed116f6739dd"
+                    },
+                    "tripDate": {
+                      "type": "date",
+                      "example": "2019-02-23"
+                    },
+                    "status": {
+                      "type": "string",
+                      "example": "rejected"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Access denied to status update of trip request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Trip status",
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "access denied"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Check request body for trip status",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Trip status",
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Invalid trip status"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "trip request does not exist",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Trip status",
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Trip request does not exist"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Trip status",
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Unathorized, Your token is invalid or expired"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/trips": {
       "post": {
         "security": [
@@ -862,6 +1021,15 @@
           "tripId": {
             "type": "string",
             "format": "uuid"
+          }
+        }
+      },
+      "tripStatus": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "rejected"
           }
         }
       }

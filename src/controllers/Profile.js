@@ -76,7 +76,7 @@ class Profile {
         }
       );
 
-      if (role === 'staff') {
+      if (role === 'travel admin' || role === 'staff') {
         const response = new Response(
           true,
           200,
