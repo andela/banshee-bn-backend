@@ -41,12 +41,13 @@ class Auth {
         companyId,
       });
 
-      const { id, role } = user;
+      const { id, role, status } = user;
       const token = jwtHelper.generateToken({
         id,
         email,
         role,
         companyId,
+        status
       });
       const verificationToken = jwtHelper.generateToken({ email });
       const verificationLink = `http://${req.headers.host}/api/v1/auth/verify?token=${verificationToken}`;
@@ -116,13 +117,15 @@ class Auth {
       const {
         id,
         role,
-        companyId
+        companyId,
+        status
       } = user;
       const token = jwtHelper.generateToken({
         id,
         email,
         role,
-        companyId
+        companyId,
+        status
       });
       const verificationToken = jwtHelper.generateToken({ email });
       const verificationLink = `${req.hostname}?token=${verificationToken}`;
@@ -258,13 +261,14 @@ class Auth {
     const result = hashHelper.comparePassword(hash, password);
     if (result) {
       const {
-        id, role
+        id, role, status
       } = user;
       const token = jwtHelper.generateToken({
         id,
         email,
         role,
-        companyId
+        companyId,
+        status
       });
       const response = new Response(
         true,
