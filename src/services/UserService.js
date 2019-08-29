@@ -17,6 +17,18 @@ class UserService {
     });
     return user;
   }
+
+  /**
+   * @description method to get user details by ID
+   * @param {object} id user id
+   * @returns {object} response object
+   */
+  static async getUserId(id) {
+    const user = await User.findOne({
+      where: { id },
+    });
+    return user;
+  }
 }
 
 export default UserService;

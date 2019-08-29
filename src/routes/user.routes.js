@@ -9,7 +9,6 @@ import {
   resetPasswordSchema
 } from '../validation/authSchema';
 import validator from '../middlewares/validator';
-import checkValidationResult from '../middlewares/validationChecker';
 import TokenHelper from '../helpers/Token';
 
 
@@ -35,8 +34,7 @@ authRoute.post(
 
 authRoute.post(
   '/login',
-  loginSchema,
-  checkValidationResult,
+  validator(loginSchema),
   Auth.login,
 );
 
