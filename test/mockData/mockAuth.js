@@ -278,6 +278,13 @@ const completeLoginWithoutCode = {
   code: ''
 };
 
+const credentialsWithInvalidEmail2 = {
+  email: 'ogedengbe123gmail.com',
+  password: 'malcomX123',
+  code: 'NOM-0024'
+};
+
+
 const users = {
   user7,
   user6,
@@ -287,6 +294,7 @@ const users = {
   user4,
   credentials,
   credentialsWithInvalidEmail,
+  credentialsWithInvalidEmail2,
   credentialsWithIncorrectCode,
   credentialsWithoutCode,
   credentialsWithoutEmail,

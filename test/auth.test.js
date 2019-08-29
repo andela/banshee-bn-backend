@@ -20,9 +20,8 @@ const {
   credentialsWithIncorrectCode, credentialsWithIncorrectPassword,
   credentialsWithIncorrectEmail, credentialsWithoutEmail,
   credentialsWithoutCode, credentialsWithInvalidEmail,
-  completeLoginWithCode,
-  completeLoginWithoutCode,
-  loginWithWrongCompanyId
+  completeLoginWithCode, completeLoginWithoutCode,
+  loginWithWrongCompanyId, credentialsWithInvalidEmail2
 } = users;
 
 describe('Auth Routes', () => {
@@ -368,11 +367,11 @@ describe('Auth Routes', () => {
         .end((err, res) => {
           expect(res.body).to.be.an('object');
           expect(res.status).to.equal(400);
-          expect(res.body.data.errors[0].msg).to.equal('must be an email address');
+          expect(res.body.data.email).to.equal('Email is required');
           done(err);
         });
     });
-    it('should not login if email is empty or invalid', (done) => {
+    it('should not login if email is empty', (done) => {
       chai
         .request(app)
         .post('/api/v1/auth/login')
@@ -380,7 +379,19 @@ describe('Auth Routes', () => {
         .end((err, res) => {
           expect(res.body).to.be.an('object');
           expect(res.status).to.equal(400);
-          expect(res.body.data.errors[0].msg).to.equal('must be an email address');
+          expect(res.body.data.email).to.equal('Email must not be empty');
+          done(err);
+        });
+    });
+    it('should not login if email is invalid', (done) => {
+      chai
+        .request(app)
+        .post('/api/v1/auth/login')
+        .send(credentialsWithInvalidEmail2)
+        .end((err, res) => {
+          expect(res.body).to.be.an('object');
+          expect(res.status).to.equal(400);
+          expect(res.body.data.email).to.equal('Must be an email address');
           done(err);
         });
     });
@@ -392,7 +403,7 @@ describe('Auth Routes', () => {
         .end((err, res) => {
           expect(res.body).to.be.an('object');
           expect(res.status).to.equal(400);
-          expect(res.body.data.errors[0].msg).to.equal('Invalid company code');
+          expect(res.body.data.code).to.equal('Company code is required');
           done(err);
         });
     });

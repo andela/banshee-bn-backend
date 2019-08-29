@@ -14,6 +14,7 @@
       "src/database/",
       "src/config/",
       "src/models/",
+      "src/helpers/PassportHelper.js",
       "src/index.js"
     ]
   },

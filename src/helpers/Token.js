@@ -42,7 +42,6 @@ class Token {
       }
       const payload = await jwt.verify(token, envSecret);
       req.payload = payload;
-
       return next();
     } catch (err) {
       const response = new Response(
