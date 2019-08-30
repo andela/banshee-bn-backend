@@ -20,6 +20,9 @@ const {
   credentialsWithIncorrectCode, credentialsWithIncorrectPassword,
   credentialsWithIncorrectEmail, credentialsWithoutEmail,
   credentialsWithoutCode, credentialsWithInvalidEmail,
+  completeLoginWithCode,
+  completeLoginWithoutCode,
+  loginWithWrongCompanyId
 } = users;
 
 describe('Auth Routes', () => {
@@ -391,6 +394,46 @@ describe('Auth Routes', () => {
           expect(res.status).to.equal(400);
           expect(res.body.data.errors[0].msg).to.equal('Invalid company code');
           done(err);
+        });
+    });
+  });
+
+  describe('login user with details from social account and code', () => {
+    it('should successfully login in user with company code and social account details ', (done) => {
+      chai
+        .request(app)
+        .post(`${baseURL}/code`)
+        .send(completeLoginWithCode)
+        .end((err, res) => {
+          expect(res.status).to.eq(200);
+          expect(res.body.message).to.eq('login successful');
+          expect(res.body.data).to.have.property('token');
+          done();
+        });
+    });
+
+    it('should return error if user is not registered', (done) => {
+      chai
+        .request(app)
+        .post(`${baseURL}/code`)
+        .send(loginWithWrongCompanyId)
+        .end((err, res) => {
+          expect(res.status).to.eq(400);
+          expect(res.body.message).to.eq('Validation Error!');
+          done();
+        });
+    });
+
+    specify('error if company code is not supplied ', (done) => {
+      chai
+        .request(app)
+        .post(`${baseURL}/code`)
+        .send(completeLoginWithoutCode)
+        .end((err, res) => {
+          expect(res.status).to.eq(400);
+          expect(res.body.message).to.eq('Validation Error!');
+          expect(res.body.data.code).to.eq('Invalid company login code');
+          done();
         });
     });
   });

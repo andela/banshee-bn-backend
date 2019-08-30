@@ -319,6 +319,112 @@ class Auth {
       return res.status(response.code).json(response);
     }
   }
+
+  /**
+   * log in user with google.
+   * @async
+   * @param  {object} req - Request object
+   * @param {object} res - Response object
+   * @return {json} Returns json object
+   * @static
+   */
+  static async loginWithGoogle(req, res) {
+    const isItEmail = req.user.includes('@');
+
+    try {
+      const userDetailsFromDb = isItEmail
+        ? await User.findOne({ where: { email: req.user, status: 'active' } })
+        : await User.findOne({ where: { name: req.user, status: 'active' } });
+
+      if (userDetailsFromDb) {
+        const response = new Response(true, 200, 'login successful',
+          {
+            id: userDetailsFromDb.id,
+            email: userDetailsFromDb.email,
+            role: userDetailsFromDb.role,
+            companyId: userDetailsFromDb.companyId
+          });
+
+        return res.status(response.code).send(response);
+      }
+      const response = new Response(false, 400, 'User not registered');
+      return res.status(400).send(response);
+    } catch (error) {
+      const response = new Response(false, 500, error.message);
+      return res.status(response.code).send(response);
+    }
+  }
+
+  /**
+   * log in user with facebook.
+   * @async
+   * @param  {object} req - Request object
+   * @param {object} res - Response object
+   * @return {json} Returns json object
+   * @static
+   */
+  static async loginWithFacebook(req, res) {
+    const isItEmail = req.user.includes('@');
+
+    try {
+      const userDetailsFromDb = isItEmail
+        ? await User.findOne({ where: { email: req.user, status: 'active' } })
+        : await User.findOne({ where: { name: req.user, status: 'active' } });
+
+      const response = new Response(true, 200, 'login successful',
+        {
+          id: userDetailsFromDb.id,
+          email: userDetailsFromDb.email,
+          role: userDetailsFromDb.role,
+          companyId: userDetailsFromDb.companyId
+        });
+
+      return res.status(response.code).send(response);
+    } catch (error) {
+      const response = new Response(false, 400, error.message);
+      return res.status(response.code).send(response);
+    }
+  }
+
+  /**
+   * complete your login from social accounts.
+   * @async
+   * @param  {object} req - Request object
+   * @param {object} res - Response object
+   * @return {json} Returns json object
+   * @static
+   */
+  static async completeLoginWithCode(req, res) {
+    const { code } = req.body;
+    const userDetailsFromDb = req.body;
+
+    try {
+      const verifyCode = await Company.findOne({
+        where:
+        { id: userDetailsFromDb.companyId, code },
+        attributes: ['id']
+      });
+
+      if (verifyCode) {
+        const token = jwtHelper.generateToken({
+          id: userDetailsFromDb.id,
+          email: userDetailsFromDb.email,
+          companyId: userDetailsFromDb.companyId,
+          role: userDetailsFromDb.role
+        });
+
+        const response = new Response(true, 200, 'login successful', { token });
+        return res.status(response.code).send(response);
+      }
+      const response = new Response(false, 400, 'Wrong company');
+
+      return res.status(response.code).send(response);
+    } catch (error) {
+      const response = new Response(false, 500, error.message);
+
+      return res.status(response.code).send(response);
+    }
+  }
 }
 
 export default Auth;

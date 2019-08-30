@@ -1,3 +1,4 @@
+/* eslint-disable arrow-parens */
 module.exports = {
   up: queryInterface => queryInterface.bulkInsert('Companies', [
     {
