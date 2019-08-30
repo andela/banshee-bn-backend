@@ -104,7 +104,8 @@ class Auth {
         password: hashedPassword,
         gender,
         dob,
-        companyId: company.id
+        companyId: company.id,
+        role: 'owner'
       });
 
       await Company.update(
