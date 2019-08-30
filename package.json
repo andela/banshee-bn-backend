@@ -19,7 +19,7 @@
   },
   "scripts": {
     "start": "node ./build/index.js",
-    "postinstall": "npm run build",
+    "postinstall": "npm run build && npm run migrate",
     "clean": "rm -rf build .nyc_output coverage && mkdir build",
     "build-babel": "babel -d ./build ./src -s",
     "build": "npm run clean && npm run build-babel",
