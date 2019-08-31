@@ -417,10 +417,11 @@
         "tags": [
           "Travel Requests"
         ],
-        "summary": "One way travel request",
-        "description": "Creates one way travel request",
+        "summary": "Travel request",
+        "description": "Creates travel request",
+        "parameters": [],
         "requestBody": {
-          "description": "One way travel request",
+          "description": "Travel request",
           "required": true,
           "content": {
             "application/json": {
@@ -478,7 +479,7 @@
                     },
                     "message": {
                       "type": "string",
-                      "example": "One way travel request successfully created"
+                      "example": "Travel request successfully created"
                     },
                     "data": {
                       "type": "object",
@@ -681,13 +682,6 @@
     }
   },
   "components": {
-    "securitySchemes": {
-      "ApiKeyAuth": {
-        "type": "apiKey",
-        "in": "header",
-        "name": "Authorization"
-      }
-    },
     "schemas": {
       "User": {
         "type": "object",

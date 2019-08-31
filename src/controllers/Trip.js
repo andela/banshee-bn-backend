@@ -50,7 +50,7 @@ class TripController {
       const { payload } = req.payload;
       const { id: userId } = payload;
       const {
-        type, from, departureDate, destination, reason
+        type, from, departureDate, returnDate, destination, reason
       } = req.body;
       const { to, accomodation } = destination;
 
@@ -61,6 +61,7 @@ class TripController {
           startBranchId: from,
           reason,
           tripDate: departureDate,
+          returnDate: type === 'oneway' ? null : returnDate,
           stop: {
             destinationBranchId: to,
             accomodationId: accomodation,
@@ -78,7 +79,7 @@ class TripController {
       const response = new Response(
         true,
         201,
-        'One way travel request successfully created',
+        'Travel request successfully created',
         { trip }
       );
       return res.status(response.code).json(response);
