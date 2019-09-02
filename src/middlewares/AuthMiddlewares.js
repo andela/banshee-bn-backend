@@ -1,6 +1,7 @@
 import search from '../helpers/SearchDatabase';
 import Response from '../helpers/Response';
 import UserService from '../services/UserService';
+import userStatus from '../helpers/userStatus';
 
 const { findCompany } = search;
 
@@ -72,6 +73,27 @@ class AuthMiddlewares {
       return res.status(response.code).json(response);
     }
 
+    return next();
+  }
+
+  /**
+   *
+   * @param {object} req Request
+   * @param {object} res Response
+   * @param {object} next Next
+   * @returns {function} Next middleware
+   */
+  static isUserVerified(req, res, next) {
+    const { payload: { status } } = req.payload;
+    const checkUserStatus = userStatus(status);
+    if (checkUserStatus !== true) {
+      const response = new Response(
+        false,
+        403,
+        checkUserStatus
+      );
+      return res.status(response.code).json(response);
+    }
     return next();
   }
 }
