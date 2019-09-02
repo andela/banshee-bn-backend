@@ -12,7 +12,7 @@ module.exports = {
       id: 'a6e35eb9-8c59-4c7d-b8d4-ae724aa7fb62',
       name: 'Spanish Premier League',
       address: 'Villareal Road, spaiard',
-      code: 'NOM-0024',
+      code: 'NOMP0024',
       owner: 'Raul'
     },
   ]),

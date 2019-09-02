@@ -10,13 +10,24 @@ module.exports = (sequelize, DataTypes) => {
       dob: DataTypes.DATEONLY,
       role: DataTypes.ENUM('owner', 'admin', 'staff'),
       status: DataTypes.ENUM('active', 'inactive', 'unverified'),
-      companyId: DataTypes.UUID
+      companyId: DataTypes.UUID,
+      favorites: DataTypes.BOOLEAN
     },
     {}
   );
   User.associate = (models) => {
-    // associations can be defined here
-
+    User.hasMany(models.Trip, {
+      foreignKey: 'userId',
+      as: 'trip',
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE'
+    });
+    User.belongsTo(models.Company, {
+      foreignKey: 'companyId',
+      as: 'company',
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE'
+    });
   };
   return User;
 };
