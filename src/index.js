@@ -7,9 +7,12 @@ import passport from 'passport';
 import router from './routes';
 import swaggerDoc from '../swagger.json';
 
+const { NODE_ENV } = process.env;
 const app = express();
 dotenv.config();
-app.use(logger('dev'));
+if (NODE_ENV === 'development' || NODE_ENV === 'production') {
+  app.use(logger('dev'));
+}
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(passport.initialize());

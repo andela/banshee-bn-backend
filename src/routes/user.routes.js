@@ -11,7 +11,6 @@ import {
   loginWithCode
 } from '../validation/authSchema';
 import validator from '../middlewares/validator';
-import checkValidationResult from '../middlewares/validationChecker';
 import TokenHelper from '../helpers/Token';
 import Strategy from '../config/passport/Strategy';
 
@@ -38,8 +37,7 @@ authRoute.post(
 
 authRoute.post(
   '/login',
-  loginSchema,
-  checkValidationResult,
+  validator(loginSchema),
   Auth.login,
 );
 

@@ -82,15 +82,27 @@ const companySignupSchema = [
 ];
 
 const loginSchema = [
-  check('email', 'must be an email address')
-    .isEmail(),
-  check('password', 'passwords must be at least 8 chars long and contain one number')
-    .isLength({ min: 8 }),
-  check('code', 'Invalid company code')
+  check('email')
     .exists()
+    .withMessage('Email is required')
+    .trim()
     .not()
     .isEmpty()
-    .isLength({ min: 5, max: 15 }),
+    .withMessage('Email must not be empty')
+    .isEmail()
+    .withMessage('Must be an email address'),
+  check('password')
+    .exists()
+    .withMessage('Password is required')
+    .trim()
+    .isLength({ min: 8 })
+    .withMessage('Invalid password'),
+  check('code')
+    .exists()
+    .withMessage('Company code is required')
+    .trim()
+    .isLength({ min: 5, max: 15 })
+    .withMessage('Invalid company code'),
 ];
 
 const forgotPasswordSchema = [
