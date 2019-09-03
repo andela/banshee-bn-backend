@@ -4,7 +4,7 @@ import capitalize from '../utils/capitalize';
 const dateRegex = /([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/;
 
 /* eslint-disable arrow-parens */
-const signupSchema = [
+const schema = [
   check('firstName')
     .trim()
     .exists().withMessage('First name is required')
@@ -60,8 +60,17 @@ const signupSchema = [
     .withMessage('Male or Female is the accepted value')
 ];
 
+const signupSchema = [
+  ...schema,
+  check('companyCode')
+    .trim()
+    .exists().withMessage('Company code is required')
+    .isLength({ min: 5, max: 15 })
+    .withMessage('Company code should be between 5 to 15 characters')
+];
+
 const companySignupSchema = [
-  ...signupSchema,
+  ...schema,
   check('companyName')
     .trim()
     .isLength({ min: 1 }).withMessage('Company name is required')
@@ -76,7 +85,7 @@ const companySignupSchema = [
 
   check('code')
     .trim()
-    .exists().withMessage('Last name is required')
+    .exists().withMessage('Company code is required')
     .isLength({ min: 5, max: 15 })
     .withMessage('Company code should be between 5 to 15 characters')
 ];
