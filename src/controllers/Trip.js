@@ -47,36 +47,39 @@ class TripController {
    */
   static async createTripRequest(req, res) {
     try {
-      const { type } = req.query;
       const { payload } = req.payload;
       const { id: userId } = payload;
       const {
-        from, departureDate, destination, reason
+        type, from, departureDate, destination, reason
       } = req.body;
       const { to, accomodation } = destination;
 
-      const { dataValues: trip } = await Trip.create({
-        type,
-        userId,
-        startBranchId: from,
-        reason,
-        tripDate: departureDate,
-      });
-
-      // create stop
-      const stop = await Stop.create({
-        destinationBranchId: to,
-        accomodationId: accomodation,
-        tripId: trip.id
-      });
-
-      // aggregate stop and trip into one response;
-      const result = { ...trip, stop };
+      const trip = await Trip.create(
+        {
+          type,
+          userId,
+          startBranchId: from,
+          reason,
+          tripDate: departureDate,
+          stop: {
+            destinationBranchId: to,
+            accomodationId: accomodation,
+          }
+        },
+        {
+          include: [
+            {
+              model: Stop,
+              as: 'stop'
+            }
+          ]
+        }
+      );
       const response = new Response(
         true,
         201,
         'One way travel request successfully created',
-        { trip: result }
+        { trip }
       );
       return res.status(response.code).json(response);
     } catch (error) {
