@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'locationId',
       as: 'location',
       onDelete: 'CASCADE',
-      onUpdate: 'CASCADE'  
+      onUpdate: 'CASCADE'
     });
     Branch.hasMany(models.Trip, {
       foreignKey: 'startBranchId',

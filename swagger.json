@@ -402,9 +402,206 @@
           }
         }
       }
+    },
+    "/trips": {
+      "post": {
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "tags": [
+          "Travel Requests"
+        ],
+        "summary": "One way travel request",
+        "description": "Creates one way travel request",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "type",
+            "description": "Travel type",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "One way travel request",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "from": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "departureDate": {
+                    "type": "string",
+                    "format": "date"
+                  },
+                  "reason": {
+                    "type": "string",
+                    "example": "Official purpose"
+                  },
+                  "destination": {
+                    "type": "object",
+                    "properties": {
+                      "to": {
+                        "type": "string",
+                        "format": "uuid"
+                      },
+                      "accomodation": {
+                        "type": "string",
+                        "format": "uuid"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successfully created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "code": {
+                      "type": "number",
+                      "example": 201
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "One way travel request successfully created"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "trip": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "string",
+                              "format": "uuid"
+                            },
+                            "type": {
+                              "type": "string",
+                              "example": "oneway"
+                            },
+                            "userId": {
+                              "type": "string",
+                              "format": "uuid"
+                            },
+                            "startBranchId": {
+                              "type": "string",
+                              "format": "uuid"
+                            },
+                            "reason": {
+                              "type": "string",
+                              "example": "Official purpose"
+                            },
+                            "tripDate": {
+                              "type": "string",
+                              "format": "date"
+                            },
+                            "status": {
+                              "type": "string",
+                              "example": "pending"
+                            },
+                            "updatedAt": {
+                              "type": "string",
+                              "format": "date-time"
+                            },
+                            "createdAt": {
+                              "type": "string",
+                              "format": "date-time"
+                            },
+                            "stop": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "string",
+                                  "format": "uuid"
+                                },
+                                "destinationBranchId": {
+                                  "type": "string",
+                                  "format": "uuid"
+                                },
+                                "accomodationId": {
+                                  "type": "string",
+                                  "format": "uuid"
+                                },
+                                "tripId": {
+                                  "type": "string",
+                                  "format": "uuid"
+                                },
+                                "updatedAt": {
+                                  "type": "string",
+                                  "format": "date-time"
+                                },
+                                "createdAt": {
+                                  "type": "string",
+                                  "format": "date-time"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "code": {
+                      "type": "number",
+                      "example": 400
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Validation Error!"
+                    },
+                    "data": {
+                      "type": "object"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
+    "securitySchemes": {
+      "ApiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization"
+      }
+    },
     "schemas": {
       "User": {
         "type": "object",

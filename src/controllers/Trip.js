@@ -1,7 +1,6 @@
 import db from '../database/models';
 import Response from '../helpers/Response';
 
-
 const {
   Trip, Branch, User, Stop, Accomodation
 } = db;
@@ -27,7 +26,7 @@ class TripController {
             as: 'stop',
             attributes: ['destinationBranchId', 'accomodationId'],
             include: [{ model: Branch, as: 'branch', attributes: ['id', 'name', 'locationId'] },
-              { model: Accomodation, as: 'accomodation', attributes: ['id', 'name', 'capacity', 'status'] }]
+            { model: Accomodation, as: 'accomodation', attributes: ['id', 'name', 'capacity', 'status'] }]
           },
           { model: User, as: 'user', attributes: ['firstName', 'lastName'] },
           { model: Branch, as: 'branch', attributes: ['name', 'locationId'] }
@@ -37,6 +36,56 @@ class TripController {
       return res.status(200).send(new Response(true, 200, 'User requests successfully retrieved', userTrips));
     } catch (err) {
       return res.status(500).send(new Response(false, 500, err.message));
+    }
+  }
+
+  /**
+   *
+   * @param {object} req Request
+   * @param {object} res Response
+   * @returns {object} JSON
+   */
+  static async createTripRequest(req, res) {
+    try {
+      const { type } = req.query;
+      const { payload } = req.payload;
+      const { id: userId } = payload;
+      const {
+        from, departureDate, destination, reason
+      } = req.body;
+      const { to, accomodation } = destination;
+
+      const { dataValues: trip } = await Trip.create({
+        type,
+        userId,
+        startBranchId: from,
+        reason,
+        tripDate: departureDate,
+      });
+
+      // create stop
+      const stop = await Stop.create({
+        destinationBranchId: to,
+        accomodationId: accomodation,
+        tripId: trip.id
+      });
+
+      // aggregate stop and trip into one response;
+      const result = { ...trip, stop };
+      const response = new Response(
+        true,
+        201,
+        'One way travel request successfully created',
+        { trip: result }
+      );
+      return res.status(response.code).json(response);
+    } catch (error) {
+      const response = new Response(
+        false,
+        500,
+        'Server error, Please try again later'
+      );
+      return res.status(response.code).json(response);
     }
   }
 }
