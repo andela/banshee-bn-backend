@@ -26,7 +26,7 @@ class TripController {
             as: 'stop',
             attributes: ['destinationBranchId', 'accomodationId'],
             include: [{ model: Branch, as: 'branch', attributes: ['id', 'name', 'locationId'] },
-            { model: Accomodation, as: 'accomodation', attributes: ['id', 'name', 'capacity', 'status'] }]
+              { model: Accomodation, as: 'accomodation', attributes: ['id', 'name', 'capacity', 'status'] }]
           },
           { model: User, as: 'user', attributes: ['firstName', 'lastName'] },
           { model: Branch, as: 'branch', attributes: ['name', 'locationId'] }

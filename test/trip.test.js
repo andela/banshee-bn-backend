@@ -12,7 +12,8 @@ chai.use(chaiHttp);
 const { Trip } = models;
 const {
   oneWayTravelRequests: oneWay,
-  returnTravelRequests: returnTrip
+  returnTravelRequests: returnTrip,
+  multiTripRequests: multi
 } = mockTripRequests;
 const tripId = 'ffe25dbe-29ea-4759-8461-ed116f6739df';
 const invalidtripId = 'ffe25dbe-29ea-4759-8461-ed116f6740df';
@@ -375,5 +376,118 @@ describe('Create travel request test', () => {
           done(err);
         });
     });
+  });
+});
+
+describe('Create multi-city request', () => {
+  before((done) => {
+    chai.request(app)
+      .post('/api/v1/auth/login')
+      .send(credentials)
+      .end((err, res) => {
+        const { token } = res.body.data.user;
+        validUserToken = token;
+        done(err);
+      });
+  });
+
+  it('should create a multi-city request', (done) => {
+    chai
+      .request(app)
+      .post(`${baseURL}/multi`)
+      .send(multi[0])
+      .set('authorization', validUserToken)
+      .end((err, res) => {
+        expect(res.status).to.equal(201);
+        expect(res.body.message).to.eql('MultiCity request created successfully');
+        done(err);
+      });
+  });
+
+  it('should throw an error if stops have the same destination', (done) => {
+    chai
+      .request(app)
+      .post(`${baseURL}/multi`)
+      .send(multi[1])
+      .set('authorization', validUserToken)
+      .end((err, res) => {
+        expect(res.status).to.equal(400);
+        expect(res.body.message).to.eql('Validation Error!');
+        done(err);
+      });
+  });
+
+  it("should return an error if trip type specified is not 'multiple'", (done) => {
+    chai
+      .request(app)
+      .post(`${baseURL}/multi`)
+      .send(multi[2])
+      .set('authorization', validUserToken)
+      .end((err, res) => {
+        expect(res.status).to.eql(400);
+        expect(res.body.message).to.eql('Validation Error!');
+        expect(res.body.data.type)
+          .to.eql('Invalid option specified');
+        done(err);
+      });
+  });
+
+  it("should return an error if start branch location doesn't exist", (done) => {
+    chai
+      .request(app)
+      .post(`${baseURL}/multi`)
+      .send(multi[5])
+      .set('authorization', validUserToken)
+      .end((err, res) => {
+        expect(res.status).to.eql(400);
+        expect(res.body.message).to.eql('Validation Error!');
+        expect(res.body.data.from)
+          .to.eql('Start branch location does not exist');
+        done(err);
+      });
+  });
+
+  it('should return an error if start location and destination are the same', (done) => {
+    chai
+      .request(app)
+      .post(`${baseURL}/multi`)
+      .send(multi[4])
+      .set('authorization', validUserToken)
+      .end((err, res) => {
+        expect(res.status).to.eql(400);
+        expect(res.body.message).to.eql('Validation Error!');
+        expect(res.body.data['destination[0].to'])
+          .to.eql('Start and Destination branch should not be the same');
+        done(err);
+      });
+  });
+
+  it('should return an error when passed invalid destination branch', (done) => {
+    chai
+      .request(app)
+      .post(baseURL)
+      .send(multi[3])
+      .set('authorization', validUserToken)
+      .end((err, res) => {
+        expect(res.status).to.eql(400);
+        expect(res.body.message).to.eql('Validation Error!');
+        expect(res.body.data['destination.to'])
+          .to.eql('Destination does not exist');
+        done(err);
+      });
+  });
+
+  it('should return a 500 error when an error occurs on the server', (done) => {
+    const stub = sinon.stub(Trip, 'create')
+      .rejects(new Error('Server error, Please try again later'));
+    chai.request(app)
+      .post(`${baseURL}/multi`)
+      .send(multi[0])
+      .set('authorization', validUserToken)
+      .end((err, res) => {
+        expect(res.status).to.equal(500);
+        stub.restore();
+        done();
+      });
   });
 });

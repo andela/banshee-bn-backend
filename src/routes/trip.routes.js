@@ -15,6 +15,12 @@ tripRoutes.post(
   validator(tripRequestSchema),
   TripController.createTripRequest
 );
+tripRoutes.post(
+  '/multi',
+  Token.verifyToken,
+  validator(multiTripSchema),
+  TripController.createMultiCityRequest
+);
 
 tripRoutes.patch(
   '/:id',

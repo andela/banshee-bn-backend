@@ -159,5 +159,127 @@ const returnTravelRequests = [
     }
   },
 ];
+const multiTripRequests = [
+  {
+    type: 'multiple',
+    from: '3dd3b34a-7554-425e-a688-36afda199614',
+    departureDate: '2000-02-19',
+    reason: 'The quick brown fox jumped over the lazy dog.',
+    destination:
+      [
+        {
+          to: '3dd3b34a-7554-455e-a688-36afda199624',
+          accomodation: '3dd3b34a-7554-425e-a688-36afda199619'
+        },
+        {
+          to: '3dd3b34a-7553-455e-a688-36afda199624',
+          accomodation: '3dd3b34a-7554-425e-a688-36afda199619'
+        }
+      ]
+  },
+  {
+    type: 'multiple',
+    from: '3dd3b34a-7554-425e-a688-36afda199614',
+    departureDate: '2000-02-19',
+    reason: 'The quick brown fox jumped over the lazy dog.',
+    destination:
+      [
+        {
+          to: '3dd3b34a-7554-455e-a688-36afda199624',
+          accomodation: '3dd3b34a-7554-425e-a688-36afda199619'
+        },
+        {
+          to: '3dd3b34a-7554-455e-a688-36afda199624',
+          accomodation: '3dd3b34a-7554-425e-a688-36afda199619'
+        }
+      ]
+  },
+  {
+    type: 'mult',
+    from: '3dd3b34a-7554-425e-a688-36afda199614',
+    departureDate: '2000-02-19',
+    reason: 'The quick brown fox jumped over the lazy dog.',
+    destination:
+      [
+        {
+          to: '3dd3b34a-7554-455e-a688-36afda199624',
+          accomodation: '3dd3b34a-7554-425e-a688-36afda199619'
+        },
+        {
+          to: '3dd3b34a-7554-455e-a688-36afda199624',
+          accomodation: '3dd3b34a-7554-425e-a688-36afda199619'
+        }
+      ]
+  },
+  {
+    type: 'multiple',
+    from: '3dd3b34a-7554-425e-a688-36afda199614',
+    departureDate: '2000-02-19',
+    reason: 'The quick brown fox jumped over the lazy dog.',
+    destination:
+      [
+        {
+          to: '3dd3b34a-7554-4552-a688-36afda199624',
+          accomodation: '3dd3b34a-7554-425e-a688-36afda199619'
+        },
+        {
+          to: '3dd3b34a-7554-455e-a688-36afda199624',
+          accomodation: '3dd3b34a-7554-425e-a688-36afda199619'
+        }
+      ]
+  },
+  {
+    type: 'multiple',
+    from: '3dd3b34a-7554-425e-a688-36afda199614',
+    departureDate: '2000-02-19',
+    reason: 'The quick brown fox jumped over the lazy dog.',
+    destination:
+      [
+        {
+          to: '3dd3b34a-7554-425e-a688-36afda199614',
+          accomodation: '3dd3b34a-7554-425e-a688-36afda199619'
+        },
+        {
+          to: '3dd3b34a-7554-455e-a688-36afda199624',
+          accomodation: '3dd3b34a-7554-425e-a688-36afda199619'
+        }
+      ]
+  },
+  {
+    type: 'multiple',
+    from: '3dd3b34a-7554-425e-a688-36afda199619',
+    departureDate: '2000-02-19',
+    reason: 'The quick brown fox jumped over the lazy dog.',
+    destination:
+      [
+        {
+          to: '3dd3b34a-7554-425e-a688-36afda199614',
+          accomodation: '3dd3b34a-7554-425e-a688-36afda199619'
+        },
+        {
+          to: '3dd3b34a-7554-455e-a688-36afda199624',
+          accomodation: '3dd3b34a-7554-425e-a688-36afda199619'
+        }
+      ]
+  },
+  {
+    type: 'multiple',
+    from: '3dd3b34a-7554-425e-a688-36afda199619',
+    departureDate: '2000-02-19',
+    returnDate: 'invalid',
+    reason: 'The quick brown fox jumped over the lazy dog.',
+    destination:
+      [
+        {
+          to: '3dd3b34a-7554-425e-a688-36afda199614',
+          accomodation: '3dd3b34a-7554-425e-a688-36afda199619'
+        },
+        {
+          to: '3dd3b34a-7554-455e-a688-36afda199624',
+          accomodation: '3dd3b34a-7554-425e-a688-36afda199619'
+        }
+      ]
+  }
+];
 
-export default { oneWayTravelRequests, returnTravelRequests };
+export default { oneWayTravelRequests, returnTravelRequests, multiTripRequests };
