@@ -1,6 +1,8 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
+import sinon from 'sinon';
 import app from '../src/index';
+import models from '../src/database/models';
 import users from './mockData/mockAuth';
 import jwtHelper from '../src/helpers/Token';
 
@@ -10,6 +12,7 @@ chai.use(chaiHttp);
 const baseURL = '/api/v1';
 
 const { credentials, user9, userNineLoginDetails } = users;
+const { User } = models;
 
 let userToken;
 let ownerToken;
@@ -211,6 +214,19 @@ describe('Profile Routes', () => {
           expect(res).to.have.status(400);
           expect(res.body).to.be.an('object');
           done(err);
+        });
+    });
+    it('should return a 500 error when an error occurs on the server', (done) => {
+      const stub = sinon.stub(User, 'update')
+        .rejects(new Error('Server error, Please try again later'));
+      chai.request(app)
+        .patch(`${baseURL}/profile`)
+        .send({ address: '311rd c close' })
+        .set('authorization', ownerToken)
+        .end((err, res) => {
+          expect(res.status).to.equal(500);
+          stub.restore();
+          done();
         });
     });
   });

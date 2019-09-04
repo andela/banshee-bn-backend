@@ -28,6 +28,10 @@
     {
       "name": "Profile",
       "description": "Operations related to Users profile"
+    },
+    {
+      "name": "Feedback",
+      "description": "Operations related to Feedbacks"
     }
   ],
   "paths": {
@@ -679,6 +683,58 @@
           }
         }
       }
+    },
+    "/accomodation/feedback": {
+      "post": {
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "tags": [
+          "Feedback"
+        ],
+        "summary": "Post a feedback for accomodation",
+        "operationId": "postAccomodationFeedback",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "token",
+            "schema": {
+              "type": "string"
+            },
+            "description": "user signup token",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "description": "user object",
+          "content": {
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/accomodationFeedback"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/accomodationFeedback"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Accomodation feedback posted successfuly"
+          },
+          "401": {
+            "description": "Unathorized, You did not provide a token"
+          },
+          "500": {
+            "description": "Server error, please try again later"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -788,6 +844,25 @@
         },
         "xml": {
           "name": "Profile"
+        }
+      },
+      "accomodationFeedback": {
+        "type": "object",
+        "properties": {
+          "reviews": {
+            "type": "string"
+          },
+          "likeDislike": {
+            "type": "string"
+          },
+          "accomodationId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "tripId": {
+            "type": "string",
+            "format": "uuid"
+          }
         }
       }
     },
