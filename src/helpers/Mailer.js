@@ -19,7 +19,9 @@ class Mailer {
       html: content,
       subject
     };
-    return sgMail.send(message);
+    if (process.env.NODE_ENV !== 'test') {
+      return sgMail.send(message);
+    }
   }
 }
 
