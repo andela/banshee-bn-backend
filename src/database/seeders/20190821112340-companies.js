@@ -15,6 +15,13 @@ module.exports = {
       code: 'NOMP0024',
       owner: 'Raul'
     },
+    {
+      id: 'a6e35eb9-8c59-5c7d-b8d4-ae724aa7fb62',
+      name: 'Barefoot Nomad Company',
+      address: '12 Ikorodu Road, Lagos',
+      code: 'BAREFOOT',
+      owner: 'Barefoot Admin'
+    }
   ]),
   down: queryInterface => queryInterface.bulkDelete('Companies', null, {})
 };

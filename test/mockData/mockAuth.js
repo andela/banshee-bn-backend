@@ -299,6 +299,30 @@ const userNineLoginDetails = {
   password: 'testing222',
   code: 'OTM123'
 };
+const superAdminLogin = {
+  id: '91542e6f-94bc-4e80-a667-586fb3752f25',
+  email: 'banshee.barefoot@gmail.com',
+  companyId: 'a6e35eb9-8c59-5c7d-b8d4-ae724aa7fb62',
+  role: 'super admin',
+};
+const unverifiedUser = {
+  id: '91542e6f-94bc-4e80-a667-586fb3752f25',
+  companyId: 'a6e35eb9-8c59-4c7d-b8d4-ae724aa7fb61',
+  email: 'john.doe@gmail.com',
+  role: 'staff'
+};
+const credentialsWithoutRole = {
+  id: '91542e6f-94bc-4e80-a667-586fb3752f25',
+  companyId: 'a6e35eb9-8c59-4c7d-b8d4-ae724aa7fb61',
+  email: 'john.doe@gmail.com',
+  role: ''
+};
+const incorrectCompanyId = {
+  id: '91542e6f-94bc-4e80-a667-586fb0752f23',
+  email: 'kukiito219@gmail.com',
+  companyId: 'a6e35eb9-8c510-4c7d-b8d4-ae724aa7fb61',
+  role: 'staff',
+};
 
 const users = {
   user1,
@@ -334,7 +358,11 @@ const users = {
   completeLoginWithCode,
   completeLoginWithoutCode,
   loginWithUnregisteredEmail,
-  userNineLoginDetails
+  userNineLoginDetails,
+  superAdminLogin,
+  unverifiedUser,
+  credentialsWithoutRole,
+  incorrectCompanyId
 };
 
 export default users;

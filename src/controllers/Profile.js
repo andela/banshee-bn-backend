@@ -90,7 +90,7 @@ class Profile {
         return res.status(response.code).json(response);
       }
 
-      if (role === 'owner') {
+      if (role === 'manager') {
         await Company.update(
           { name: companyName, address },
           {

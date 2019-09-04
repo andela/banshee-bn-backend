@@ -106,7 +106,7 @@ class Auth {
         gender,
         dob,
         companyId: company.id,
-        role: 'owner'
+        role: 'manager'
       });
 
       await Company.update(
