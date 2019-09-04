@@ -65,38 +65,38 @@ describe('Create one-way request', () => {
   });
   it('should create a one-way travel request', (done) => {
     chai.request(app)
-      .post('/api/v1/trips?type=oneway')
+      .post(baseURL)
       .send(oneWay[0])
       .set('authorization', validUserToken)
       .end((err, res) => {
         const { trip } = res.body.data;
         expect(res.status).to.equal(201);
         expect(res.body.data).to.haveOwnProperty('trip');
+        expect(trip.type).to.eql(oneWay[0].type);
         expect(trip.startBranchId).to.eql(oneWay[0].from);
         expect(trip.reason).to.eql(oneWay[0].reason);
         expect(new Date(trip.tripDate)).to.eql(new Date(oneWay[0].departureDate));
-        expect(trip.stop.destinationBranchId).to.eql(oneWay[0].destination.to);
-        expect(trip.stop.accomodationId).to.eql(oneWay[0].destination.accomodation);
+        expect(trip.stop[0].destinationBranchId).to.eql(oneWay[0].destination.to);
+        expect(trip.stop[0].accomodationId).to.eql(oneWay[0].destination.accomodation);
         done();
       });
   });
-
-  it('should return an error when the query parameter is invalid', (done) => {
+  it('should return an error when trip type is invalid', (done) => {
     chai.request(app)
-      .post('/api/v1/trips?type=invalid')
-      .send(oneWay[0])
+      .post(baseURL)
+      .send(oneWay[1])
       .set('authorization', validUserToken)
       .end((err, res) => {
         expect(res.status).to.eql(400);
         expect(res.body.message).to.eql('Validation Error!');
-        expect(res.body.data.type).to.eql('Invalid query parameter');
+        expect(res.body.data.type).to.eql('Invalid trip type');
         done();
       });
   });
   it('should return an error when passed invalid start branch', (done) => {
     chai.request(app)
-      .post('/api/v1/trips?type=oneway')
-      .send(oneWay[1])
+      .post(baseURL)
+      .send(oneWay[2])
       .set('authorization', validUserToken)
       .end((err, res) => {
         expect(res.status).to.eql(400);
@@ -109,8 +109,8 @@ describe('Create one-way request', () => {
   });
   it('should return an error when passed invalid destination branch', (done) => {
     chai.request(app)
-      .post('/api/v1/trips?type=oneway')
-      .send(oneWay[2])
+      .post(baseURL)
+      .send(oneWay[3])
       .set('authorization', validUserToken)
       .end((err, res) => {
         expect(res.status).to.eql(400);
@@ -123,8 +123,8 @@ describe('Create one-way request', () => {
   });
   it('should return an error when start branch is equal to destination', (done) => {
     chai.request(app)
-      .post('/api/v1/trips?type=oneway')
-      .send(oneWay[3])
+      .post(baseURL)
+      .send(oneWay[4])
       .set('authorization', validUserToken)
       .end((err, res) => {
         expect(res.status).to.eql(400);
@@ -137,8 +137,8 @@ describe('Create one-way request', () => {
   });
   it('should return an error when accomodation does not exist', (done) => {
     chai.request(app)
-      .post('/api/v1/trips?type=oneway')
-      .send(oneWay[4])
+      .post(baseURL)
+      .send(oneWay[5])
       .set('authorization', validUserToken)
       .end((err, res) => {
         expect(res.status).to.eql(400);
@@ -149,11 +149,71 @@ describe('Create one-way request', () => {
         done();
       });
   });
+  it('should return an error when trip type is empty', (done) => {
+    chai.request(app)
+      .post(baseURL)
+      .send(oneWay[6])
+      .set('authorization', validUserToken)
+      .end((err, res) => {
+        expect(res.status).to.eql(400);
+        expect(res.body.message).to.eql('Validation Error!');
+        expect(res.body.data.type).to.eql('Trip type is required');
+        done();
+      });
+  });
+  it('should return an error when start branch is empty', (done) => {
+    chai.request(app)
+      .post(baseURL)
+      .send(oneWay[7])
+      .set('authorization', validUserToken)
+      .end((err, res) => {
+        expect(res.status).to.eql(400);
+        expect(res.body.message).to.eql('Validation Error!');
+        expect(res.body.data.from).to.eql('Starting point is required');
+        done();
+      });
+  });
+  it('should return an error when departure date is empty', (done) => {
+    chai.request(app)
+      .post(baseURL)
+      .send(oneWay[8])
+      .set('authorization', validUserToken)
+      .end((err, res) => {
+        expect(res.status).to.eql(400);
+        expect(res.body.message).to.eql('Validation Error!');
+        expect(res.body.data.departureDate).to.eql('Departure date is required');
+        done();
+      });
+  });
+  it('should return an error when departure date is invalid', (done) => {
+    chai.request(app)
+      .post(baseURL)
+      .send(oneWay[9])
+      .set('authorization', validUserToken)
+      .end((err, res) => {
+        expect(res.status).to.eql(400);
+        expect(res.body.message).to.eql('Validation Error!');
+        expect(res.body.data.departureDate).to.eql('Invalid departure date format');
+        done();
+      });
+  });
+  it('should return an error when travel reason is empty', (done) => {
+    chai.request(app)
+      .post(baseURL)
+      .send(oneWay[10])
+      .set('authorization', validUserToken)
+      .end((err, res) => {
+        expect(res.status).to.eql(400);
+        expect(res.body.message).to.eql('Validation Error!');
+        expect(res.body.data.reason).to.eql('Travel reason is required');
+        done();
+      });
+  });
   it('should return a 500 error when an error occurs on the server', (done) => {
     const stub = sinon.stub(Trip, 'create')
       .rejects(new Error('Server error, Please try again later'));
     chai.request(app)
-      .post('/api/v1/trips?type=oneway')
+      .post(baseURL)
       .send(oneWay[0])
       .set('authorization', validUserToken)
       .end((err, res) => {

@@ -419,17 +419,6 @@
         ],
         "summary": "One way travel request",
         "description": "Creates one way travel request",
-        "parameters": [
-          {
-            "in": "query",
-            "name": "type",
-            "description": "Travel type",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "requestBody": {
           "description": "One way travel request",
           "required": true,
@@ -438,6 +427,10 @@
               "schema": {
                 "type": "object",
                 "properties": {
+                  "type": {
+                    "type": "string",
+                    "example": "oneway"
+                  },
                   "from": {
                     "type": "string",
                     "format": "uuid"
@@ -530,31 +523,34 @@
                               "format": "date-time"
                             },
                             "stop": {
-                              "type": "object",
-                              "properties": {
-                                "id": {
-                                  "type": "string",
-                                  "format": "uuid"
-                                },
-                                "destinationBranchId": {
-                                  "type": "string",
-                                  "format": "uuid"
-                                },
-                                "accomodationId": {
-                                  "type": "string",
-                                  "format": "uuid"
-                                },
-                                "tripId": {
-                                  "type": "string",
-                                  "format": "uuid"
-                                },
-                                "updatedAt": {
-                                  "type": "string",
-                                  "format": "date-time"
-                                },
-                                "createdAt": {
-                                  "type": "string",
-                                  "format": "date-time"
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "id": {
+                                    "type": "string",
+                                    "format": "uuid"
+                                  },
+                                  "destinationBranchId": {
+                                    "type": "string",
+                                    "format": "uuid"
+                                  },
+                                  "accomodationId": {
+                                    "type": "string",
+                                    "format": "uuid"
+                                  },
+                                  "tripId": {
+                                    "type": "string",
+                                    "format": "uuid"
+                                  },
+                                  "updatedAt": {
+                                    "type": "string",
+                                    "format": "date-time"
+                                  },
+                                  "createdAt": {
+                                    "type": "string",
+                                    "format": "date-time"
+                                  }
                                 }
                               }
                             }
