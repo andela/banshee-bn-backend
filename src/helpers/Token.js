@@ -1,6 +1,9 @@
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import Response from './Response';
+import db from '../database/models';
+
+const { User } = db;
 
 dotenv.config();
 const envSecret = process.env.TOKEN_SECRET;
@@ -51,6 +54,40 @@ class Token {
       );
       return res.status(response.code).json(response);
     }
+  }
+
+  /**
+   * Verify admin user
+   * @static
+   * @param {string} role - User role
+   * @param {object} req - HTTP Request object
+   * @param {object} res  - HTTP Response object
+   * @param {function} next - callback function
+   * @returns {object} returns admin token
+   */
+  static verifyAdminToken(role) {
+    return async (req, res, next) => {
+      const token = req.headers.authorization
+      || req.headers['x-access-token'] || req.query.token || req.body.token;
+      if (!token) {
+        return res.status(401).json(
+          new Response(false, 401, 'Unauthorized, Your did not provide a token')
+        );
+      }
+      try {
+        const decoded = jwt.verify(token, envSecret);
+        const user = await User.findOne({ where: { id: decoded.payload.id } });
+        if (!user || user.status !== 'active' || user.role !== role) {
+          return res.status(401).json(
+            new Response(false, 401, `Only active ${role}s can access this resource`)
+          );
+        }
+        req.payload = decoded;
+        return next();
+      } catch (error) {
+        return res.status(500).json(new Response(false, 500, 'There\'s an error processing your token'));
+      }
+    };
   }
 }
 

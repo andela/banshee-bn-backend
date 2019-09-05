@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
       password: DataTypes.STRING,
       gender: DataTypes.ENUM('male', 'female'),
       dob: DataTypes.DATEONLY,
-      role: DataTypes.ENUM('owner', 'admin', 'staff'),
+      role: DataTypes.ENUM('super admin', 'travel admin', 'travel team member', 'manager', 'requester', 'staff'),
       status: DataTypes.ENUM('active', 'inactive', 'unverified'),
       companyId: DataTypes.UUID,
       favorites: DataTypes.BOOLEAN
