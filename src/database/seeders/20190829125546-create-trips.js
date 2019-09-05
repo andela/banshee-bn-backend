@@ -39,7 +39,44 @@ module.exports = {
       returnDate: null,
       reason: 'to meet with clients',
       status: 'approved'
-    }
+    },
+    {
+      id: '72a5c8f5-27eb-4623-b6f4-09f77cc871f3',
+      type: 'oneway',
+      startBranchId: '3dd3b34a-7554-425e-a688-36afda199614',
+      userId: '91542e6f-94bc-4e80-a667-586fb0752f24',
+      tripDate: '2019-02-17',
+      reason: 'for holiday',
+      status: 'pending'
+    },
+    {
+      id: 'ba3f6b93-f09e-49a4-bb28-c65555250bc1',
+      type: 'return',
+      startBranchId: '3dd3b34a-7554-425e-a688-36afda199614',
+      userId: '91542e6f-94bc-4e80-a667-586fb0752f24',
+      tripDate: '2019-02-17',
+      returnDate: '2019-02-23',
+      reason: 'for holiday',
+      status: 'pending'
+    },
+    {
+      id: 'db17ddb2-a6ba-49f5-9715-e0e81eb7720a',
+      type: 'multiple',
+      startBranchId: '3dd3b34a-7554-425e-a688-36afda199614',
+      userId: '91542e6f-94bc-4e80-a667-586fb0752f24',
+      tripDate: '2019-02-17',
+      reason: 'for holiday',
+      status: 'pending'
+    },
+    {
+      id: '4ae4fef9-8e5e-4d2a-879a-a0425cd3d5aa',
+      type: 'oneway',
+      startBranchId: '3dd3b34a-7554-425e-a688-36afda199614',
+      userId: '91542e6f-94bc-4e80-a667-586fb0752f24',
+      tripDate: '2019-02-17',
+      reason: 'for holiday',
+      status: 'approved'
+    },
   ]),
   down: queryInterface => queryInterface.bulkDelete('Trips', null, {})
 };
