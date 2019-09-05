@@ -121,5 +121,43 @@ const oneWayTravelRequests = [
     }
   },
 ];
+const returnTravelRequests = [
+  {
+    type: 'return',
+    from: '3dd3b34a-7554-425e-a688-36afda199614',
+    departureDate: '2000-09-09',
+    returnDate: '2000-09-10',
+    reason: 'Just wanna travel',
+    destination:
+    {
+      to: '3dd3b34a-7554-455e-a688-36afda199624',
+      accomodation: '3dd3b34a-7554-425e-a688-36afda199619'
+    }
+  },
+  {
+    type: 'return',
+    from: '3dd3b34a-7554-425e-a688-36afda199614',
+    departureDate: '2000-09-09',
+    returnDate: 'invalid',
+    reason: 'Just wanna travel',
+    destination:
+    {
+      to: '3dd3b34a-7554-455e-a688-36afda199624',
+      accomodation: '3dd3b34a-7554-425e-a688-36afda199619'
+    }
+  },
+  {
+    type: 'return',
+    from: '3dd3b34a-7554-425e-a688-36afda199614',
+    departureDate: '2000-09-09',
+    returnDate: '2000-09-09',
+    reason: 'Just wanna travel',
+    destination:
+    {
+      to: '3dd3b34a-7554-455e-a688-36afda199624',
+      accomodation: '3dd3b34a-7554-425e-a688-36afda199619'
+    }
+  },
+];
 
-export default { oneWayTravelRequests };
+export default { oneWayTravelRequests, returnTravelRequests };

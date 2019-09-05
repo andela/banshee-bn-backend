@@ -1,10 +1,10 @@
 import { body } from 'express-validator';
+import { isValid, parseISO } from 'date-fns';
 import models from '../database/models';
 
 const { Branch, Accomodation } = models;
-const dateRegex = /([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/;
 
-const oneWaySchema = [
+const tripRequestSchema = [
   body('type')
     .not().isEmpty({ ignore_whitespace: true })
     .withMessage('Trip type is required')
@@ -27,8 +27,24 @@ const oneWaySchema = [
   body('departureDate')
     .not().isEmpty({ ignore_whitespace: true })
     .withMessage('Departure date is required')
-    .matches(dateRegex)
-    .withMessage('Invalid departure date format'),
+    .custom(value => isValid(parseISO(value)))
+    .withMessage('Invalid departure date format')
+    .customSanitizer(value => new Date(value)),
+  body('returnDate')
+    .trim()
+    .custom((value, { req }) => {
+      const { type, departureDate } = req.body;
+      if (type === 'return') {
+        if (!isValid(parseISO(value))) {
+          throw new Error('Invalid return date format');
+        }
+        if (new Date(value) <= new Date(departureDate)) {
+          throw new Error('Return date must be greater than departure date');
+        }
+      }
+      return true;
+    })
+    .customSanitizer(value => new Date(value)),
   body('reason')
     .not().isEmpty({ ignore_whitespace: true })
     .withMessage('Travel reason is required')
@@ -64,4 +80,4 @@ const oneWaySchema = [
     }),
 ];
 
-export { oneWaySchema };
+export { tripRequestSchema };
