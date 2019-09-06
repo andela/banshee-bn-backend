@@ -324,6 +324,34 @@ const incorrectCompanyId = {
   role: 'staff',
 };
 
+const user10 = {
+  email: 'kukiito219@gmail.com',
+  password: '12345678',
+  code: '4RHJHJJKSK'
+};
+
+const credentialsForServerError = {
+  firstName: 'lanre',
+  lastName: 'Daniels',
+  email: 'alamu@gmail.com',
+  password: 'testing222',
+  gender: 'male',
+  dob: '2001-04-30',
+  companyName: 'Samket',
+  address: '4th, saint john str',
+  code: 'SAM123'
+};
+
+const credentialsForServerError2 = {
+  firstName: 'lanre',
+  lastName: 'Daniels',
+  email: 'alamu@gmail.com',
+  password: 'testing222',
+  gender: 'male',
+  dob: '2001-04-30',
+  companyCode: '4RHJHJJKSK'
+};
+
 const users = {
   user1,
   user2,
@@ -334,6 +362,7 @@ const users = {
   user7,
   user8,
   user9,
+  user10,
   credentials,
   credentialsWithInvalidEmail,
   credentialsWithInvalidEmail2,
@@ -362,7 +391,9 @@ const users = {
   superAdminLogin,
   unverifiedUser,
   credentialsWithoutRole,
-  incorrectCompanyId
+  incorrectCompanyId,
+  credentialsForServerError,
+  credentialsForServerError2
 };
 
 export default users;

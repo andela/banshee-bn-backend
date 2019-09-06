@@ -1,6 +1,8 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
+import sinon from 'sinon';
 import app from '../src/index';
+import models from '../src/database/models';
 import jwtHelper from '../src/helpers/Token';
 import users from './mockData/mockAuth';
 
@@ -8,6 +10,7 @@ const { expect } = chai;
 chai.use(chaiHttp);
 
 const baseURL = '/api/v1/auth';
+const { User } = models;
 const {
   invalidFirstname, undefinedFirstname,
   undefinedLastname, invalidLastname,
@@ -21,7 +24,8 @@ const {
   credentialsWithIncorrectEmail, credentialsWithoutEmail,
   credentialsWithoutCode, credentialsWithInvalidEmail,
   completeLoginWithCode, completeLoginWithoutCode,
-  loginWithWrongCompanyId, credentialsWithInvalidEmail2
+  loginWithWrongCompanyId, credentialsWithInvalidEmail2,
+  credentialsForServerError, credentialsForServerError2
 } = users;
 
 describe('Auth Routes', () => {
@@ -309,6 +313,30 @@ describe('Auth Routes', () => {
           done();
         });
     });
+  });
+  it('should return a 500 error when an error occurs on the server', (done) => {
+    const stub = sinon.stub(User, 'create')
+      .rejects(new Error('Server error, Please try again later'));
+    chai.request(app)
+      .post(`${baseURL}/register/company`)
+      .send(credentialsForServerError)
+      .end((err, res) => {
+        expect(res.status).to.equal(500);
+        stub.restore();
+        done();
+      });
+  });
+  it('should return a 500 error when an error occurs on the server', (done) => {
+    const stub = sinon.stub(User, 'create')
+      .rejects(new Error('Server error, Please try again later'));
+    chai.request(app)
+      .post(`${baseURL}/register/user`)
+      .send(credentialsForServerError2)
+      .end((err, res) => {
+        expect(res.status).to.equal(500);
+        stub.restore();
+        done();
+      });
   });
   describe('User Login', () => {
     it('should login with correct email, password and company code', (done) => {
