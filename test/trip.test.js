@@ -8,20 +8,27 @@ import users from './mockData/mockAuth';
 import models from '../src/database/models';
 import mockTripRequests from './mockData/mockTrips';
 
-const { expect } = chai;
 chai.use(chaiHttp);
-const { completeLoginWithCode, credentials } = users;
 const { Trip } = models;
 const {
   oneWayTravelRequests: oneWay,
   returnTravelRequests: returnTrip
 } = mockTripRequests;
+const tripId = 'ffe25dbe-29ea-4759-8461-ed116f6739df';
+const invalidtripId = 'ffe25dbe-29ea-4759-8461-ed116f6740df';
+const { expect } = chai;
+const {
+  completeLoginWithCode,
+  credentials,
+  adminAuth,
+  staffAuth
+} = users;
 let validUserToken;
 
 const baseURL = '/api/v1/trips';
 
 describe('Travel Request', () => {
-  describe('Get Users Requests ancd details', () => {
+  describe('Get Users Requests and details', () => {
     it('Should return a users requests', (done) => {
       const token = jwtHelper.generateToken(completeLoginWithCode);
 
@@ -273,6 +280,99 @@ describe('Create travel request test', () => {
             'Return date must be greater than departure date'
           );
           done();
+        });
+    });
+  });
+  describe('Modify Trip request status', () => {
+    it('should update a trip request status', (done) => {
+      const { token } = adminAuth;
+      chai
+        .request(app)
+        .patch(`/api/v1/trips/${tripId}`)
+        .set('Accept', 'application/json')
+        .set({ authorization: `${token}` })
+        .send({ status: 'rejected' })
+        .end((err, res) => {
+          expect(res.status).to.equal(200);
+          expect(res.body.data.id).to.equal(tripId);
+          expect(res.body.success).to.equal(true);
+          done(err);
+        });
+    });
+    it('should not update a trip request status without status', (done) => {
+      const { token } = adminAuth;
+      chai
+        .request(app)
+        .patch(`/api/v1/trips/${tripId}`)
+        .set('Accept', 'application/json')
+        .set({ authorization: `${token}` })
+        .send({})
+        .end((err, res) => {
+          expect(res.status).to.equal(400);
+          expect(res.body.data.status).to.equal('Trip status is required');
+          expect(res.body.success).to.equal(false);
+          done(err);
+        });
+    });
+    it('should not update a trip request status without admin priviledge', (done) => {
+      const { token } = staffAuth;
+      chai
+        .request(app)
+        .patch(`/api/v1/trips/${tripId}`)
+        .set('Accept', 'application/json')
+        .set({ authorization: `${token}` })
+        .send({ status: 'rejected' })
+        .end((err, res) => {
+          expect(res.status).to.equal(403);
+          expect(res.body.message).to.equal('access denied');
+          expect(res.body.success).to.equal(false);
+          done(err);
+        });
+    });
+    it('should not update a trip request status with invalid status', (done) => {
+      const { token } = adminAuth;
+      chai
+        .request(app)
+        .patch(`/api/v1/trips/${tripId}`)
+        .set('Accept', 'application/json')
+        .set({ authorization: `${token}` })
+        .send({ status: 'Rej' })
+        .end((err, res) => {
+          expect(res.status).to.equal(400);
+          expect(res.body.data.status).to.equal('Invalid trip status');
+          expect(res.body.success).to.equal(false);
+          done(err);
+        });
+    });
+    it('should not update a trip request status with invalid token', (done) => {
+      const { token } = adminAuth;
+      chai
+        .request(app)
+        .patch(`/api/v1/trips/${tripId}`)
+        .set('Accept', 'application/json')
+        .set({ authorization: `${token}notvalid` })
+        .send({ status: 'Rejected' })
+        .end((err, res) => {
+          expect(res.status).to.equal(401);
+          expect(res.body.message).to.equal('Unathorized, Your token is invalid or expired');
+          expect(res.body.success).to.equal(false);
+          done(err);
+        });
+    });
+
+    it('should not update a trip request status with invalid token', (done) => {
+      const { token } = adminAuth;
+      chai
+        .request(app)
+        .patch(`/api/v1/trips/${invalidtripId}`)
+        .set('Accept', 'application/json')
+        .set({ authorization: `${token}` })
+        .send({ status: 'rejected' })
+        .end((err, res) => {
+          expect(res.status).to.equal(404);
+          expect(res.body.message).to.equal('Trip does not exist');
+          expect(res.body.success).to.equal(false);
+          done(err);
         });
     });
   });

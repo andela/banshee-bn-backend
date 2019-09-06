@@ -92,6 +92,43 @@ class TripController {
       return res.status(response.code).json(response);
     }
   }
+
+  /**
+  * @description - this method update the status of a travel request
+  * @param {object} req - the request sent to the router
+  * @param {object} res  - the request sent back from the controller
+  * @returns {object} - object
+  */
+  static async modifyTripRequestStatus(req, res) {
+    const { status } = req.body;
+    const { id } = req.params;
+    const trip = await Trip.findOne({
+      where: { id },
+      returning: true
+    });
+    if (trip) {
+      const updatedTrip = await trip.update({ status },
+        {
+          returning: true,
+          plain: true,
+          fields: ['status']
+        });
+
+      const response = new Response(
+        true,
+        200,
+        `Trip ${status} successfully`,
+        updatedTrip
+      );
+      return res.status(response.code).json(response);
+    }
+    const response = new Response(
+      false,
+      404,
+      'Trip does not exist'
+    );
+    return res.status(response.code).json(response);
+  }
 }
 
 export default TripController;

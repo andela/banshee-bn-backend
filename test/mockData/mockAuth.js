@@ -220,6 +220,12 @@ const credentials = {
   code: 'NOMP0024'
 };
 
+const credentials2 = {
+  email: 'withtvpeter@gmail.com',
+  password: 'password2019',
+  code: 'NOMP0024'
+};
+
 const credentialsWithIncorrectCode = {
   email: 'ogedengbe123@gmail.com',
   password: 'malcomX123',
@@ -251,7 +257,7 @@ const credentialsWithoutCode = {
 const credentialsWithInvalidEmail = {
   email: '',
   password: 'malcomX123',
-  code: 'NOM-0024'
+  code: 'NOMP0024'
 };
 
 const completeLoginWithCode = {
@@ -275,11 +281,13 @@ const completeLoginWithoutCode = {
   role: 'staff',
   code: ''
 };
+const staffAuth = { token: '' };
+const adminAuth = { token: '' };
 
 const credentialsWithInvalidEmail2 = {
   email: 'ogedengbe123gmail.com',
   password: 'malcomX123',
-  code: 'NOM-0024'
+  code: 'NOMP0024'
 };
 
 const user9 = {
@@ -364,6 +372,7 @@ const users = {
   user9,
   user10,
   credentials,
+  credentials2,
   credentialsWithInvalidEmail,
   credentialsWithInvalidEmail2,
   credentialsWithIncorrectCode,
@@ -393,7 +402,9 @@ const users = {
   credentialsWithoutRole,
   incorrectCompanyId,
   credentialsForServerError,
-  credentialsForServerError2
+  credentialsForServerError2,
+  staffAuth,
+  adminAuth
 };
 
 export default users;

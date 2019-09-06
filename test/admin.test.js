@@ -23,7 +23,7 @@ describe('Admin controller', () => {
         .request(app)
         .patch(`${baseUrl}/${credentials.email}/role`)
         .set('x-access-token', token)
-        .send({ role: 'staff' })
+        .send({ role: 'travel admin' })
         .end((err, res) => {
           expect(res.status).to.eq(400);
           expect(res.body.message).to.eq('User role did not change');
