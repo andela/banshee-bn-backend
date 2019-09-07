@@ -49,13 +49,19 @@ const tripRequestSchema = [
     .not().isEmpty({ ignore_whitespace: true })
     .withMessage('Travel reason is required')
     .trim(),
-  body('destination.to')
+  body('destinations')
+    .not().isEmpty()
+    .withMessage('Destination(s) is required')
+    .isArray()
+    .withMessage('Invalid destination format'),
+  body('destinations.*.to')
     .exists()
     .withMessage('Destination does not exist')
     .trim()
     .isUUID(4)
     .withMessage('Invalid destination format')
     .custom(async (value, { req }) => {
+      const { destinations } = req.body;
       const branch = await Branch.findOne({ where: { id: value } });
       if (!branch) {
         throw new Error('Destination does not exist');
@@ -63,10 +69,17 @@ const tripRequestSchema = [
       if (value === req.body.from) {
         throw new Error('Start and Destination should not be the same');
       }
+
+      const filtered = destinations.filter(
+        (data) => data.to === value
+      );
+      if (filtered.length > 1) {
+        throw new Error('One or more destination branches are the same');
+      }
       return true;
     }),
-  body('destination.accomodation')
-    .exists()
+  body('destinations.*.accomodation')
+    .not().isEmpty()
     .withMessage('Accomodation does not exist')
     .trim()
     .isUUID(4)
