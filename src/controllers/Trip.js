@@ -26,7 +26,7 @@ class TripController {
             as: 'stop',
             attributes: ['destinationBranchId', 'accomodationId'],
             include: [{ model: Branch, as: 'branch', attributes: ['id', 'name', 'locationId'] },
-            { model: Accomodation, as: 'accomodation', attributes: ['id', 'name', 'capacity', 'status'] }]
+              { model: Accomodation, as: 'accomodation', attributes: ['id', 'name', 'capacity', 'status'] }]
           },
           { model: User, as: 'user', attributes: ['firstName', 'lastName'] },
           { model: Branch, as: 'branch', attributes: ['name', 'locationId'] }
@@ -50,9 +50,13 @@ class TripController {
       const { payload } = req.payload;
       const { id: userId } = payload;
       const {
-        type, from, departureDate, returnDate, destination, reason
+        type, from, departureDate, returnDate, destinations, reason
       } = req.body;
-      const { to, accomodation } = destination;
+
+      const stops = destinations.map(({ to, accomodation }) => ({
+        destinationBranchId: to,
+        accomodationId: accomodation,
+      }));
 
       const trip = await Trip.create(
         {
@@ -61,17 +65,14 @@ class TripController {
           startBranchId: from,
           reason,
           tripDate: departureDate,
-          returnDate: type === 'oneway' ? null : returnDate,
-          stop: {
-            destinationBranchId: to,
-            accomodationId: accomodation,
-          }
+          returnDate: type === 'return' ? returnDate : null,
+          stop: stops
         },
         {
           include: [
             {
               model: Stop,
-              as: 'stop'
+              as: 'stop',
             }
           ]
         }

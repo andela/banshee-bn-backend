@@ -87,8 +87,8 @@ describe('Create travel request test', () => {
           expect(trip.startBranchId).to.eql(oneWay[0].from);
           expect(trip.reason).to.eql(oneWay[0].reason);
           expect(new Date(trip.tripDate)).to.eql(new Date(oneWay[0].departureDate));
-          expect(trip.stop[0].destinationBranchId).to.eql(oneWay[0].destination.to);
-          expect(trip.stop[0].accomodationId).to.eql(oneWay[0].destination.accomodation);
+          expect(trip.stop[0].destinationBranchId).to.eql(oneWay[0].destinations[0].to);
+          expect(trip.stop[0].accomodationId).to.eql(oneWay[0].destinations[0].accomodation);
           done();
         });
     });
@@ -126,7 +126,7 @@ describe('Create travel request test', () => {
         .end((err, res) => {
           expect(res.status).to.eql(400);
           expect(res.body.message).to.eql('Validation Error!');
-          expect(res.body.data['destination.to']).to.eql(
+          expect(res.body.data['destinations[0].to']).to.eql(
             'Destination does not exist'
           );
           done();
@@ -140,7 +140,7 @@ describe('Create travel request test', () => {
         .end((err, res) => {
           expect(res.status).to.eql(400);
           expect(res.body.message).to.eql('Validation Error!');
-          expect(res.body.data['destination.to']).to.eql(
+          expect(res.body.data['destinations[0].to']).to.eql(
             'Start and Destination should not be the same'
           );
           done();
@@ -154,7 +154,7 @@ describe('Create travel request test', () => {
         .end((err, res) => {
           expect(res.status).to.eql(400);
           expect(res.body.message).to.eql('Validation Error!');
-          expect(res.body.data['destination.accomodation']).to.eql(
+          expect(res.body.data['destinations[0].accomodation']).to.eql(
             'Accomodation does not exist'
           );
           done();
@@ -249,8 +249,8 @@ describe('Create travel request test', () => {
           expect(trip.reason).to.eql(returnTrip[0].reason);
           expect(new Date(trip.tripDate)).to.eql(new Date(returnTrip[0].departureDate));
           expect(new Date(trip.returnDate)).to.eql(new Date(returnTrip[0].returnDate));
-          expect(trip.stop[0].destinationBranchId).to.eql(returnTrip[0].destination.to);
-          expect(trip.stop[0].accomodationId).to.eql(returnTrip[0].destination.accomodation);
+          expect(trip.stop[0].destinationBranchId).to.eql(returnTrip[0].destinations[0].to);
+          expect(trip.stop[0].accomodationId).to.eql(returnTrip[0].destinations[0].accomodation);
           done();
         });
     });

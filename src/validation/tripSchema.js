@@ -49,7 +49,12 @@ const tripRequestSchema = [
     .not().isEmpty({ ignore_whitespace: true })
     .withMessage('Travel reason is required')
     .trim(),
-  body('destination.to')
+  body('destinations')
+    .not().isEmpty()
+    .withMessage('Destination(s) is required')
+    .isArray()
+    .withMessage('Invalid destination format'),
+  body('destinations.*.to')
     .exists()
     .withMessage('Destination does not exist')
     .trim()
@@ -65,8 +70,8 @@ const tripRequestSchema = [
       }
       return true;
     }),
-  body('destination.accomodation')
-    .exists()
+  body('destinations.*.accomodation')
+    .not().isEmpty()
     .withMessage('Accomodation does not exist')
     .trim()
     .isUUID(4)
