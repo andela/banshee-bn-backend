@@ -101,9 +101,9 @@ class TripController {
   */
   static async modifyTripRequestStatus(req, res) {
     const { status } = req.body;
-    const { id } = req.params;
+    const { tripId } = req.params;
     const trip = await Trip.findOne({
-      where: { id },
+      where: { id: tripId },
       returning: true
     });
     if (trip) {
