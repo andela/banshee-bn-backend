@@ -94,6 +94,146 @@ class TripController {
   }
 
   /**
+  * Get pending requests
+  * Route: GET: /trips
+  * @param {object} req - HTTP Request object
+  * @param {object} res - HTTP Response object
+  * @return {res} res - HTTP Response object
+  * @memberof TripsController
+  */
+  static async getPendingRequests(req, res) {
+    try {
+      const { type } = req.query;
+      const { payload: { companyId } } = req.payload;
+      let trips;
+      switch (type) {
+        case 'pending':
+          trips = await Trip.findAll({
+            where: { status: 'pending' },
+            include: [{
+              model: User,
+              as: 'user',
+              attributes: {
+                exclude: [
+                  'id',
+                  'firstName',
+                  'lastName',
+                  'dob',
+                  'gender',
+                  'email',
+                  'password',
+                  'role',
+                  'status',
+                  'companyId',
+                  'favorites',
+                  'createdAt',
+                  'updatedAt'
+                ]
+              },
+              where: { companyId }
+            }],
+          });
+          break;
+        case 'approved':
+          trips = await Trip.findAll({
+            where: { status: 'approved' },
+            include: [{
+              model: User,
+              as: 'user',
+              attributes: {
+                exclude: [
+                  'id',
+                  'firstName',
+                  'lastName',
+                  'dob',
+                  'gender',
+                  'email',
+                  'password',
+                  'role',
+                  'status',
+                  'companyId',
+                  'favorites',
+                  'createdAt',
+                  'updatedAt'
+                ]
+              },
+              where: { companyId }
+            }],
+          });
+          break;
+        case 'rejected':
+          trips = await Trip.findAll({
+            where: { status: 'rejected' },
+            include: [{
+              model: User,
+              as: 'user',
+              attributes: {
+                exclude: [
+                  'id',
+                  'firstName',
+                  'lastName',
+                  'dob',
+                  'gender',
+                  'email',
+                  'password',
+                  'role',
+                  'status',
+                  'companyId',
+                  'favorites',
+                  'createdAt',
+                  'updatedAt'
+                ]
+              },
+              where: { companyId }
+            }],
+          });
+          break;
+        default:
+          trips = await Trip.findAll({
+            include: [{
+              model: User,
+              as: 'user',
+              attributes: {
+                exclude: [
+                  'id',
+                  'firstName',
+                  'lastName',
+                  'dob',
+                  'gender',
+                  'email',
+                  'password',
+                  'role',
+                  'status',
+                  'companyId',
+                  'favorites',
+                  'createdAt',
+                  'updatedAt'
+                ]
+              },
+              where: { companyId }
+            }],
+          });
+      }
+      if (!trips.length) {
+        const response = new Response(
+          false, 404, 'No pending requests'
+        );
+        return res.status(response.code).json(response);
+      }
+
+      const response = new Response(
+        true, 200, 'Requests retrieved', trips
+      );
+      return res.status(response.code).json(response);
+    } catch (error) {
+      const response = new Response(
+        false, 500, 'Server error, Please try again later'
+      );
+      return res.status(response.code).json(response);
+    }
+  }
+
+  /**
   * @description - this method update the status of a travel request
   * @param {object} req - the request sent to the router
   * @param {object} res  - the request sent back from the controller

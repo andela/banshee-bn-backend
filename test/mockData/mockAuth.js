@@ -360,10 +360,28 @@ const credentialsForServerError2 = {
   companyCode: '4RHJHJJKSK'
 };
 
+const manager = {
+  email: 'thaRealMugabe@gmail.com',
+  password: 'password2019',
+  code: '4RHJHJJKSK'
+};
+
 const unverifiedLogin = {
   email: 'john.doe@gmail.com',
   password: 'password2019',
   code: '4RHJHJJKSK'
+};
+
+const nonManager = {
+  email: 'tjhakeemus1@gmail.com',
+  password: '12345678',
+  code: '4RHJHJJKSK'
+};
+
+const nonManage = {
+  email: 'ghaddafi@gmail.com',
+  password: 'password2019',
+  code: 'BAREFOOT'
 };
 
 const users = {
@@ -411,7 +429,10 @@ const users = {
   credentialsForServerError2,
   staffAuth,
   adminAuth,
-  unverifiedLogin
+  unverifiedLogin,
+  manager,
+  nonManager,
+  nonManage
 };
 
 export default users;

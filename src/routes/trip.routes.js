@@ -5,12 +5,21 @@ import validator from '../middlewares/validator';
 import permit from '../middlewares/permission';
 import verify from '../middlewares/AuthMiddlewares';
 import {
-  tripRequestSchema, tripRequestStatusSchema, editTripRequestSchema
+  tripRequestSchema,
+  tripRequestStatusSchema,
+  editTripRequestSchema
 } from '../validation/tripSchema';
 
 const tripRoutes = Router();
 
 tripRoutes.get('/user', Token.verifyToken, TripController.getUserTrips);
+
+tripRoutes.get(
+  '/',
+  Token.verifyToken,
+  permit('manager'),
+  TripController.getPendingRequests
+);
 
 tripRoutes.post(
   '/',
