@@ -1095,6 +1095,145 @@
           }
         }
       }
+    },
+    "/search": {
+      "get": {
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "tags": [
+          "Travel Requests"
+        ],
+        "summary": "Search trip requests",
+        "description": "Searches trip requests",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "keyword",
+            "description": "Search keyword",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "filter",
+            "description": "Search filter",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful update",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "code": {
+                      "type": "number",
+                      "example": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Search results"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "searchResults": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string",
+                                "format": "uuid"
+                              },
+                              "type": {
+                                "type": "string",
+                                "example": "oneway"
+                              },
+                              "userId": {
+                                "type": "string",
+                                "format": "uuid"
+                              },
+                              "startBranchId": {
+                                "type": "string",
+                                "format": "uuid"
+                              },
+                              "reason": {
+                                "type": "string",
+                                "example": "Official purpose"
+                              },
+                              "tripDate": {
+                                "type": "string",
+                                "format": "date"
+                              },
+                              "status": {
+                                "type": "string",
+                                "example": "pending"
+                              },
+                              "updatedAt": {
+                                "type": "string",
+                                "format": "date-time"
+                              },
+                              "createdAt": {
+                                "type": "string",
+                                "format": "date-time"
+                              },
+                              "user": {
+                                "type": "object",
+                                "properties": {
+                                  "firstName": {
+                                    "type": "string"
+                                  },
+                                  "lastName": {
+                                    "type": "string"
+                                  },
+                                  "email": {
+                                    "type": "string"
+                                  },
+                                  "gender": {
+                                    "type": "string"
+                                  },
+                                  "dob": {
+                                    "type": "string",
+                                    "format": "date"
+                                  },
+                                  "role": {
+                                    "type": "string"
+                                  },
+                                  "updatedAt": {
+                                    "type": "string",
+                                    "format": "date-time"
+                                  },
+                                  "createdAt": {
+                                    "type": "string",
+                                    "format": "date-time"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
