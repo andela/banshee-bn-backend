@@ -110,6 +110,30 @@ module.exports = {
       status: 'active',
       role: 'manager'
     },
+    {
+      id: '91542e6f-94bc-4e80-a667-586fb3752f69',
+      companyId: 'a6e35eb9-8c59-4c7d-b8d4-ae724aa7fb61',
+      firstName: 'Travel',
+      lastName: 'Admin',
+      email: 'travel.admin@gmail.com',
+      password: hashHelper.hashPassword('password2019'),
+      gender: 'male',
+      dob: '2012-09-10',
+      status: 'active',
+      role: 'travel admin'
+    },
+    {
+      id: '91542e6f-94bc-4e81-a667-586fb0752f25',
+      companyId: 'a6e35eb9-8c59-4c7d-b8d4-ae724aa7fb62',
+      firstName: 'Banshee',
+      lastName: 'Travel',
+      email: 'banshee.admin@gmail.com',
+      password: hashHelper.hashPassword('password2019'),
+      gender: 'male',
+      dob: '2012-09-10',
+      status: 'active',
+      role: 'travel admin'
+    }
   ]),
   down: queryInterface => queryInterface.bulkDelete('Users', null, {})
 };

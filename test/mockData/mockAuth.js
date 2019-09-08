@@ -371,6 +371,12 @@ const unverifiedLogin = {
   password: 'password2019',
   code: '4RHJHJJKSK'
 };
+const travelAdmin = {
+  id: '91542e6f-94bc-4e80-a667-586fb3752f69',
+  email: 'travel.admin@gmail.com',
+  companyId: 'a6e35eb9-8c59-4c7d-b8d4-ae724aa7fb61',
+  role: 'travel admin',
+};
 
 const nonManager = {
   email: 'tjhakeemus1@gmail.com',
@@ -432,7 +438,8 @@ const users = {
   unverifiedLogin,
   manager,
   nonManager,
-  nonManage
+  nonManage,
+  travelAdmin
 };
 
 export default users;

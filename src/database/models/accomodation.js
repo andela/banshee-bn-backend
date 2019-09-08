@@ -3,7 +3,9 @@ module.exports = (sequelize, DataTypes) => {
     name: DataTypes.STRING,
     branchId: DataTypes.UUID,
     capacity: DataTypes.INTEGER,
-    status: DataTypes.STRING
+    status: DataTypes.STRING,
+    imgurl: DataTypes.STRING,
+    address: DataTypes.STRING
   }, {});
   Accomodation.associate = (models) => {
     Accomodation.belongsTo(models.Branch, {

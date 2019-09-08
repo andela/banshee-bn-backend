@@ -24,6 +24,11 @@ module.exports = {
       id: '1bf9f868-2a59-45ae-8f68-ad68095ca0ac',
       name: 'Asokoro',
       locationId: '0190ae78-d184-4258-add5-0b2c6982efef'
+    },
+    {
+      id: '3dd3b34a-7554-455e-a688-36afda199159',
+      name: 'Ibadan',
+      locationId: '0190ae78-d184-4258-add5-0b2c6982efef'
     }
   ]),
   down: (queryInterface) => queryInterface.bulkDelete('Branches', null, {})
