@@ -5,10 +5,10 @@ import users from "./mockData/mockAuth";
 
 const { expect } = chai;
 chai.use(chaiHttp);
-const { staffAuth, adminAuth } = users;
+const { adminAuth } = users;
 
-describe("NOTIFICATION OPTION TEST", () => {
-  it("should turn on email notification for admin user", done => {
+describe('NOTIFICATION OPTION TEST', () => {
+  it('should turn on email notification for admin user', done => {
     const { token } = adminAuth;
     chai
       .request(app)
@@ -27,7 +27,7 @@ describe("NOTIFICATION OPTION TEST", () => {
     const { token } = adminAuth;
     chai
       .request(app)
-      .patch(`/api/v1/notifications/email_opt`)
+      .patch('/api/v1/notifications/email_opt')
       .set({ authorization: `${token}` })
       .send({ emailOpt: false })
       .end((err, res) => {
@@ -82,7 +82,7 @@ describe("NOTIFICATION OPTION TEST", () => {
         done();
       });
   });
-  it("should turn off in-app notification for admin user", done => {
+  it('should turn off in-app notification for admin user', done => {
     const { token } = adminAuth;
     chai
       .request(app)
@@ -92,7 +92,7 @@ describe("NOTIFICATION OPTION TEST", () => {
       .end((err, res) => {
         expect(res).to.have.status(200);
         expect(res.body).to.be.an("object");
-        expect(res.body.data.email).to.equal("ogedengbe123@gmail.com");
+        expect(res.body.data.email).to.equal('ogedengbe123@gmail.com');
         expect(res.body.data.inAppOpt).to.equal(false);
         done();
       });
@@ -107,21 +107,21 @@ describe("NOTIFICATION OPTION TEST", () => {
       .send({})
       .end((err, res) => {
         expect(res).to.have.status(400);
-        expect(res.body.data.inAppOpt).to.equal("In App option is required");
+        expect(res.body.data.inAppOpt).to.equal('In App option is required');
         done();
       });
   });
-  it("should not modify turn email notification with invalid inAppOpt", done => {
+  it('should not modify turn email notification with invalid inAppOpt', done => {
     const { token } = adminAuth;
     chai
       .request(app)
-      .patch(`/api/v1/notifications/in_app_opt`)
+      .patch('/api/v1/notifications/in_app_opt')
       .set({ authorization: `${token}` })
       .send({ inAppOpt: 'trueggfgfsgf' })
       .end((err, res) => {
         expect(res).to.have.status(400);
         expect(res.body.data.inAppOpt).to.equal(
-          "In App option must be a boolean"
+          'In App option must be a boolean'
         );
         done();
       });

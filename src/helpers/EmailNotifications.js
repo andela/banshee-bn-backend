@@ -1,5 +1,8 @@
 import mailer from './Mailer';
 import template from './emailTemplate';
+import templateIndex from './template';
+import newTripRequestEmailContent from './template/newTripRequestEmailContent';
+import newTripStyle from './template/styles';
 
 /**
  * @class EmailNotifications
@@ -39,6 +42,18 @@ class EmailNotifications {
     <p class="message">Click the link below to confirm your registration</p>
         <a class="btn" href="${link}">Confirm email</a>`;
     const message = template(title, body);
+    mailer.sendMail(email, title, message);
+  }
+
+  /**
+ * @param {string} email
+ * @param {string} title
+ * @param {object} data
+ * @returns {*} sends an email to user(s) when new
+ */
+  static sendNewTrip(email, title, data) {
+    const content = newTripRequestEmailContent(data);
+    const message = templateIndex(newTripStyle, content);
     mailer.sendMail(email, title, message);
   }
 }

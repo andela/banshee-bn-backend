@@ -13,6 +13,8 @@
     "exclude": [
       "src/database/",
       "src/config/",
+      "src/helpers/template/",
+      "src/helpers/Mailer.js",
       "src/models/",
       "src/helpers/PassportHelper.js",
       "src/index.js"

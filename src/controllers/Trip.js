@@ -1,6 +1,9 @@
 import { Op } from 'sequelize';
 import db from '../database/models';
 import Response from '../helpers/Response';
+import SearchDatabase from '../helpers/SearchDatabase';
+import EmailNotifications from '../helpers/EmailNotifications';
+import addNotification from '../helpers/addNotification';
 
 const {
   Trip, Branch, User, Stop, Accomodation, Location
@@ -51,7 +54,7 @@ class TripController {
    */
   static async createTripRequest(req, res) {
     try {
-      const { payload: { id: userId } } = req.payload;
+      const { payload: { id: userId, email, companyId } } = req.payload;
       const {
         type, from, departureDate, returnDate, destinations, reason
       } = req.body;
@@ -60,7 +63,6 @@ class TripController {
         destinationBranchId: to,
         accomodationId: accomodation,
       }));
-
       const trip = await Trip.create(
         {
           type,
@@ -80,13 +82,33 @@ class TripController {
           ]
         }
       );
-      const response = new Response(
-        true,
-        201,
-        'Travel request successfully created',
-        { trip }
-      );
-      return res.status(response.code).json(response);
+      if (trip.id) {
+        const admins = await SearchDatabase.findAdminUsersWithNotificationOpt(
+          ['travel admin', 'manager'], { emailOpt: true }, { companyId }
+        );
+        const emails = admins.map((admin) => admin.email);
+        if (emails) {
+          const data = await SearchDatabase.findTrip(trip.id);
+          const tripData = {
+            type,
+            reason,
+            departureDate,
+            returnDate
+          };
+          const message = `${data.user.firstName} ${data.user.lastName} requested for a ${type} trip`;
+          const recipients = emails.includes(email) ? [...emails] : [...emails, email];
+          data.trips = { ...data.trips, ...tripData };
+          EmailNotifications.sendNewTrip(emails, message, data);
+          await addNotification(trip.id, message, recipients);
+          const response = new Response(
+            true,
+            201,
+            'Travel request successfully created',
+            { trip }
+          );
+          return res.status(response.code).json(response);
+        }
+      }
     } catch (error) {
       const response = new Response(
         false,

@@ -1,9 +1,6 @@
-import jwt from 'jsonwebtoken';
-import db from '../database/models';
 import Response from '../helpers/Response';
 import modifyUserNotificationOpt from '../helpers/modifyUserNotificationOpt';
 
-const { User } = db;
 /** */
 class NotificationOpt {
 /**

@@ -12,13 +12,13 @@ module.exports = (sequelize, DataTypes) => {
     });
     Branch.hasMany(models.Trip, {
       foreignKey: 'startBranchId',
-      as: 'trip',
+      as: 'trips',
       onDelete: 'CASCADE',
       onUpdate: 'CASCADE'
     });
     Branch.hasMany(models.Accomodation, {
       foreignKey: 'branchId',
-      as: 'accomodation',
+      as: 'accomodations',
       onDelete: 'CASCADE',
       onUpdate: 'CASCADE'
     });
