@@ -16,5 +16,6 @@ router.use('/user', adminRoute);
 router.use('/accomodation', feedbackRoute);
 router.use('/search', searchRoute);
 router.use('/admin/accomodation', accomodationRoutes);
+router.use('/user/accomodation', accomodationRoutes);
 
 export default router;

@@ -1,8 +1,9 @@
 import { check } from 'express-validator';
+import { isValid, parseISO } from 'date-fns';
 import db from '../database/models';
 
 const {
-  Branch, Accomodation, Location, Room
+  Branch, Accomodation, Location, Room, Trip
 } = db;
 
 const createAccomodation = [
@@ -116,4 +117,63 @@ const addRoom = [
     .withMessage('Room type should not exceed 50 characters and not less than 5 characters long')
 ];
 
-export { createAccomodation, addRoom };
+const accomodationBooking = [
+  check('accomodationId')
+    .exists().withMessage('Accomodation Id is required')
+    .isUUID(4)
+    .withMessage('Invalid Accomodation Id format')
+    .custom(async (value, { req }) => {
+      const accomodation = await Accomodation.findOne({ where: { id: value } });
+      if (!accomodation) {
+        throw new Error('Accomodation does not exist');
+      }
+      if (accomodation.status === 'filled') {
+        throw new Error('Accomodation is filled up');
+      }
+      return true;
+    }),
+
+  check('roomId')
+    .exists().withMessage('Room Id is required')
+    .isUUID(4)
+    .withMessage('Invalid Room Id format')
+    .custom(async (value, { req }) => {
+      const room = await Room.findOne({ where: { id: req.body.roomId } });
+      if (!room) {
+        throw new Error('Room does not exist');
+      }
+      return true;
+    }),
+
+  check('bookDate')
+    .exists().withMessage('Date of booking is required')
+    .custom((value, { req }) => {
+      if (!isValid(parseISO(value))) {
+        throw new Error('Invalid return date format');
+      }
+      if (new Date(value) < new Date()) {
+        throw new Error('Invalid date, you can not select a day that as occured');
+      }
+      return true;
+    })
+    .customSanitizer((value) => new Date(value)),
+
+  check('tripId')
+    .exists().withMessage('Trip Id is required')
+    .custom(async (value, { req }) => {
+      const { id: userId } = req.payload.payload;
+      const trip = await Trip.findOne({ where: { id: value } });
+      if (!trip) {
+        throw new Error('Trip does not exist');
+      }
+      if (userId !== trip.userId) {
+        throw new Error('This trip is not associated with this user');
+      }
+      if (trip.status !== 'approved') {
+        throw new Error('Your trip is awaiting approval');
+      }
+      return true;
+    })
+];
+
+export { createAccomodation, addRoom, accomodationBooking };
