@@ -44,4 +44,6 @@ tripRoutes.patch(
   TripController.modifyTripRequestStatus,
 );
 
+tripRoutes.get('/mostvisited', Token.verifyToken, TripController.getMostVisitedBranch);
+
 export default tripRoutes;

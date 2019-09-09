@@ -1,8 +1,9 @@
+import { Op } from 'sequelize';
 import db from '../database/models';
 import Response from '../helpers/Response';
 
 const {
-  Trip, Branch, User, Stop, Accomodation
+  Trip, Branch, User, Stop, Accomodation, Location
 } = db;
 
 /**
@@ -353,6 +354,74 @@ class TripController {
         'Server error, Please try again later'
       );
       return res.status(response.code).json(response);
+    }
+  }
+
+  /**
+   * @description - method to retrieve a users favourites destinations
+   * @param {object} req - HTTP request object
+   * @param {object} res - HTTP response object
+   * @returns {object} - object
+   */
+  static async getMostVisitedBranch(req, res) {
+    const { companyId } = req.payload.payload;
+    const userLocationBranches = [];
+    const branchIds = [];
+
+    try {
+      // get the users branches
+      const userBranches = await Location.findAll({
+        where: { companyId },
+        attributes: ['id'],
+        include: [{
+          model: Branch,
+          as: 'branch',
+          attributes: ['id'],
+        }],
+        raw: true
+      });
+
+      userBranches.forEach((element) => {
+        userLocationBranches.push(element['branch.id']);
+      });
+
+      const mostVisitedBranches = await Stop.count({
+        where: {
+          destinationBranchId: {
+            [Op.in]: userLocationBranches
+          }
+        },
+        group: ['destinationBranchId'],
+      });
+
+      const orderByCount = mostVisitedBranches.sort((a, b) => b.count - a.count);
+      const mostThreeVisitedBranches = orderByCount.slice(0, 3);
+
+      mostThreeVisitedBranches.forEach((branch) => {
+        branchIds.push(branch.destinationBranchId);
+      });
+
+      const branchesInfo = await Branch.findAll({
+        where: {
+          id: {
+            [Op.in]: branchIds
+          }
+        },
+        include: [{
+          model: Location,
+          as: 'location',
+          attributes: ['country', 'city']
+        }
+        ],
+        attributes: ['id', 'name']
+      });
+      return res.status(200).json(
+        new Response(true, 200, 'Successfully retrieved company user\'s most travelled destinations', branchesInfo)
+      );
+    } catch (error) {
+      return res.status(500).json(
+        new Response(false, 500, error.message)
+      );
     }
   }
 }
