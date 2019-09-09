@@ -12,8 +12,7 @@ module.exports = {
     database: DB_DEV_NAME,
     host: '127.0.0.1',
     port: process.env.DB_PORT,
-    logging: false,
-    dialect
+    dialect,
   },
   test: {
     username: DB_USER_NAME,

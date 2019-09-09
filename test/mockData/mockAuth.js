@@ -360,6 +360,12 @@ const credentialsForServerError2 = {
   companyCode: '4RHJHJJKSK'
 };
 
+const unverifiedLogin = {
+  email: 'john.doe@gmail.com',
+  password: 'password2019',
+  code: '4RHJHJJKSK'
+};
+
 const users = {
   user1,
   user2,
@@ -404,7 +410,8 @@ const users = {
   credentialsForServerError,
   credentialsForServerError2,
   staffAuth,
-  adminAuth
+  adminAuth,
+  unverifiedLogin
 };
 
 export default users;

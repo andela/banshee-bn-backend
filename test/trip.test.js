@@ -9,21 +9,24 @@ import models from '../src/database/models';
 import mockTripRequests from './mockData/mockTrips';
 
 chai.use(chaiHttp);
+const { expect } = chai;
 const { Trip } = models;
-const {
-  oneWayTravelRequests: oneWay,
-  returnTravelRequests: returnTrip
-} = mockTripRequests;
 const tripId = 'ffe25dbe-29ea-4759-8461-ed116f6739df';
 const invalidtripId = 'ffe25dbe-29ea-4759-8461-ed116f6740df';
-const { expect } = chai;
+const {
+  oneWayTravelRequests: oneWay,
+  returnTravelRequests: returnTrip,
+  multiTripRequests: multiple
+} = mockTripRequests;
 const {
   completeLoginWithCode,
   credentials,
   adminAuth,
-  staffAuth
+  staffAuth,
+  unverifiedLogin
 } = users;
 let validUserToken;
+let unverifiedUserToken;
 
 const baseURL = '/api/v1/trips';
 
@@ -73,6 +76,7 @@ describe('Create travel request test', () => {
         done();
       });
   });
+
   describe('Create one way travel request', () => {
     it('should create a one-way travel request', (done) => {
       chai.request(app)
@@ -87,8 +91,8 @@ describe('Create travel request test', () => {
           expect(trip.startBranchId).to.eql(oneWay[0].from);
           expect(trip.reason).to.eql(oneWay[0].reason);
           expect(new Date(trip.tripDate)).to.eql(new Date(oneWay[0].departureDate));
-          expect(trip.stop[0].destinationBranchId).to.eql(oneWay[0].destination.to);
-          expect(trip.stop[0].accomodationId).to.eql(oneWay[0].destination.accomodation);
+          expect(trip.stop[0].destinationBranchId).to.eql(oneWay[0].destinations[0].to);
+          expect(trip.stop[0].accomodationId).to.eql(oneWay[0].destinations[0].accomodation);
           done();
         });
     });
@@ -126,7 +130,7 @@ describe('Create travel request test', () => {
         .end((err, res) => {
           expect(res.status).to.eql(400);
           expect(res.body.message).to.eql('Validation Error!');
-          expect(res.body.data['destination.to']).to.eql(
+          expect(res.body.data['destinations[0].to']).to.eql(
             'Destination does not exist'
           );
           done();
@@ -140,7 +144,7 @@ describe('Create travel request test', () => {
         .end((err, res) => {
           expect(res.status).to.eql(400);
           expect(res.body.message).to.eql('Validation Error!');
-          expect(res.body.data['destination.to']).to.eql(
+          expect(res.body.data['destinations[0].to']).to.eql(
             'Start and Destination should not be the same'
           );
           done();
@@ -154,7 +158,7 @@ describe('Create travel request test', () => {
         .end((err, res) => {
           expect(res.status).to.eql(400);
           expect(res.body.message).to.eql('Validation Error!');
-          expect(res.body.data['destination.accomodation']).to.eql(
+          expect(res.body.data['destinations[0].accomodation']).to.eql(
             'Accomodation does not exist'
           );
           done();
@@ -234,6 +238,7 @@ describe('Create travel request test', () => {
         });
     });
   });
+
   describe('Create return travel request', () => {
     it('should create a return travel request', (done) => {
       chai.request(app)
@@ -249,9 +254,9 @@ describe('Create travel request test', () => {
           expect(trip.reason).to.eql(returnTrip[0].reason);
           expect(new Date(trip.tripDate)).to.eql(new Date(returnTrip[0].departureDate));
           expect(new Date(trip.returnDate)).to.eql(new Date(returnTrip[0].returnDate));
-          expect(trip.stop[0].destinationBranchId).to.eql(returnTrip[0].destination.to);
-          expect(trip.stop[0].accomodationId).to.eql(returnTrip[0].destination.accomodation);
-          done();
+          expect(trip.stop[0].destinationBranchId).to.eql(returnTrip[0].destinations[0].to);
+          expect(trip.stop[0].accomodationId).to.eql(returnTrip[0].destinations[0].accomodation);
+          done(err);
         });
     });
     it('should return an error when passed invalid return date', (done) => {
@@ -375,5 +380,68 @@ describe('Create travel request test', () => {
           done(err);
         });
     });
+  });
+});
+
+describe('Create multi-city trip request', () => {
+  before('Login an unverified user', (done) => {
+    chai
+      .request(app)
+      .post('/api/v1/auth/login')
+      .send(unverifiedLogin)
+      .end((err, res) => {
+        const { token } = res.body.data.user;
+        unverifiedUserToken = token;
+        done(err);
+      });
+  });
+
+  it('should create a multi-city trip request', (done) => {
+    chai
+      .request(app)
+      .post(baseURL)
+      .send(multiple[0])
+      .set('authorization', validUserToken)
+      .end((err, res) => {
+        const { trip, trip: { stop } } = res.body.data;
+        expect(res.status).to.equal(201);
+        expect(trip.type).to.eql(multiple[0].type);
+        expect(trip.startBranchId).to.eql(multiple[0].from);
+        expect(trip.reason).to.eql(multiple[0].reason);
+        expect(stop).to.be.an('array');
+        expect(stop.length).to.be.greaterThan(1);
+        done(err);
+      });
+  });
+
+  it('should return an error if an unverified user makes a request', (done) => {
+    chai
+      .request(app)
+      .post(baseURL)
+      .send(multiple[0])
+      .set('authorization', unverifiedUserToken)
+      .end((err, res) => {
+        const { success, code, message } = res.body;
+        expect(res).to.have.status(403);
+        expect(success).to.equal(false);
+        expect(code).to.equal(403);
+        expect(message).to.eql('Your account has not been verified');
+        done(err);
+      });
+  });
+
+  it('should return an error if one or more destinations are the same', (done) => {
+    chai
+      .request(app)
+      .post(baseURL)
+      .send(multiple[1])
+      .set('authorization', validUserToken)
+      .end((err, res) => {
+        expect(res).to.have.status(400);
+        expect(res.body.success).to.equal(false);
+        expect(res.body.message)
+          .to.eql('Validation Error!');
+        done(err);
+      });
   });
 });
