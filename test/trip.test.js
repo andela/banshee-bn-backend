@@ -380,6 +380,21 @@ describe('Create travel request test', () => {
           done(err);
         });
     });
+    it('should not modify a trip request status with invalid status', (done) => {
+      const { token } = adminAuth;
+      chai
+        .request(app)
+        .patch(`/api/v1/trips/${tripId}ff`)
+        .set('Accept', 'application/json')
+        .set({ authorization: `${token}` })
+        .send({ status: 'rejected' })
+        .end((err, res) => {
+          expect(res.status).to.equal(400);
+          expect(res.body.data.tripId).to.equal('Invalid trip id');
+          expect(res.body.success).to.equal(false);
+          done(err);
+        });
+    });
   });
 });
 

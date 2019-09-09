@@ -99,7 +99,14 @@ const tripRequestStatusSchema = [
     .withMessage('Trip status is required')
     .trim()
     .custom((value) => ['pending', 'approved', 'rejected'].includes(value))
-    .withMessage('Invalid trip status')
+    .withMessage('Invalid trip status'),
+  
+  check('tripId')
+    .exists()
+    .withMessage('Trip Id is required')
+    .trim()
+    .isUUID(4)
+    .withMessage('Invalid trip id')
 ];
 
 export { tripRequestStatusSchema, tripRequestSchema };

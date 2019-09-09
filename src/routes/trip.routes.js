@@ -19,7 +19,7 @@ tripRoutes.post(
 );
 
 tripRoutes.patch(
-  '/:id',
+  '/:tripId',
   Token.verifyToken,
   permit('travel admin', 'manager'),
   validator(tripRequestStatusSchema),
