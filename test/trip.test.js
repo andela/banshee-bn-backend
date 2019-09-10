@@ -4,8 +4,8 @@ import chaiHttp from 'chai-http';
 import sinon from 'sinon';
 import app from '../src/index';
 import jwtHelper from '../src/helpers/Token';
-import users from './mockData/mockAuth';
 import models from '../src/database/models';
+import users from './mockData/mockAuth';
 import mockTripRequests from './mockData/mockTrips';
 
 chai.use(chaiHttp);
@@ -23,10 +23,16 @@ const {
   credentials,
   adminAuth,
   staffAuth,
+  manager,
+  nonManager,
+  nonManage,
   unverifiedLogin
 } = users;
 let validUserToken;
+let validManagerToken;
+let nonManagerToken;
 let unverifiedUserToken;
+let nonPending;
 
 const baseURL = '/api/v1/trips';
 
@@ -458,5 +464,223 @@ describe('Create multi-city trip request', () => {
           .to.eql('Validation Error!');
         done(err);
       });
+  });
+});
+
+describe('Avail Requests for approval', () => {
+  before('Login to get manager\'s token', (done) => {
+    chai
+      .request(app)
+      .post('/api/v1/auth/login')
+      .send(manager)
+      .end((err, res) => {
+        const { token } = res.body.data.user;
+        validManagerToken = token;
+        done(err);
+      });
+  });
+
+  before('Login to non-manager\'s token', (done) => {
+    chai
+      .request(app)
+      .post('/api/v1/auth/login')
+      .send(nonManager)
+      .end((err, res) => {
+        const { token } = res.body.data.user;
+        nonManagerToken = token;
+        done(err);
+      });
+  });
+
+  before('Login to manager without pending request', (done) => {
+    chai
+      .request(app)
+      .post('/api/v1/auth/login')
+      .send(nonManage)
+      .end((err, res) => {
+        const { token } = res.body.data.user;
+        nonPending = token;
+        done(err);
+      });
+  });
+
+  describe('Get all request', () => {
+    it('should get all trip requests', (done) => {
+      chai
+        .request(app)
+        .get(baseURL)
+        .set('authorization', validManagerToken)
+        .end((err, res) => {
+          expect(res).to.have.status(200);
+          expect(res.body.success).to.equal(true);
+          expect(res.body.message)
+            .to.eql('Requests retrieved');
+          expect(res.body.data).to.be.an('array');
+          done(err);
+        });
+    });
+
+    it('should get all pending trip requests', (done) => {
+      chai
+        .request(app)
+        .get(`${baseURL}?type=pending`)
+        .set('authorization', validManagerToken)
+        .end((err, res) => {
+          expect(res).to.have.status(200);
+          expect(res.body.success).to.equal(true);
+          expect(res.body.message)
+            .to.eql('Requests retrieved');
+          expect(res.body.data).to.be.an('array');
+          done(err);
+        });
+    });
+
+    it('should get all approved trip requests', (done) => {
+      chai
+        .request(app)
+        .get(`${baseURL}?type=approved`)
+        .set('authorization', validManagerToken)
+        .end((err, res) => {
+          expect(res).to.have.status(200);
+          expect(res.body.success).to.equal(true);
+          expect(res.body.message)
+            .to.eql('Requests retrieved');
+          expect(res.body.data).to.be.an('array');
+          done(err);
+        });
+    });
+
+    it('should get all rejected trip requests', (done) => {
+      chai
+        .request(app)
+        .get(`${baseURL}?type=rejected`)
+        .set('authorization', validManagerToken)
+        .end((err, res) => {
+          expect(res).to.have.status(200);
+          expect(res.body.success).to.equal(true);
+          expect(res.body.message)
+            .to.eql('Requests retrieved');
+          expect(res.body.data).to.be.an('array');
+          done(err);
+        });
+    });
+
+    it('should return an error if there are no pending requests', (done) => {
+      chai
+        .request(app)
+        .get(baseURL)
+        .set('authorization', nonPending)
+        .end((err, res) => {
+          const { success, message } = res.body;
+          expect(res.status).to.equal(404);
+          expect(success).to.equal(false);
+          expect(message).to.eql('No pending requests');
+          done(err);
+        });
+    });
+
+    it('should return an error if token is not supplied', (done) => {
+      chai
+        .request(app)
+        .get(baseURL)
+        .set('authorization', '')
+        .end((err, res) => {
+          expect(res).to.have.status(401);
+          expect(res.body.success).to.equal(false);
+          expect(res.body.message)
+            .to.eql('Unathorized, You did not provide a token');
+          done(err);
+        });
+    });
+
+    it('should return an error if an unauthorized tries to make request', (done) => {
+      chai
+        .request(app)
+        .get(baseURL)
+        .set('authorization', nonManagerToken)
+        .end((err, res) => {
+          expect(res).to.have.status(403);
+          expect(res.body.success).to.equal(false);
+          expect(res.body.message)
+            .to.eql('access denied');
+          done(err);
+        });
+    });
+
+    it('should return a 500 error when an error occurs on the server', (done) => {
+      const stub = sinon.stub(Trip, 'findAll')
+        .rejects(new Error('Server error, Please try again later'));
+      chai
+        .request(app)
+        .get(baseURL)
+        .set('authorization', validManagerToken)
+        .end((err, res) => {
+          expect(res.status).to.equal(500);
+          stub.restore();
+          done(err);
+        });
+    });
+  });
+
+  describe('Approve pending request', () => {
+    it('should allow a manager approve a pending request', (done) => {
+      chai
+        .request(app)
+        .patch(`${baseURL}/ffe25dbe-29ea-4759-8468-ed116f6739df`)
+        .send({ status: 'approved' })
+        .set('Authorization', validManagerToken)
+        .end((err, res) => {
+          const { data } = res.body;
+          expect(res).to.have.status(200);
+          expect(res.body.success).to.equal(true);
+          expect(res.body.message)
+            .to.eql('Trip approved successfully');
+          expect(data.status).to.eql('approved');
+          done(err);
+        });
+    });
+
+    it('should return an error if trip ID doesn\'t exist', (done) => {
+      chai
+        .request(app)
+        .patch(`${baseURL}/ffe25dbe-29ea-4759-8468-ed116f6739da`)
+        .send({ status: 'approved' })
+        .set('Authorization', validManagerToken)
+        .end((err, res) => {
+          expect(res).to.have.status(404);
+          expect(res.body.success).to.equal(false);
+          expect(res.body.message)
+            .to.eql('Trip does not exist');
+          done(err);
+        });
+    });
+
+    it('should return an error if token is not supplied', (done) => {
+      chai
+        .request(app)
+        .patch(`${baseURL}/ffe25dbe-29ea-4759-8468-ed116f6739df`)
+        .set('authorization', '')
+        .end((err, res) => {
+          expect(res).to.have.status(401);
+          expect(res.body.success).to.equal(false);
+          expect(res.body.message)
+            .to.eql('Unathorized, You did not provide a token');
+          done(err);
+        });
+    });
+
+    it('should return an error if an unauthorized user tries to make request', (done) => {
+      chai
+        .request(app)
+        .patch(`${baseURL}/ffe25dbe-29ea-4759-8468-ed116f6739df`)
+        .set('authorization', nonManagerToken)
+        .end((err, res) => {
+          expect(res).to.have.status(403);
+          expect(res.body.success).to.equal(false);
+          expect(res.body.message)
+            .to.eql('access denied');
+          done(err);
+        });
+    });
   });
 });

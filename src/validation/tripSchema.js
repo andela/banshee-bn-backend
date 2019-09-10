@@ -1,8 +1,8 @@
 import { body, check, param } from 'express-validator';
+import validateUUID from 'uuid-validate';
 import {
   isValid, parseISO, isFuture
 } from 'date-fns';
-import validateUUID from 'uuid-validate';
 import models from '../database/models';
 
 const { Branch, Accomodation, Stop } = models;
@@ -215,4 +215,6 @@ const editTripRequestSchema = [
     }),
 ];
 
-export { tripRequestStatusSchema, tripRequestSchema, editTripRequestSchema };
+export {
+  tripRequestStatusSchema, tripRequestSchema, editTripRequestSchema
+};

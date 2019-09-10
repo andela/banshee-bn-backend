@@ -11,6 +11,16 @@ module.exports = {
       status: 'pending'
     },
     {
+      id: 'ffe25dbe-29ea-4759-8468-ed116f6739df',
+      type: 'multiple',
+      startBranchId: 'ffe35dbe-29ea-4759-8461-ed116f6739dd',
+      userId: '91542e6f-94bc-4e80-a667-586fb0752f23',
+      tripDate: '2019-02-17',
+      returnDate: '2019-02-23',
+      reason: 'for holiday',
+      status: 'pending'
+    },
+    {
       id: 'ffe25dbe-29ea-4759-8462-ed116f6739df',
       type: 'return',
       startBranchId: 'ffe35dbe-29ea-4759-8461-ed116f6739dd',
