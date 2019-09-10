@@ -2,7 +2,7 @@ const oneWayTravelRequests = [
   {
     type: 'oneway',
     from: '3dd3b34a-7554-425e-a688-36afda199614',
-    departureDate: '2000-09-09',
+    departureDate: '2020-09-09',
     reason: 'Just wanna travel',
     destinations: [
       {
@@ -137,8 +137,8 @@ const returnTravelRequests = [
   {
     type: 'return',
     from: '3dd3b34a-7554-425e-a688-36afda199614',
-    departureDate: '2000-09-09',
-    returnDate: '2000-09-10',
+    departureDate: '2020-09-09',
+    returnDate: '2020-09-10',
     reason: 'Just wanna travel',
     destinations: [
       {
@@ -150,7 +150,7 @@ const returnTravelRequests = [
   {
     type: 'return',
     from: '3dd3b34a-7554-425e-a688-36afda199614',
-    departureDate: '2000-09-09',
+    departureDate: '2020-09-09',
     returnDate: 'invalid',
     reason: 'Just wanna travel',
     destinations: [
@@ -163,8 +163,8 @@ const returnTravelRequests = [
   {
     type: 'return',
     from: '3dd3b34a-7554-425e-a688-36afda199614',
-    departureDate: '2000-09-09',
-    returnDate: '2000-09-09',
+    departureDate: '2020-09-09',
+    returnDate: '2020-09-09',
     reason: 'Just wanna travel',
     destinations: [
       {
@@ -179,7 +179,7 @@ const multiTripRequests = [
   {
     type: 'oneway',
     from: '3dd3b34a-7554-425e-a688-36afda199614',
-    departureDate: '2000-02-19',
+    departureDate: '2020-02-19',
     reason: 'Robert Mugabe is no more',
     destinations: [
       {

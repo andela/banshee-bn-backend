@@ -4,7 +4,9 @@ import Token from '../helpers/Token';
 import validator from '../middlewares/validator';
 import permit from '../middlewares/permission';
 import verify from '../middlewares/AuthMiddlewares';
-import { tripRequestSchema, tripRequestStatusSchema } from '../validation/tripSchema';
+import {
+  tripRequestSchema, tripRequestStatusSchema, editTripRequestSchema
+} from '../validation/tripSchema';
 
 const tripRoutes = Router();
 
@@ -16,6 +18,13 @@ tripRoutes.post(
   verify.isUserVerified,
   validator(tripRequestSchema),
   TripController.createTripRequest
+);
+tripRoutes.put(
+  '/:tripId',
+  Token.verifyToken,
+  verify.isUserVerified,
+  validator(editTripRequestSchema),
+  TripController.editTripRequest
 );
 
 tripRoutes.patch(
