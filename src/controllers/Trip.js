@@ -20,12 +20,15 @@ class TripController {
     try {
       const userTrips = await Trip.findAll({
         where: { userId: id },
+        attributes: {
+          exclude: ['startBranchId', 'userId']
+        },
         include: [
           {
             model: Stop,
             as: 'stop',
-            attributes: ['destinationBranchId', 'accomodationId'],
-            include: [{ model: Branch, as: 'branch', attributes: ['id', 'name', 'locationId'] },
+            attributes: ['id'],
+            include: [{ model: Branch, as: 'branch', attributes: ['id', 'name'] },
               { model: Accomodation, as: 'accomodation', attributes: ['id', 'name', 'capacity', 'status'] }]
           },
           { model: User, as: 'user', attributes: ['firstName', 'lastName'] },
