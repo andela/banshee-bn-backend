@@ -50,7 +50,7 @@ class Token {
       const response = new Response(
         false,
         401,
-        'Unathorized, Your token is invalid or expired'
+        'Unauthorized, Your token is invalid or expired'
       );
       return res.status(response.code).json(response);
     }
@@ -71,7 +71,7 @@ class Token {
       || req.headers['x-access-token'] || req.query.token || req.body.token;
       if (!token) {
         return res.status(401).json(
-          new Response(false, 401, 'Unauthorized, Your did not provide a token')
+          new Response(false, 401, 'Unauthorized, You did not provide a token')
         );
       }
       try {

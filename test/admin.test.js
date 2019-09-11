@@ -142,7 +142,7 @@ describe('Admin controller', () => {
           expect(res.status).to.eq(401);
           // eslint-disable-next-line no-unused-expressions
           expect(res.body.success).to.be.false;
-          expect(res.body.message).to.eq('Unauthorized, Your did not provide a token');
+          expect(res.body.message).to.eq('Unauthorized, You did not provide a token');
           done();
         });
     });
