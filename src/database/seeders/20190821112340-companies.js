@@ -21,6 +21,13 @@ module.exports = {
       address: '12 Ikorodu Road, Lagos',
       code: 'BAREFOOT',
       owner: 'Barefoot Admin'
+    },
+    {
+      id: 'e819fb11-d55f-4cbf-ad04-894d53cee722',
+      name: 'Soft Blues Limited',
+      address: '234 Muriokunola street, Lagos Island',
+      code: 'SB0002',
+      owner: 'Brightside'
     }
   ]),
   down: queryInterface => queryInterface.bulkDelete('Companies', null, {})

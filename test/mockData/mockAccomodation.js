@@ -8,7 +8,7 @@ const accomodationWithWrongBranchId = {
 };
 const accomodationWrongCompany = {
   name: 'The new Accomodation center',
-  branchId: '3dd3b34a-7554-425e-a688-36afda199614',
+  branchId: '1404d644-fa2e-49a9-982f-eec3afeb5c0d',
   capacity: '20',
   address: 'This is the address of the center',
   imgurl: 'this is the image url'
@@ -52,7 +52,7 @@ const addRoom1 = {
 const roomInAnotherCompany = {
   name: 'Room 5',
   type: 'Executive Room',
-  accomodationId: '3dd3b34a-7554-425e-a688-36afda199619'
+  accomodationId: 'b4e9ba65-cb81-4b8a-8aec-1ffe24a9ed33'
 };
 const roomWithWrongAccId = {
   name: 'Room with Sauce',

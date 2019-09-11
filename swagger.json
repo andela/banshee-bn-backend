@@ -1230,7 +1230,102 @@
         }
       }
     },
-  "/user/accomodation/booking": {
+    "/trips/timeframe": {
+      "get": {
+        "tags": [
+          "Travel Requests"
+        ],
+        "summary": "Get stats of trip requests made in the last x timeframe",
+        "description": "Count trip requests",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "start",
+            "description": "Start date",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "end",
+            "description": "End date",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful update",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "code": {
+                      "type": "number",
+                      "example": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Trip stat count results"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "tripCount": {
+                          "type": "number",
+                          "example": 5
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "code": {
+                      "type": "number",
+                      "example": 400
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Validation Error!"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties":{
+                        "end":{
+                          "type": "string",
+                          "example": "end date is required"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/accomodation/booking": {
     "post": {
       "security": [
         {

@@ -28,7 +28,7 @@ const branch2 = {
 
 const branch3 = {
   name: 'Jonny Hills Groups',
-  locationId: '3dd3b24a-7554-425e-a688-36afda195614'
+  locationId: '3dd3b24a-7554-425e-a688-36afda195714'
 };
 const admin = {
   location, inCompleteLocation, location2, branch, branch2, branch3, branch4

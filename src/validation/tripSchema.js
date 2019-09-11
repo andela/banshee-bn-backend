@@ -1,9 +1,10 @@
 import { body, check, param } from 'express-validator';
 import validateUUID from 'uuid-validate';
 import {
-  isValid, parseISO, isFuture
+  isValid, parseISO, isFuture, isDate
 } from 'date-fns';
 import models from '../database/models';
+import date from '../utils/date';
 
 const { Branch, Accomodation, Stop } = models;
 
@@ -215,6 +216,26 @@ const editTripRequestSchema = [
     }),
 ];
 
+const timeframeSchema = [
+  check('start')
+    .exists()
+    .withMessage('Start date is required')
+    .custom(value => isValid(parseISO(value)))
+    .withMessage('Invalid start date.')
+    .custom(value => date.isToday(value) || !isFuture(new Date(value)))
+    .withMessage('Date must be today or before today'),
+  check('end')
+    .exists()
+    .withMessage('end date is required')
+    .custom(value => isValid(parseISO(value)))
+    .withMessage('Invalid end date')
+    .custom(value => date.isToday(value) || isFuture(new Date(value)))
+    .withMessage('Date must be today or after'),
+];
+
 export {
-  tripRequestStatusSchema, tripRequestSchema, editTripRequestSchema
+  tripRequestStatusSchema,
+  tripRequestSchema,
+  editTripRequestSchema,
+  timeframeSchema
 };

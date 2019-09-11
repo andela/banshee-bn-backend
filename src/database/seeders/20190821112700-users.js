@@ -132,6 +132,42 @@ module.exports = {
       gender: 'male',
       dob: '2012-09-10',
       status: 'active',
+      role: 'manager'
+    },
+    {
+      id: '8c2b1bb8-c3f2-410a-bd07-4743cfc65758',
+      companyId: 'e819fb11-d55f-4cbf-ad04-894d53cee722',
+      firstName: 'Dolapo',
+      lastName: 'Junior',
+      email: 'dolapo.junior@gmail.com',
+      password: hashHelper.hashPassword('password2019'),
+      gender: 'male',
+      dob: '2012-09-10',
+      status: 'active',
+      role: 'travel admin'
+    },
+    {
+      id: '54cef27e-a449-4f00-8a5c-d103be93ebb0',
+      companyId: 'e819fb11-d55f-4cbf-ad04-894d53cee722',
+      firstName: 'Bright',
+      lastName: 'John',
+      email: 'bright.john@gmail.com',
+      password: hashHelper.hashPassword('password2019'),
+      gender: 'male',
+      dob: '2012-09-10',
+      status: 'active',
+      role: 'manager'
+    },
+    {
+      id: 'f30f431e-0d60-47cd-ae8a-5864c5246d98',
+      companyId: 'e819fb11-d55f-4cbf-ad04-894d53cee722',
+      firstName: 'Mary',
+      lastName: 'Jane',
+      email: 'mary.jane@gmail.com',
+      password: hashHelper.hashPassword('password2019'),
+      gender: 'female',
+      dob: '2012-09-10',
+      status: 'active',
       role: 'travel admin'
     },
     {
