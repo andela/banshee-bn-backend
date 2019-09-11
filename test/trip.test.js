@@ -364,7 +364,7 @@ describe('Create travel request test', () => {
         .send({ status: 'Rejected' })
         .end((err, res) => {
           expect(res.status).to.equal(401);
-          expect(res.body.message).to.equal('Unathorized, Your token is invalid or expired');
+          expect(res.body.message).to.equal('Unauthorized, Your token is invalid or expired');
           expect(res.body.success).to.equal(false);
           done(err);
         });

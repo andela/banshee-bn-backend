@@ -541,7 +541,7 @@ describe('EMAIL VERIFICATION TEST', () => {
         expect(res).to.have.status(401);
         expect(res.body).to.be.an('object');
         expect(res.body).to.have.keys('success', 'code', 'message');
-        expect(message).to.be.equal('Unathorized, Your token is invalid or expired');
+        expect(message).to.be.equal('Unauthorized, Your token is invalid or expired');
         done();
       });
   });
