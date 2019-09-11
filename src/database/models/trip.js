@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'tripId',
       as: 'stop',
       onDelete: 'CASCADE',
-      onUpdate: 'CASCADE'
+      onUpdate: 'CASCADE',
     });
     Trip.belongsTo(models.Branch, {
       foreignKey: 'startBranchId',
@@ -28,6 +28,12 @@ module.exports = (sequelize, DataTypes) => {
       onDelete: 'CASCADE',
       onUpdate: 'CASCADE',
       sourceKey: 'startBranchId'
+    });
+    Trip.hasMany(models.Comment, {
+      foreignKey: 'tripId',
+      as: 'comments',
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE'
     });
   };
   return Trip;

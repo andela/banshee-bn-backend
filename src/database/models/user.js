@@ -22,6 +22,12 @@ module.exports = (sequelize, DataTypes) => {
       onDelete: 'CASCADE',
       onUpdate: 'CASCADE'
     });
+    User.hasMany(models.Comment, {
+      foreignKey: 'userId',
+      as: 'comments',
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE'
+    });
     User.belongsTo(models.Company, {
       foreignKey: 'companyId',
       as: 'company',
