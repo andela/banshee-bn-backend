@@ -44,8 +44,7 @@ describe('Travel Request', () => {
       chai.request(app).get(`${baseURL}/user`).send({ token }).end((err, res) => {
         expect(res.status).to.eq(200);
         expect(res.body.message).to.eq('User requests successfully retrieved');
-        expect(res.body.data[0].userId).to.eq(completeLoginWithCode.id);
-        expect(res.body.data[0].stop).to.be.an('Array');
+        expect(res.body.data).to.be.an('Array');
         done();
       });
     });
