@@ -13,11 +13,11 @@ const router = Router();
 router.use('/auth', authRoute);
 router.use('/trips', tripRoute);
 router.use(profileRoute);
-router.use('/user', adminRoute);
 router.use('/accomodation', feedbackRoute);
 router.use('/search', searchRoute);
 router.use('/admin/accomodation', accomodationRoutes);
 router.use('/user/accomodation', accomodationRoutes);
 router.use('/trips', commentRoute);
+router.use('/', adminRoute);
 
 export default router;

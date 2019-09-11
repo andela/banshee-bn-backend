@@ -1,7 +1,7 @@
 import Response from '../helpers/Response';
 import db from '../database/models';
 
-const { User } = db;
+const { User, Location, Branch } = db;
 
 /**
  * Admin settings controller
@@ -83,6 +83,58 @@ class AdminController {
         false, 500, 'Server error, Please try again later'
       );
       return res.status(response.code).json(response);
+    }
+  }
+
+  /**
+   * @description - method to create company locations
+   * @param {object} req - HTTP request object
+   * @param {object} res - HTTP response object
+   * @returns {object} object
+   */
+  static async createCompanyLocation(req, res) {
+    const { companyId } = req.payload.payload;
+    const { country, city } = req.body;
+
+    try {
+      const { dataValues } = await Location.create({
+        companyId,
+        country,
+        city
+      });
+
+      return res.status(201).json(
+        new Response(true, 201, 'Company location created successfully', dataValues)
+      );
+    } catch (error) {
+      return res.status(500).json(
+        new Response(false, 500, error.message)
+      );
+    }
+  }
+
+  /**
+   * @description - method to create company branches
+   * @param {object} req - HTTP request object
+   * @param {object} res - HTTP response object
+   * @returns {object} object
+   */
+  static async createCompanyBranch(req, res) {
+    const { name, locationId } = req.body;
+
+    try {
+      const { dataValues } = await Branch.create({
+        name,
+        locationId
+      });
+
+      return res.status(201).json(
+        new Response(true, 201, 'Company branch created successfully', dataValues)
+      );
+    } catch (error) {
+      return res.status(500).json(
+        new Response(false, 500, error.message)
+      );
     }
   }
 }
