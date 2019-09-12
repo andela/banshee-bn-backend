@@ -6,7 +6,17 @@ import validator from '../middlewares/validator';
 
 const adminRoutes = Router();
 
-adminRoutes.patch('/:email/role', Token.verifyAdminToken('super admin'),
-  validator(updateUserRole), AdminController.updateUserRole);
+adminRoutes.patch(
+  '/:email/role',
+  Token.verifyAdminToken('super admin'),
+  validator(updateUserRole),
+  AdminController.updateUserRole
+);
+
+adminRoutes.get(
+  '/all',
+  Token.verifyAdminToken('super admin'),
+  AdminController.getAllUsers
+);
 
 export default adminRoutes;

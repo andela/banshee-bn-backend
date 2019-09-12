@@ -1,11 +1,15 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
+import sinon from 'sinon';
 import app from '../src/index';
+import models from '../src/database/models';
 import jwtHelper from '../src/helpers/Token';
 import users from './mockData/mockAuth';
 
 const { expect } = chai;
 chai.use(chaiHttp);
+
+const { User } = models;
 const {
   superAdminLogin, credentials, completeLoginWithCode,
   user6, loginWithUnregisteredEmail, user8, credentialsWithoutRole,
@@ -45,7 +49,7 @@ describe('Admin controller', () => {
           done();
         });
     });
-    
+
     it('should return error if it is not a super admin', (done) => {
       const token = jwtHelper.generateToken(completeLoginWithCode);
 
@@ -133,7 +137,6 @@ describe('Admin controller', () => {
         });
     });
     it('should return error if token is not supplied', (done) => {
-
       chai
         .request(app)
         .patch(`${baseUrl}/${credentials.email}/role`)
@@ -144,6 +147,39 @@ describe('Admin controller', () => {
           expect(res.body.success).to.be.false;
           expect(res.body.message).to.eq('Unauthorized, You did not provide a token');
           done();
+        });
+    });
+  });
+
+  describe('Retrieve all users', () => {
+    it('should return all the users in a company', (done) => {
+      const token = jwtHelper.generateToken(superAdminLogin);
+      chai
+        .request(app)
+        .get(`${baseUrl}/all`)
+        .set('authorization', token)
+        .end((err, res) => {
+          const { success, message, data } = res.body;
+          expect(res).to.have.status(200);
+          expect(success).to.equal(true);
+          expect(message).to.eql('Users retrieved');
+          expect(data).to.be.an('array');
+          done(err);
+        });
+    });
+
+    it('should return a 500 error when an error occurs on the server', (done) => {
+      const token = jwtHelper.generateToken(superAdminLogin);
+      const stub = sinon.stub(User, 'findAll')
+        .rejects(new Error('Server error, Please try again later'));
+      chai
+        .request(app)
+        .get(`${baseUrl}/all`)
+        .set('authorization', token)
+        .end((err, res) => {
+          expect(res.status).to.equal(500);
+          stub.restore();
+          done(err);
         });
     });
   });
