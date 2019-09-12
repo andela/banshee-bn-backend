@@ -5,18 +5,24 @@ import app from '../src/index';
 import models from '../src/database/models';
 import jwtHelper from '../src/helpers/Token';
 import users from './mockData/mockAuth';
+import admin from './mockData/mockAdmin';
+
 
 const { expect } = chai;
 chai.use(chaiHttp);
-
-const { User } = models;
 const {
   superAdminLogin, credentials, completeLoginWithCode,
   user6, loginWithUnregisteredEmail, user8, credentialsWithoutRole,
-  unverifiedUser
+  unverifiedUser, managerLogin
 } = users;
 
-const baseUrl = '/api/v1/user';
+const {
+  location, inCompleteLocation, location2, branch, branch2,
+  branch3, branch4
+} = admin;
+const { Location, Branch, User } = models;
+
+const baseUrl = '/api/v1/';
 
 describe('Admin controller', () => {
   describe('Update user role', () => {
@@ -25,7 +31,7 @@ describe('Admin controller', () => {
 
       chai
         .request(app)
-        .patch(`${baseUrl}/${credentials.email}/role`)
+        .patch(`${baseUrl}/user/${credentials.email}/role`)
         .set('x-access-token', token)
         .send({ role: 'travel admin' })
         .end((err, res) => {
@@ -39,7 +45,7 @@ describe('Admin controller', () => {
 
       chai
         .request(app)
-        .patch(`${baseUrl}/${credentials.email}/role`)
+        .patch(`${baseUrl}/user/${credentials.email}/role`)
         .set('x-access-token', token)
         .send({ role: 'manager' })
         .end((err, res) => {
@@ -55,7 +61,7 @@ describe('Admin controller', () => {
 
       chai
         .request(app)
-        .patch(`${baseUrl}/${user6.email}/role`)
+        .patch(`${baseUrl}/user/${user6.email}/role`)
         .set('x-access-token', token)
         .send({ role: 'manager' })
         .end((err, res) => {
@@ -69,7 +75,7 @@ describe('Admin controller', () => {
 
       chai
         .request(app)
-        .patch(`${baseUrl}/${loginWithUnregisteredEmail.email}/role`)
+        .patch(`${baseUrl}/user/${loginWithUnregisteredEmail.email}/role`)
         .set('x-access-token', token)
         .send({ role: 'manager' })
         .end((err, res) => {
@@ -83,7 +89,7 @@ describe('Admin controller', () => {
 
       chai
         .request(app)
-        .patch(`${baseUrl}/${user8.email}/role`)
+        .patch(`${baseUrl}/user/${user8.email}/role`)
         .set('x-access-token', token)
         .send({ role: 'staff' })
         .end((err, res) => {
@@ -97,7 +103,7 @@ describe('Admin controller', () => {
 
       chai
         .request(app)
-        .patch(`${baseUrl}/${unverifiedUser.email}/role`)
+        .patch(`${baseUrl}/user/${unverifiedUser.email}/role`)
         .set('x-access-token', token)
         .send({ role: 'travel admin' })
         .end((err, res) => {
@@ -111,7 +117,7 @@ describe('Admin controller', () => {
 
       chai
         .request(app)
-        .patch(`${baseUrl}/${credentialsWithoutRole.email}/role`)
+        .patch(`${baseUrl}/user/${credentialsWithoutRole.email}/role`)
         .set('x-access-token', token)
         .send({ role: 'travel' })
         .end((err, res) => {
@@ -126,7 +132,7 @@ describe('Admin controller', () => {
 
       chai
         .request(app)
-        .patch(`${baseUrl}/${credentials.email}/role`)
+        .patch(`${baseUrl}/user/${credentials.email}/role`)
         .set('x-access-token', token)
         .send({ role: 'travel admin\'' })
         .end((err, res) => {
@@ -139,7 +145,7 @@ describe('Admin controller', () => {
     it('should return error if token is not supplied', (done) => {
       chai
         .request(app)
-        .patch(`${baseUrl}/${credentials.email}/role`)
+        .patch(`${baseUrl}/user/${credentials.email}/role`)
         .send({ role: 'travel admin' })
         .end((err, res) => {
           expect(res.status).to.eq(401);
@@ -156,7 +162,7 @@ describe('Admin controller', () => {
       const token = jwtHelper.generateToken(superAdminLogin);
       chai
         .request(app)
-        .get(`${baseUrl}/all`)
+        .get(`${baseUrl}/user/all`)
         .set('authorization', token)
         .end((err, res) => {
           const { success, message, data } = res.body;
@@ -174,12 +180,120 @@ describe('Admin controller', () => {
         .rejects(new Error('Server error, Please try again later'));
       chai
         .request(app)
-        .get(`${baseUrl}/all`)
+        .get(`${baseUrl}/user/all`)
         .set('authorization', token)
         .end((err, res) => {
           expect(res.status).to.equal(500);
           stub.restore();
           done(err);
+        });
+    });
+  });
+  describe('Create company location', () => {
+    const managerToken = jwtHelper.generateToken(managerLogin);
+
+    it('should create a company location', (done) => {
+      chai.request(app).post(`${baseUrl}/location/create`)
+        .set('x-access-token', managerToken)
+        .send(location)
+        .end((err, res) => {
+          expect(res.status).to.eq(201);
+          expect(res.body.message).to.eq('Company location created successfully');
+          expect(res.body.data.city).to.eq(location.city);
+          done();
+        });
+    });
+    it('should return error if all fields are not filled', (done) => {
+      chai.request(app).post(`${baseUrl}/location/create`)
+        .set('x-access-token', managerToken)
+        .send(inCompleteLocation)
+        .end((err, res) => {
+          expect(res.status).to.eq(400);
+          expect(res.body.message).to.eq('Validation Error!');
+          done();
+        });
+    });
+    it('should return error if location is already created', (done) => {
+      chai.request(app).post(`${baseUrl}/location/create`)
+        .set('x-access-token', managerToken)
+        .send(location)
+        .end((err, res) => {
+          expect(res.status).to.eq(400);
+          expect(res.body.message).to.eq('Validation Error!');
+          done();
+        });
+    });
+    it('should return error 500 if there is server error', (done) => {
+      const stub = sinon.stub(Location, 'create').rejects(new Error('Server error, try again'));
+
+      chai.request(app).post(`${baseUrl}/location/create`)
+        .set('x-access-token', managerToken)
+        .send(location2)
+        .end((err, res) => {
+          expect(res.status).to.eq(500);
+          expect(res.body.message).to.eq('Server error, try again');
+          stub.restore();
+          done();
+        });
+    });
+  });
+  describe('Create company branch', () => {
+    const managerToken = jwtHelper.generateToken(managerLogin);
+
+    it('should create a company branch', (done) => {
+      chai.request(app).post(`${baseUrl}/branch/create`)
+        .set('x-access-token', managerToken)
+        .send(branch)
+        .end((err, res) => {
+          expect(res.status).to.eq(201);
+          expect(res.body.message).to.eq('Company branch created successfully');
+          done();
+        });
+    });
+    it('should return error if all fields are not filled', (done) => {
+      chai.request(app).post(`${baseUrl}/branch/create`)
+        .set('x-access-token', managerToken)
+        .send(branch2)
+        .end((err, res) => {
+          expect(res.status).to.eq(400);
+          expect(res.body.message).to.eq('Validation Error!');
+          done();
+        });
+    });
+    it('should return error if branch is already registered', (done) => {
+      chai.request(app).post(`${baseUrl}/branch/create`)
+        .set('x-access-token', managerToken)
+        .send(branch)
+        .end((err, res) => {
+          expect(res.status).to.eq(400);
+          expect(res.body.message).to.eq('Validation Error!');
+          done();
+        });
+    });
+
+    it('should return error if branch is not known', (done) => {
+      chai.request(app).post(`${baseUrl}/branch/create`)
+        .set('x-access-token', managerToken)
+        .send(branch3)
+        .end((err, res) => {
+          expect(res.status).to.eq(400);
+          expect(res.body.message).to.eq('Validation Error!');
+          expect(res.body.data.locationId).to.eq('Unknown location');
+          done();
+        });
+    });
+
+    it('should return error 500 if there is server error', (done) => {
+      const stub = sinon.stub(Branch, 'create').rejects(new Error('Server error, try again'));
+
+      chai.request(app).post(`${baseUrl}/branch/create`)
+        .set('x-access-token', managerToken)
+        .send(branch4)
+        .end((err, res) => {
+          expect(res.status).to.eq(500);
+          expect(res.body.message).to.eq('Server error, try again');
+          stub.restore();
+          done();
         });
     });
   });

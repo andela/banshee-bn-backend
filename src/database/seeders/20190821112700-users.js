@@ -133,7 +133,19 @@ module.exports = {
       dob: '2012-09-10',
       status: 'active',
       role: 'travel admin'
-    }
+    },
+    {
+      id: 'd885cb0d-8520-4ee1-bab7-d3097adadc32',
+      companyId: 'a6e35eb9-8c59-4c7d-b8d4-ae724aa7fb61',
+      firstName: 'Managing',
+      lastName: 'Director',
+      email: 'managing.director@gmail.com',
+      password: hashHelper.hashPassword('password2019'),
+      gender: 'male',
+      dob: '2012-09-10',
+      status: 'active',
+      role: 'manager'
+    },
   ]),
   down: queryInterface => queryInterface.bulkDelete('Users', null, {})
 };
