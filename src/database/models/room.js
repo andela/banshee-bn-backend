@@ -2,7 +2,8 @@ module.exports = (sequelize, DataTypes) => {
   const Room = sequelize.define('Room', {
     name: DataTypes.STRING,
     type: DataTypes.STRING,
-    accomodationId: DataTypes.UUID
+    accomodationId: DataTypes.UUID,
+    booked: DataTypes.BOOLEAN
   }, {});
   Room.associate = models => {
     Room.belongsTo(models.Accomodation, {

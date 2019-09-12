@@ -26,6 +26,15 @@ module.exports = {
       status: 'available',
       imgurl: 'https://res.cloudinary.com/tvpeter/image/upload/v1567651493/hotel_onnio1.jpg',
       address: '20 Kenny Johns Drive, Abuja'
+    },
+    {
+      id: '3dd3b34a-7554-425e-a688-36afda199615',
+      name: 'Ocean drive Inn',
+      branchId: '3dd3b34a-7554-425e-a688-36afda199614',
+      capacity: 10,
+      status: 'filled',
+      imgurl: null,
+      address: '31, Ocean drive, Lekki'
     }
   ]),
   down: queryInterface => queryInterface.bulkDelete('Accomodations', null, {})

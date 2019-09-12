@@ -1098,11 +1098,6 @@
     },
     "/search": {
       "get": {
-        "security": [
-          {
-            "ApiKeyAuth": []
-          }
-        ],
         "tags": [
           "Travel Requests"
         ],
@@ -1231,6 +1226,58 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+  "/user/accomodation/booking": {
+    "post": {
+      "security": [
+        {
+          "ApiKeyAuth": []
+        }
+      ],
+      "tags": [
+          "Accomodation"
+        ],
+        "summary": "Post an accomodation booking",
+        "operationId": "postAccomodationBooking",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "token",
+            "schema": {
+              "type": "string"
+            },
+            "description": "user signin token",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "description": "user object",
+          "content": {
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/accomodationBooking"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/accomodationBooking"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Accomodation feedback posted successfuly"
+          },
+          "401": {
+            "description": "Unathorized, You did not provide a token"
+          },
+          "500": {
+            "description": "Server error, please try again later"
           }
         }
       }
@@ -1370,6 +1417,27 @@
           "status": {
             "type": "string",
             "example": "rejected"
+          }
+        }
+      },
+      "accomodationBooking": {
+        "type": "object",
+        "properties": {
+          "accomodationId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "roomId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "bookDate": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "tripId": {
+            "type": "string",
+            "format": "uuid"
           }
         }
       }

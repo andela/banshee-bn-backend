@@ -23,6 +23,19 @@ module.exports = {
       name: 'Room 4',
       type: 'Single Room',
       accomodationId: '3dd3b34a-7554-425e-a688-36afda199619',
+    },
+    {
+      id: '3dd3b34a-1254-495e-a688-36afda199616',
+      name: 'Room 5',
+      type: 'Single Room',
+      accomodationId: '3dd3b34a-7554-425e-a688-36afda199619',
+      booked: 'true'
+    },
+    {
+      id: '3dd3b34a-1254-495e-a688-36afda199613',
+      name: 'Room 6',
+      type: 'Standard Room',
+      accomodationId: '3dd3b34a-7554-425e-a688-36afda199619',
     }
   ]),
   down: queryInterface => queryInterface.bulkDelete('Rooms', null, {})

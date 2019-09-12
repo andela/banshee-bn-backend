@@ -87,6 +87,26 @@ module.exports = {
       reason: 'for holiday',
       status: 'approved'
     },
+    {
+      id: 'ff10015c-1624-4490-9b1f-1a2cf0ee4493',
+      type: 'oneway',
+      startBranchId: '3dd3b34a-7554-425e-a688-36afda199614',
+      userId: '91542e6f-94bc-4e80-a667-586fb0752f23',
+      tripDate: '2019-09-11',
+      returnDate: null,
+      reason: 'for meeting',
+      status: 'approved'
+    },
+    {
+      id: 'ff10015c-1624-4490-9b1f-1a2cf0ee4492',
+      type: 'oneway',
+      startBranchId: '3dd3b34a-7554-425e-a688-36afda199614',
+      userId: '91542e6f-94bc-4e80-a667-586fb0752f23',
+      tripDate: '2019-09-15',
+      returnDate: null,
+      reason: 'meeting with company owner',
+      status: 'pending'
+    }
   ]),
   down: queryInterface => queryInterface.bulkDelete('Trips', null, {})
 };
