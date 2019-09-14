@@ -4,19 +4,19 @@
  * @returns {string} string
  */
 const newTripRequestEmailTemplate = (data) => {
-  const requesterName = `${data.user.firstName} ${data.user.lastName}`;
-  const requesterEmail = `${data.user.email}`;
-  const requeterStartLocation = `${data.startLocation.name} ${data.startLocation.location.city} ${data.startLocation.location.country}`;
-  const departureDate = `${data.trips.departureDate}`;
-  const reason = `${data.trips.reason}`;
-  const type = `${data.trips.type}`;
-  const destinations = data.destinations.reduce((initial, destination) => `
+    const requesterName = `${data.user.firstName} ${data.user.lastName}`;
+    const requesterEmail = `${data.user.email}`;
+    const requeterStartLocation = `${data.startLocation.name} ${data.startLocation.location.city} ${data.startLocation.location.country}`;
+    const departureDate = `${data.trips.departureDate}`;
+    const reason = `${data.trips.reason}`;
+    const type = `${data.trips.type}`;
+    const destinations = data.destinations.reduce((initial, destination) => `
             ${initial}<tr>
             <td>${destination.branch.name} ${destination.branch.location.city} ${destination.branch.location.country}</td>
             <td>${destination.accomodation.name}</td>
             <td>Indefinite</td>
         </tr>`, '');
-  return `
+    return `
     <div class="container">
     <div class="logo">
         <center><img src="https://res.cloudinary.com/pomile/image/upload/c_scale,w_120/v1567691280/nomadTravel_lg_logo_sqbl9o.png" /></center>

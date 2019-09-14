@@ -1,7 +1,7 @@
 import hashHelper from '../../helpers/Hash';
 
 module.exports = {
-  up: queryInterface => queryInterface.bulkInsert('Users', [
+  up: (queryInterface) => queryInterface.bulkInsert('Users', [
     {
       id: 'ffe25dbe-29ea-4759-8461-ed116f6739dd',
       companyId: 'a6e35eb9-8c59-4c7d-b8d4-ae724aa7fb61',
@@ -13,7 +13,8 @@ module.exports = {
       gender: 'male',
       status: 'active',
       role: 'staff',
-      emailOpt: false
+      emailOpt: false,
+      inAppOpt: true
     },
     {
       id: '91542e6f-94bc-4e80-a667-586fb0752f23',
@@ -26,7 +27,8 @@ module.exports = {
       dob: '2012-09-12',
       status: 'active',
       role: 'staff',
-      emailOpt: false
+      emailOpt: false,
+      inAppOpt: true
     },
     {
       id: '91542e6f-94bc-4e80-a667-586fb0752f24',
@@ -39,7 +41,8 @@ module.exports = {
       dob: '2012-09-12',
       status: 'active',
       role: 'travel admin',
-      emailOpt: true
+      emailOpt: true,
+      inAppOpt: true
     },
     {
       id: 'd7c0b7a9-e2cc-4b2c-9c15-dfd4920c60ff',
@@ -52,7 +55,8 @@ module.exports = {
       companyId: 'a6e35eb9-8c59-4c7d-b8d4-ae724aa7fb61',
       role: 'staff',
       status: 'active',
-      emailOpt: false
+      emailOpt: false,
+      inAppOpt: true
     },
     {
       id: '91542e6f-94bc-4e80-a667-586fb0752f25',
@@ -65,7 +69,22 @@ module.exports = {
       dob: '2012-09-10',
       status: 'active',
       role: 'staff',
-      emailOpt: false
+      emailOpt: false,
+      inAppOpt: true
+    },
+    {
+      id: '91542e6f-94bc-4e80-a667-586fb0752f85',
+      companyId: 'a6e35eb9-8c59-4c7d-b8d4-ae724aa7fb62',
+      firstName: 'Chris',
+      lastName: 'Owen',
+      email: 'chris.owen@gmail.com',
+      password: hashHelper.hashPassword('password2019'),
+      gender: 'male',
+      dob: '2012-09-10',
+      status: 'active',
+      role: 'manager',
+      emailOpt: true,
+      inAppOpt: true
     },
     {
       id: '91542e6f-94bc-4e80-a667-586fb3752f25',
@@ -78,7 +97,8 @@ module.exports = {
       dob: '2012-09-10',
       status: 'active',
       role: 'super admin',
-      emailOpt: true
+      emailOpt: true,
+      inAppOpt: true
     },
     {
       id: '91542e6f-94bc-4e80-a667-586fb3752f26',
@@ -91,7 +111,8 @@ module.exports = {
       dob: '2012-09-10',
       status: 'active',
       role: 'manager',
-      emailOpt: true
+      emailOpt: true,
+      inAppOpt: true
     },
     {
       id: '91542e6f-94bc-4e80-a667-586fb3752f65',
@@ -104,7 +125,8 @@ module.exports = {
       dob: '2012-09-10',
       status: 'unverified',
       role: 'staff',
-      emailOpt: true
+      emailOpt: true,
+      inAppOpt: true
     },
     {
       id: 'ffe25dbe-29ea-4759-8464-ed116f6739dd',
@@ -117,7 +139,8 @@ module.exports = {
       dob: '2012-09-12',
       status: 'active',
       role: 'manager',
-      emailOpt: true
+      emailOpt: true,
+      inAppOpt: true
     },
     {
       id: '91542e6f-94bc-4e80-a667-586fb3752f69',
@@ -130,7 +153,8 @@ module.exports = {
       dob: '2012-09-10',
       status: 'active',
       role: 'travel admin',
-      emailOpt: true
+      emailOpt: true,
+      inAppOpt: true
     },
     {
       id: '91542e6f-94bc-4e81-a667-586fb0752f25',
@@ -143,7 +167,8 @@ module.exports = {
       dob: '2012-09-10',
       status: 'active',
       role: 'travel admin',
-      emailOpt: true
+      emailOpt: true,
+      inAppOpt: true
     },
     {
       id: 'd885cb0d-8520-4ee1-bab7-d3097adadc32',
@@ -156,8 +181,9 @@ module.exports = {
       dob: '2012-09-10',
       status: 'active',
       role: 'manager',
-      emailOpt: true
+      emailOpt: true,
+      inAppOpt: true
     },
   ]),
-  down: queryInterface => queryInterface.bulkDelete('Users', null, {})
+  down: (queryInterface) => queryInterface.bulkDelete('Users', null, {})
 };

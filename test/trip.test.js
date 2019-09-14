@@ -242,6 +242,15 @@ describe('Travel Request', () => {
           });
       });
     });
+    it('should test in-app page template', (done) => {
+      chai.request(app)
+        .get(`${baseURL}/test/in_app`)
+        .set('authorization', adminAuth.token)
+        .end((err, res) => {
+          expect(res.status).to.equal(200);
+          done();
+        });
+    });
   });
 
   describe('Create return travel request', () => {

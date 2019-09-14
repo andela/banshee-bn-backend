@@ -4,6 +4,11 @@ import Response from '../helpers/Response';
 import SearchDatabase from '../helpers/SearchDatabase';
 import EmailNotifications from '../helpers/EmailNotifications';
 import addNotification from '../helpers/addNotification';
+import { inAppStyle } from '../helpers/template/styles';
+import { connectionScript, eventScript } from '../helpers/template/script';
+import inAppHTMLContent from '../helpers/template/inAppContent';
+import templateIndex from '../helpers/template/index';
+import inAppBot from '../helpers/socektIo/inAppBot';
 
 const {
   Trip, Branch, User, Stop, Accomodation, Location
@@ -83,11 +88,19 @@ class TripController {
         }
       );
       if (trip.id) {
-        const admins = await SearchDatabase.findAdminUsersWithNotificationOpt(
+        const adminsUsersWithEmailOpt = await SearchDatabase.findAdminUsersWithNotificationOpt(
           ['travel admin', 'manager'], { emailOpt: true }, { companyId }
         );
-        const emails = admins.map((admin) => admin.email);
-        if (emails) {
+        const adminsUsersWithInappOpt = await SearchDatabase.findAdminUsersWithNotificationOpt(
+          ['travel admin', 'manager'], { inAppOpt: true }, { companyId }
+        );
+        const usersTurnedOnEmailOpt = adminsUsersWithEmailOpt.map((admin) => admin.email);
+        const inAppRecipients = adminsUsersWithInappOpt
+          .map((admin) => (admin.email !== email ? admin.email : null))
+          .filter((item) => item !== null);
+        const emailRecipients = usersTurnedOnEmailOpt.includes(email)
+          ? [...usersTurnedOnEmailOpt] : [...usersTurnedOnEmailOpt, email];
+        if (usersTurnedOnEmailOpt || inAppRecipients) {
           const data = await SearchDatabase.findTrip(trip.id);
           const tripData = {
             type,
@@ -96,10 +109,11 @@ class TripController {
             returnDate
           };
           const message = `${data.user.firstName} ${data.user.lastName} requested for a ${type} trip`;
-          const recipients = emails.includes(email) ? [...emails] : [...emails, email];
+
           data.trips = { ...data.trips, ...tripData };
-          EmailNotifications.sendNewTrip(emails, message, data);
-          await addNotification(trip.id, message, recipients);
+          EmailNotifications.sendNewTrip(emailRecipients, message, data);
+          inAppBot.send('New trip request', { message, inAppRecipients, companyId }, 'trip');
+          await addNotification(trip.id, message, inAppRecipients);
           const response = new Response(
             true,
             201,
@@ -445,6 +459,29 @@ class TripController {
         new Response(false, 500, error.message)
       );
     }
+  }
+
+  /**
+ *
+ * @param {req} req
+ * @param {res} res
+ * @return {object} object
+ */
+  static sendInAppPage(req, res) {
+    const connectScript = connectionScript(
+      'chris.owen@gmail.com',
+      'a6e35eb9-8c59-4c7d-b8d4-ae724aa7fb62'
+    );
+    const newTripListenerScript = eventScript(
+      'New trip request alert'
+    );
+
+    const script = `
+          ${connectScript}
+          ${newTripListenerScript}
+    `;
+    const temp = templateIndex(inAppStyle, inAppHTMLContent, script);
+    res.status(200).send(temp);
   }
 }
 

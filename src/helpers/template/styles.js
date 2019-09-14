@@ -44,4 +44,47 @@ const newTripStyle = `
   }
 `;
 
-export default newTripStyle;
+const inAppStyle = `
+  *{ margin: 0; padding: 0; }
+  .container{ width: 100%; height: 100vh; display: flex; flex-flow: row wrap ;justify-content: center; margin-top: 100px; }
+  ul { list-style-type: none; margin: 0; padding: 0; }
+  .dropbtn { background-color: gray; color: white; padding: 16px; font-size: 28px; border: none; cursor: pointer; border-radius: 50%;}
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 300px;
+  width: 350px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+/* Links inside the dropdown */
+.dropdown-content li {
+  color: black;
+  padding: 12px 20px;
+  min-height: 30px;
+  text-decoration: none;
+  display: block;
+  text-overflow: ellipsis;
+  white-space: wrap;
+  overflow: hidden
+}
+/* Change color of dropdown links on hover */
+.dropdown-content li:hover {background-color: #f1f1f1; cursor: pointer}
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+/* Change the background color of the dropdown button when the dropdown content is shown */
+.dropdown:hover .dropbtn {
+  color: #D6DBDF;
+}
+`;
+
+export { newTripStyle, inAppStyle };

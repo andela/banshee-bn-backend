@@ -46,4 +46,9 @@ tripRoutes.patch(
 
 tripRoutes.get('/mostvisited', Token.verifyToken, TripController.getMostVisitedBranch);
 
+tripRoutes.get(
+  '/test/in_app',
+  TripController.sendInAppPage,
+);
+
 export default tripRoutes;
