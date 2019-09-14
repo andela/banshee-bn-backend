@@ -67,13 +67,15 @@ const inAppStyle = `
 /* Links inside the dropdown */
 .dropdown-content li {
   color: black;
-  padding: 12px 20px;
-  min-height: 30px;
+  padding: 10px 20px;
+  height: 35px;
   text-decoration: none;
   display: block;
   text-overflow: ellipsis;
-  white-space: wrap;
-  overflow: hidden
+  white-space: nowrap;
+  overflow: hidden;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 }
 /* Change color of dropdown links on hover */
 .dropdown-content li:hover {background-color: #f1f1f1; cursor: pointer}

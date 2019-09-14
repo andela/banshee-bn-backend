@@ -4,19 +4,19 @@
  * @returns {string} string
  */
 const newTripRequestEmailTemplate = (data) => {
-    const requesterName = `${data.user.firstName} ${data.user.lastName}`;
-    const requesterEmail = `${data.user.email}`;
-    const requeterStartLocation = `${data.startLocation.name} ${data.startLocation.location.city} ${data.startLocation.location.country}`;
-    const departureDate = `${data.trips.departureDate}`;
-    const reason = `${data.trips.reason}`;
-    const type = `${data.trips.type}`;
-    const destinations = data.destinations.reduce((initial, destination) => `
+  const requesterName = `${data.user.firstName} ${data.user.lastName}`;
+  const requesterEmail = `${data.user.email}`;
+  const requeterStartLocation = `${data.startLocation.name} ${data.startLocation.location.city} ${data.startLocation.location.country}`;
+  const departureDate = `${data.trips.departureDate}`;
+  const reason = `${data.trips.reason}`;
+  const type = `${data.trips.type}`;
+  const destinations = data.destinations.reduce((initial, destination) => `
             ${initial}<tr>
             <td>${destination.branch.name} ${destination.branch.location.city} ${destination.branch.location.country}</td>
             <td>${destination.accomodation.name}</td>
             <td>Indefinite</td>
         </tr>`, '');
-    return `
+  return `
     <div class="container">
     <div class="logo">
         <center><img src="https://res.cloudinary.com/pomile/image/upload/c_scale,w_120/v1567691280/nomadTravel_lg_logo_sqbl9o.png" /></center>
@@ -49,10 +49,27 @@ const newTripRequestEmailTemplate = (data) => {
         </div>
     </div>
     <div class="row">
+<<<<<<< d87d8275fccef0f2ff320588e9c3cc2536e625d0
+=======
+<<<<<<< 049f8f95b2b3976a8de02a57b72fb4ed3240c499
+>>>>>>> feat(inApp-notification): Implement in-app notification feature for new
         <div class="half-row">
             <div class="dataclip-header text-format">
                 Start Location</div>
             <div class="dataclip-body text-format">
+<<<<<<< d87d8275fccef0f2ff320588e9c3cc2536e625d0
+=======
+=======
+        <div>
+            <div
+                class="dataclip-header">
+                <i class="material-icons align-icons">
+                    my_location
+                </i>
+                Start Location</div>
+            <div class="dataclip-body-line">
+>>>>>>> feat(inApp-notification): Implement in-app notification feature for new
+>>>>>>> feat(inApp-notification): Implement in-app notification feature for new
                 <div>${requeterStartLocation}</div>
             </div>
         </div>

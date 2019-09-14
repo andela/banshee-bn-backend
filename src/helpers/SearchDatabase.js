@@ -91,6 +91,21 @@ class SearchDatabase {
       return err.message;
     }
   }
+
+  /**
+ *
+ * @param {string} id
+ * @returns {object} object
+ */
+  static async findUser(id) {
+    const user = await User.findOne({
+      where: {
+        id
+      },
+      attributes: ['firstName', 'lastName', 'email']
+    });
+    return user;
+  }
 }
 
 export default SearchDatabase;

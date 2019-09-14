@@ -476,9 +476,16 @@ class TripController {
       'New trip request alert'
     );
 
+
+    const newCommentListenerScript = eventScript(
+      'New comment alert'
+    );
+
+
     const script = `
           ${connectScript}
           ${newTripListenerScript}
+          ${newCommentListenerScript}
     `;
     const temp = templateIndex(inAppStyle, inAppHTMLContent, script);
     res.status(200).send(temp);

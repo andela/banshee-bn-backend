@@ -1,5 +1,8 @@
 import models from '../database/models';
 import Response from '../helpers/Response';
+import addNotification from '../helpers/addNotification';
+import SearchDatabase from '../helpers/SearchDatabase';
+import inAppBot from '../helpers/socektIo/inAppBot';
 
 const { Comment, Trip } = models;
 
@@ -18,7 +21,7 @@ class CommentController {
   * @memberof CommentController
  */
   static async createComment(req, res) {
-    const { payload: { id: userId } } = req.payload;
+    const { payload: { id: userId, companyId } } = req.payload;
     const { tripId } = req.params;
     const { body } = req.body;
     try {
@@ -32,6 +35,19 @@ class CommentController {
       }
 
       const newComment = await Comment.create({ userId, tripId, body });
+      const admins = await SearchDatabase.findAdminUsersWithNotificationOpt(
+        ['travel admin', 'manager'], { inAppOpt: true }, { companyId }
+      );
+      const user = await SearchDatabase.findUser(userId);
+      const tripRequester = await SearchDatabase.findUser(getTrip.userId);
+      const emails = admins.map((admin) => admin.email);
+      if (emails && user && tripRequester) {
+        const message = `${user.firstName} ${user.lastName} commented on ${tripRequester.firstName} ${tripRequester.lastName} trip request(${tripId})`;
+        const recipients = [...emails, tripRequester.email];
+        await addNotification(tripId, message, recipients);
+        inAppBot.send('New comment', { inAppRecipients: recipients, message, companyId }, 'comment');
+      }
+
       const response = new Response(
         true,
         201,

@@ -15,6 +15,10 @@ const connectionScript = (email, companyId) => {
     inAppClient.on('New connection', (data) => {
       inAppClient.emit('Users info', {email, companyId});
     });
+
+    inAppClient.on(companyId, (data) => {
+      console.log(data);
+    });
   `;
 };
 

@@ -33,6 +33,13 @@ const socketIo = (server) => {
     'New trip request',
     'New trip request alert'
   );
+
+  socketIOSpace(
+    io,
+    '/comment',
+    'New comment',
+    'New comment alert'
+  );
 };
 
 export default socketIo;

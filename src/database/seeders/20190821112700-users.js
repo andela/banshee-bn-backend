@@ -13,8 +13,12 @@ module.exports = {
       gender: 'male',
       status: 'active',
       role: 'staff',
+<<<<<<< d87d8275fccef0f2ff320588e9c3cc2536e625d0
       emailOpt: false,
       inAppOpt: true
+=======
+      emailOpt: false
+>>>>>>> feat(inApp-notification): Implement in-app notification feature for new
     },
     {
       id: '91542e6f-94bc-4e80-a667-586fb0752f23',
@@ -27,8 +31,12 @@ module.exports = {
       dob: '2012-09-12',
       status: 'active',
       role: 'staff',
+<<<<<<< d87d8275fccef0f2ff320588e9c3cc2536e625d0
       emailOpt: false,
       inAppOpt: true
+=======
+      emailOpt: false
+>>>>>>> feat(inApp-notification): Implement in-app notification feature for new
     },
     {
       id: '91542e6f-94bc-4e80-a667-586fb0752f24',
@@ -41,8 +49,12 @@ module.exports = {
       dob: '2012-09-12',
       status: 'active',
       role: 'travel admin',
+<<<<<<< d87d8275fccef0f2ff320588e9c3cc2536e625d0
       emailOpt: true,
       inAppOpt: true
+=======
+      emailOpt: true
+>>>>>>> feat(inApp-notification): Implement in-app notification feature for new
     },
     {
       id: 'd7c0b7a9-e2cc-4b2c-9c15-dfd4920c60ff',
@@ -55,8 +67,12 @@ module.exports = {
       companyId: 'a6e35eb9-8c59-4c7d-b8d4-ae724aa7fb61',
       role: 'staff',
       status: 'active',
+<<<<<<< d87d8275fccef0f2ff320588e9c3cc2536e625d0
       emailOpt: false,
       inAppOpt: true
+=======
+      emailOpt: false
+>>>>>>> feat(inApp-notification): Implement in-app notification feature for new
     },
     {
       id: '91542e6f-94bc-4e80-a667-586fb0752f25',
@@ -69,6 +85,7 @@ module.exports = {
       dob: '2012-09-10',
       status: 'active',
       role: 'staff',
+<<<<<<< d87d8275fccef0f2ff320588e9c3cc2536e625d0
       emailOpt: false,
       inAppOpt: true
     },
@@ -85,6 +102,9 @@ module.exports = {
       role: 'manager',
       emailOpt: true,
       inAppOpt: true
+=======
+      emailOpt: false
+>>>>>>> feat(inApp-notification): Implement in-app notification feature for new
     },
     {
       id: '91542e6f-94bc-4e80-a667-586fb3752f25',
@@ -97,8 +117,12 @@ module.exports = {
       dob: '2012-09-10',
       status: 'active',
       role: 'super admin',
+<<<<<<< d87d8275fccef0f2ff320588e9c3cc2536e625d0
       emailOpt: true,
       inAppOpt: true
+=======
+      emailOpt: true
+>>>>>>> feat(inApp-notification): Implement in-app notification feature for new
     },
     {
       id: '91542e6f-94bc-4e80-a667-586fb3752f26',
@@ -111,8 +135,12 @@ module.exports = {
       dob: '2012-09-10',
       status: 'active',
       role: 'manager',
+<<<<<<< d87d8275fccef0f2ff320588e9c3cc2536e625d0
       emailOpt: true,
       inAppOpt: true
+=======
+      emailOpt: true
+>>>>>>> feat(inApp-notification): Implement in-app notification feature for new
     },
     {
       id: '91542e6f-94bc-4e80-a667-586fb3752f65',
@@ -125,8 +153,12 @@ module.exports = {
       dob: '2012-09-10',
       status: 'unverified',
       role: 'staff',
+<<<<<<< d87d8275fccef0f2ff320588e9c3cc2536e625d0
       emailOpt: true,
       inAppOpt: true
+=======
+      emailOpt: true
+>>>>>>> feat(inApp-notification): Implement in-app notification feature for new
     },
     {
       id: 'ffe25dbe-29ea-4759-8464-ed116f6739dd',
@@ -139,8 +171,12 @@ module.exports = {
       dob: '2012-09-12',
       status: 'active',
       role: 'manager',
+<<<<<<< d87d8275fccef0f2ff320588e9c3cc2536e625d0
       emailOpt: true,
       inAppOpt: true
+=======
+      emailOpt: true
+>>>>>>> feat(inApp-notification): Implement in-app notification feature for new
     },
     {
       id: '91542e6f-94bc-4e80-a667-586fb3752f69',
@@ -153,8 +189,12 @@ module.exports = {
       dob: '2012-09-10',
       status: 'active',
       role: 'travel admin',
+<<<<<<< d87d8275fccef0f2ff320588e9c3cc2536e625d0
       emailOpt: true,
       inAppOpt: true
+=======
+      emailOpt: true
+>>>>>>> feat(inApp-notification): Implement in-app notification feature for new
     },
     {
       id: '91542e6f-94bc-4e81-a667-586fb0752f25',
@@ -167,8 +207,12 @@ module.exports = {
       dob: '2012-09-10',
       status: 'active',
       role: 'travel admin',
+<<<<<<< d87d8275fccef0f2ff320588e9c3cc2536e625d0
       emailOpt: true,
       inAppOpt: true
+=======
+      emailOpt: true
+>>>>>>> feat(inApp-notification): Implement in-app notification feature for new
     },
     {
       id: 'd885cb0d-8520-4ee1-bab7-d3097adadc32',
@@ -181,8 +225,12 @@ module.exports = {
       dob: '2012-09-10',
       status: 'active',
       role: 'manager',
+<<<<<<< d87d8275fccef0f2ff320588e9c3cc2536e625d0
       emailOpt: true,
       inAppOpt: true
+=======
+      emailOpt: true
+>>>>>>> feat(inApp-notification): Implement in-app notification feature for new
     },
   ]),
   down: (queryInterface) => queryInterface.bulkDelete('Users', null, {})
