@@ -4,6 +4,11 @@ import Response from '../helpers/Response';
 import SearchDatabase from '../helpers/SearchDatabase';
 import EmailNotifications from '../helpers/EmailNotifications';
 import addNotification from '../helpers/addNotification';
+import { inAppStyle } from '../helpers/template/styles';
+import script from '../helpers/template/inAppScript';
+import inAppHTMLContent from '../helpers/template/inAppContent';
+import templateIndex from '../helpers/template/index';
+import inAppBot from '../helpers/inAppBot';
 
 const {
   Trip, Branch, User, Stop, Accomodation, Location
@@ -99,6 +104,7 @@ class TripController {
           const recipients = emails.includes(email) ? [...emails] : [...emails, email];
           data.trips = { ...data.trips, ...tripData };
           EmailNotifications.sendNewTrip(emails, message, data);
+          inAppBot.send('New trip request', { message, recipients });
           await addNotification(trip.id, message, recipients);
           const response = new Response(
             true,
@@ -445,6 +451,17 @@ class TripController {
         new Response(false, 500, error.message)
       );
     }
+  }
+
+  /**
+ *
+ * @param {req} req
+ * @param {res} res
+ * @return {object} object
+ */
+  static sendInAppPage(req, res) {
+    const temp = templateIndex(inAppStyle, inAppHTMLContent, script);
+    res.status(200).send(temp);
   }
 }
 

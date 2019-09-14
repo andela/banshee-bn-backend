@@ -2,7 +2,7 @@ import mailer from './Mailer';
 import template from './emailTemplate';
 import templateIndex from './template';
 import newTripRequestEmailContent from './template/newTripRequestEmailContent';
-import newTripStyle from './template/styles';
+import { newTripStyle } from './template/styles';
 
 /**
  * @class EmailNotifications
