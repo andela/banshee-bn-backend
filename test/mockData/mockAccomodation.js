@@ -25,6 +25,7 @@ const accomodationComplete = {
   name: 'Martinez Guest Inn Housing',
   branchId: '3dd3b34a-7554-455e-a688-36afda199624',
   capacity: '20',
+  imgUrl: 'image.png',
   address: 'This is the address of the center',
 };
 const accdtnWithoutName = {

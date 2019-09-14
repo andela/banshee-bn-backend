@@ -85,7 +85,7 @@ class Token {
         req.payload = decoded;
         return next();
       } catch (error) {
-        return res.status(500).json(new Response(false, 500, 'There\'s an error processing your token'));
+        return res.status(401).json(new Response(false, 401, 'Unauthorized, your token is invalid or expired'));
       }
     };
   }

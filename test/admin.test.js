@@ -174,7 +174,7 @@ describe('Admin controller', () => {
         });
     });
 
-    it('should return a 500 error when an error occurs on the server', (done) => {
+    it('should return a 401 error when an error occurs on the server', (done) => {
       const token = jwtHelper.generateToken(superAdminLogin);
       const stub = sinon.stub(User, 'findAll')
         .rejects(new Error('Server error, Please try again later'));
@@ -183,7 +183,7 @@ describe('Admin controller', () => {
         .get(`${baseUrl}/user/all`)
         .set('authorization', token)
         .end((err, res) => {
-          expect(res.status).to.equal(500);
+          expect(res.status).to.equal(401);
           stub.restore();
           done(err);
         });

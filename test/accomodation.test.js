@@ -1,7 +1,6 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
 import sinon from 'sinon';
-import cloudinary from 'cloudinary';
 import app from '../src/index';
 import jwtHelper from '../src/helpers/Token';
 import users from './mockData/mockAuth';
@@ -16,35 +15,28 @@ const { travelAdmin } = users;
 const {
   accomodationWithWrongBranchId,
   accomodationWrongCompany, existingAccomodation, addRoom,
-  accomodationComplete, roomWithWrongAccId, InvalidCharacterAcctn,
+  roomWithWrongAccId, InvalidCharacterAcctn, accomodationComplete,
   addRoom1, roomInAnotherCompany, roomWithoutName, accdtnWithoutName
 } = accomodation;
 
 describe('Travel Admin Creates Accomodation', () => {
-  describe('Create accomodation facility', ()=> {
-    it('should create an accomodation facility', (done) => {
-      const token = jwtHelper.generateToken(travelAdmin);
-      const filePath = `${__dirname}/hotel.jpg`;
-      const stub = sinon.stub(cloudinary.uploader, 'upload').returns('thisistheimageurl');
+  describe('Create accomodation facility', () => {
+    const token = jwtHelper.generateToken(travelAdmin);
+
+    it('should create accomodation facility', (done) => {
+
       chai
         .request(app)
         .post(`${baseUrl}/create`)
+        .send(accomodationComplete)
         .set('x-access-token', token)
-        .set('Content-Type', 'Multipart/form-data')
-        .attach('imgurl', filePath, 'hotel.jpg')
-        .field('name', accomodationComplete.name)
-        .field('branchId', accomodationComplete.branchId)
-        .field('capacity', accomodationComplete.capacity)
-        .field('address', accomodationComplete.address)
         .end((err, res) => {
-          expect(res.status).to.eq(200);
-          expect(res.body.message).to.eq('Successfully created acoomodation center');
-          stub.restore();
+          expect(res.status).to.eq(201);
+          expect(res.body.message).to.eq('Successfully created accomodation center');
           done();
         });
     });
     it('should return error if invalid branch is supplied', (done) => {
-      const token = jwtHelper.generateToken(travelAdmin);
 
       chai
         .request(app)
@@ -59,7 +51,6 @@ describe('Travel Admin Creates Accomodation', () => {
         });
     });
     it('should return error if unauthorized branchid is supplied', (done) => {
-      const token = jwtHelper.generateToken(travelAdmin);
 
       chai
         .request(app)
@@ -74,7 +65,6 @@ describe('Travel Admin Creates Accomodation', () => {
         });
     });
     it('should return error if accomodation facility name is not supplied', (done) => {
-      const token = jwtHelper.generateToken(travelAdmin);
 
       chai
         .request(app)
@@ -88,7 +78,6 @@ describe('Travel Admin Creates Accomodation', () => {
         });
     });
     it('should return error if a registered accomodation is sent', (done) => {
-      const token = jwtHelper.generateToken(travelAdmin);
 
       chai
         .request(app)
@@ -103,7 +92,6 @@ describe('Travel Admin Creates Accomodation', () => {
         });
     });
     it('should return error 500 if there is server error', (done) => {
-      const token = jwtHelper.generateToken(travelAdmin);
 
       const stub = sinon.stub(Accomodation, 'create')
         .rejects(new Error('There\'s error processing your request, try again'));
@@ -123,8 +111,9 @@ describe('Travel Admin Creates Accomodation', () => {
   });
 
   describe('Add rooms to accomodation facility', () => {
+    const token = jwtHelper.generateToken(travelAdmin);
+
     it('should create a new room', (done) => {
-      const token = jwtHelper.generateToken(travelAdmin);
 
       chai
         .request(app)
@@ -138,7 +127,6 @@ describe('Travel Admin Creates Accomodation', () => {
         });
     });
     it('should return error if accomodation is not found', (done) => {
-      const token = jwtHelper.generateToken(travelAdmin);
 
       chai
         .request(app)
@@ -152,7 +140,6 @@ describe('Travel Admin Creates Accomodation', () => {
         });
     });
     it('should return error if user attempts to add a room to another company\'s accomodation', (done) => {
-      const token = jwtHelper.generateToken(travelAdmin);
 
       chai
         .request(app)
@@ -166,7 +153,6 @@ describe('Travel Admin Creates Accomodation', () => {
         });
     });
     it('should return error if room is already registered', (done) => {
-      const token = jwtHelper.generateToken(travelAdmin);
 
       chai
         .request(app)
@@ -180,7 +166,6 @@ describe('Travel Admin Creates Accomodation', () => {
         });
     });
     it('should return error if name of room is not supplied', (done) => {
-      const token = jwtHelper.generateToken(travelAdmin);
 
       chai
         .request(app)
@@ -194,7 +179,6 @@ describe('Travel Admin Creates Accomodation', () => {
         });
     });
     it('should return error if number of rooms is equal to the capacity of the accomodation', (done) => {
-      const token = jwtHelper.generateToken(travelAdmin);
       const stub = sinon.stub(Room, 'count')
         .returns(12);
 
@@ -211,7 +195,6 @@ describe('Travel Admin Creates Accomodation', () => {
         });
     });
     it('should return error if there is server error', (done) => {
-      const token = jwtHelper.generateToken(travelAdmin);
       const stub = sinon.stub(Room, 'create')
         .rejects(new Error('There\'s error processing your request, try again'));
 
