@@ -8,6 +8,7 @@ import searchRoute from './search.routes';
 import accomodationRoutes from './accomodation.routes';
 import commentRoute from './comment.routes';
 import notificationOptRoute from './notificationOpt.routes';
+import ratingRoute from './rating.routes';
 
 const router = Router();
 
@@ -21,5 +22,6 @@ router.use('/admin/accomodation', accomodationRoutes);
 router.use('/user/accomodation', accomodationRoutes);
 router.use('/trips', commentRoute);
 router.use('/', adminRoute);
+router.use('/accomodation', ratingRoute);
 
 export default router;
