@@ -67,4 +67,13 @@ describe('Comments API', () => {
         });
     });
   });
+
+  describe.skip('DELETE /trips/:tripId/comment/:commentId', () => {
+    it('should pseudo-delete a comment', (done) => {
+      chai
+        .request(app)
+        .delete(`${baseURL}/:tripId/comment/:commentId`)
+        .set('authorization', userToken)
+    });
+  });
 });
