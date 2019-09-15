@@ -5,7 +5,11 @@ module.exports = (sequelize, DataTypes) => {
     capacity: DataTypes.INTEGER,
     status: DataTypes.STRING,
     imgurl: DataTypes.STRING,
-    address: DataTypes.STRING
+    address: DataTypes.STRING,
+    description: DataTypes.TEXT,
+    addOns: DataTypes.TEXT,
+    amenities: DataTypes.ARRAY(DataTypes.TEXT),
+    cost: DataTypes.DECIMAL(10, 2)
   }, {});
   Accomodation.associate = (models) => {
     Accomodation.belongsTo(models.Branch, {

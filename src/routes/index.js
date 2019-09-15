@@ -7,6 +7,7 @@ import feedbackRoute from './feedback.routes';
 import searchRoute from './search.routes';
 import accomodationRoutes from './accomodation.routes';
 import commentRoute from './comment.routes';
+import supplierRoute from './supplier.routes';
 
 const router = Router();
 
@@ -19,5 +20,6 @@ router.use('/admin/accomodation', accomodationRoutes);
 router.use('/user/accomodation', accomodationRoutes);
 router.use('/trips', commentRoute);
 router.use('/', adminRoute);
+router.use('/supplier', supplierRoute);
 
 export default router;
