@@ -4,12 +4,11 @@ import AccomodationController from '../controllers/Accomodation';
 import validator from '../middlewares/validator';
 import middleware from '../middlewares/AuthMiddlewares';
 import { createAccomodation, addRoom, accomodationBooking } from '../validation/accomodationSchema';
-import upload from '../utils/upload';
 
 const accomodationRoutes = Router();
 
 accomodationRoutes.post('/create',
-  Token.verifyAdminToken('travel admin'), upload.single('imgurl'), validator(createAccomodation), AccomodationController.createAccomodation);
+  Token.verifyAdminToken('travel admin'), validator(createAccomodation), AccomodationController.createAccomodation);
 
 accomodationRoutes.post('/addroom',
   Token.verifyAdminToken('travel admin'), validator(addRoom), AccomodationController.addRoom);

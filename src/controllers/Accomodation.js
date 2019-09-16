@@ -1,15 +1,9 @@
-import dotenv from 'dotenv';
-import cloudinary from 'cloudinary';
 import Response from '../helpers/Response';
 import db from '../database/models';
 
-dotenv.config();
-cloudinary.v2.config({
-  cloud_name: process.env.CLOUDINARY_NAME,
-  api_key: process.env.CLOUDINARY_API,
-  api_secret: process.env.CLOUDINARY_SECRET
-});
-const { Accomodation, Room, Booking, User } = db;
+const {
+  Accomodation, Room, Booking, User
+} = db;
 
 /**
  * Accomodation class
@@ -23,24 +17,22 @@ class AccomodationController {
    */
   static async createAccomodation(req, res) {
     const {
-      name, branchId, capacity, address
+      name, branchId, capacity, address, imgUrl
     } = req.body;
 
     try {
-      const image = req.file ? await cloudinary.uploader.upload(req.file.path) : null;
-      const imgurl = image ? image.public_id : null;
       const { dataValues } = await Accomodation.create({
         name,
         branchId,
         capacity,
         status: 'available',
-        imgurl,
+        imgurl: imgUrl,
         address
       });
-      return res.status(200).json(new Response(
+      return res.status(201).json(new Response(
         true,
-        200,
-        'Successfully created acoomodation center',
+        201,
+        'Successfully created accomodation center',
         dataValues
       ));
     } catch (error) {

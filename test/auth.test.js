@@ -546,4 +546,16 @@ describe('EMAIL VERIFICATION TEST', () => {
         done();
       });
   });
+  it('should return error if there is server error', (done) => {
+    const stub = sinon.stub(User, 'findOne').rejects('Server error');
+    chai
+      .request(app)
+      .patch(`${baseURL}/verify?token=${token}`)
+      .end((err, res) => {
+        expect(res).to.have.status(500);
+        expect(res.body.message).to.eq('Server error, Please try again later');
+        stub.restore();
+        done();
+      });
+  });
 });
