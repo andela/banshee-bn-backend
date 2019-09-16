@@ -7,11 +7,13 @@ import feedbackRoute from './feedback.routes';
 import searchRoute from './search.routes';
 import accomodationRoutes from './accomodation.routes';
 import commentRoute from './comment.routes';
+import notificationOptRoute from './notificationOpt.routes';
 
 const router = Router();
 
 router.use('/auth', authRoute);
 router.use('/trips', tripRoute);
+router.use('/notifications', notificationOptRoute);
 router.use(profileRoute);
 router.use('/accomodation', feedbackRoute);
 router.use('/search', searchRoute);

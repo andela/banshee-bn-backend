@@ -5,6 +5,7 @@ import app from '../src/index';
 import models from '../src/database/models';
 import jwtHelper from '../src/helpers/Token';
 import users from './mockData/mockAuth';
+import { getMaxListeners } from 'cluster';
 
 const { expect } = chai;
 chai.use(chaiHttp);
@@ -19,14 +20,14 @@ const {
   undefinedDOB, invalidDOB,
   undefinedGender, invalidGender,
   invalidCode, user1, user2,
-  user3, user4, user5, credentials,
+  user3, user4, user5, credentials, credentials2,
   credentialsWithIncorrectCode, credentialsWithIncorrectPassword,
   credentialsWithIncorrectEmail, credentialsWithoutEmail,
   credentialsWithoutCode, credentialsWithInvalidEmail,
   completeLoginWithCode, completeLoginWithoutCode,
-  loginWithWrongCompanyId, credentialsWithInvalidEmail2,
-  credentialsForServerError, credentialsForServerError2,
-  adminAuth, staffAuth, credentials2
+  loginWithWrongCompanyId, credentialsForServerError,
+  credentialsForServerError2, adminAuth,
+  staffAuth, credentialsWithInvalidEmail2
 } = users;
 
 describe('Auth Routes', () => {

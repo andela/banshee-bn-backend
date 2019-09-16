@@ -11,7 +11,9 @@ module.exports = (sequelize, DataTypes) => {
       role: DataTypes.ENUM('super admin', 'travel admin', 'travel team member', 'manager', 'requester', 'staff'),
       status: DataTypes.ENUM('active', 'inactive', 'unverified'),
       companyId: DataTypes.UUID,
-      favorites: DataTypes.BOOLEAN
+      favorites: DataTypes.BOOLEAN,
+      emailOpt: DataTypes.BOOLEAN,
+      inAppOpt: DataTypes.BOOLEAN
     },
     {}
   );
