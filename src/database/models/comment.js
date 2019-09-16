@@ -2,7 +2,8 @@ module.exports = (sequelize, DataTypes) => {
   const Comment = sequelize.define('Comment', {
     tripId: DataTypes.UUID,
     userId: DataTypes.UUID,
-    body: DataTypes.TEXT
+    body: DataTypes.TEXT,
+    deleted: DataTypes.BOOLEAN
   }, {});
   Comment.associate = (models) => {
     // associations can be defined here

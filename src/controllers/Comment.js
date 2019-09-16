@@ -44,6 +44,29 @@ class CommentController {
       return res.status(response.code).json(response);
     }
   }
+
+  /**
+  * Delete a Comment
+  * Route: DELETE: /trips/comments/:commentId
+  * @param {object} req - HTTP Request object
+  * @param {object} res - HTTP Response object
+  * @return {object} empty res - HTTP Response object
+  * @memberof CommentController
+ */
+  static async deleteComment(req, res) {
+    const { commentId } = req.params;
+    try {
+      await Comment.update(
+        { deleted: true, },
+        { where: { id: commentId } }
+      );
+      const response = new Response(true, 200, 'Comment deleted!');
+      return res.status(response.code).json(response);
+    } catch (error) {
+      const response = new Response(false, 500, error.message);
+      return res.status(response.code).json(response);
+    }
+  }
 }
 
 export default CommentController;
