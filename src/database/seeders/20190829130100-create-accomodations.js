@@ -35,7 +35,28 @@ module.exports = {
       status: 'filled',
       imgurl: null,
       address: '31, Ocean drive, Lekki'
-    }
+    },
+    {
+      id: 'b4e9ba65-cb81-4b8a-8aec-1ffe24a9ed33',
+      name: 'Oriental',
+      branchId: '7b717bff-9202-4c44-9848-80ec876b6fdc',
+      capacity: 100,
+      status: 'filled'
+    },
+    {
+      id: 'b1a81334-fbf4-4160-83bf-e58f9063f7cf',
+      name: 'Crown Berry',
+      branchId: '1404d644-fa2e-49a9-982f-eec3afeb5c0d',
+      capacity: 100,
+      status: 'filled'
+    },
+    {
+      id: 'a16d39cd-3499-493a-8dd9-6141ed33df73',
+      name: 'Eko Hotel',
+      branchId: 'dbbe4992-4091-4914-a266-38ecdcf42083',
+      capacity: 100,
+      status: 'filled'
+    },
   ]),
   down: queryInterface => queryInterface.bulkDelete('Accomodations', null, {})
 };

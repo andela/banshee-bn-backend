@@ -269,8 +269,8 @@ describe('Update trip request', () => {
           expect(trip.startBranchId).to.eql(multiTrip[0].from);
           expect(trip.reason).to.eql(multiTrip[0].reason);
           expect(new Date(trip.tripDate)).to.eql(new Date(departureDate));
-          expect(stop[1].destinationBranchId).to.eql(destinations[0].to);
-          expect(stop[1].accomodationId).to.eql(destinations[0].accomodation);
+          expect(stop[3].destinationBranchId).to.eql(destinations[0].to);
+          expect(stop[3].accomodationId).to.eql(destinations[0].accomodation);
           done();
         });
     });

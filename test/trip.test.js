@@ -7,6 +7,7 @@ import jwtHelper from '../src/helpers/Token';
 import models from '../src/database/models';
 import users from './mockData/mockAuth';
 import mockTripRequests from './mockData/mockTrips';
+import timeFrameRange from '../test/mockData/mockDate';
 
 chai.use(chaiHttp);
 const { expect } = chai;
@@ -707,3 +708,182 @@ describe('Travel Request', () => {
     });
   });
 });
+describe('Trip stats', () => {
+  it('count the number of trips made today', (done) => {
+    const { token } = adminAuth;
+    const end = timeFrameRange.endXDay();
+    const today = new Date();
+    chai
+      .request(app)
+      .get(`/api/v1/trips/timeframe?start=${today.toISOString()}&end=${end}`)
+      .set('authorization', token)
+      .end((err, res) => {
+        expect(res).to.have.status(200);
+        expect(res.body.success).to.equal(true);
+        expect(res.body.data.tripCount).to.equal(0);
+        done();
+      });
+  });
+  it('count the number of trips made yesterday', (done) => {
+    const { token } = adminAuth;
+    const yesterday = timeFrameRange.lastXDays(1);
+    chai
+      .request(app)
+      .get(`/api/v1/trips/timeframe?start=${yesterday.startDate}&end=${yesterday.endDate}`)
+      .set('authorization', token)
+      .end((err, res) => {
+        expect(res).to.have.status(200);
+        expect(res.body.success).to.equal(true);
+        expect(res.body.data.tripCount).to.equal(3);
+        done();
+      });
+  });
+
+  it('count number of trips made in last 3 days', (done) => {
+    const { token } = adminAuth;
+    const last3Days = timeFrameRange.lastXDays(1);
+    chai
+      .request(app)
+      .get(`/api/v1/trips/timeframe?start=${last3Days.startDate}&end=${last3Days.endDate}`)
+      .set('authorization', token)
+      .end((err, res) => {
+        expect(res).to.have.status(200);
+        expect(res.body.success).to.equal(true);
+        expect(res.body.data.tripCount).to.equal(3);
+        done();
+      });
+  });
+
+  it('count the number of trips made in this week', (done) => {
+    const thisWeek = timeFrameRange.getThisWeek();
+    const { token } = adminAuth;
+    chai
+      .request(app)
+      .get(`/api/v1/trips/timeframe?start=${thisWeek.startDate}&end=${thisWeek.endDate}`)
+      .set('authorization', token)
+      .end((err, res) => {
+        expect(res).to.have.status(200);
+        expect(res.body.success).to.equal(true);
+        expect(res.body.data.tripCount).to.equal(5);
+        done(err);
+      });
+  });
+  it('count the number of trips made in the last 7 days', (done) => {
+    const last7Days = timeFrameRange.lastXDays(7);
+    const { token } = adminAuth;
+    chai
+      .request(app)
+      .get(`/api/v1/trips/timeframe?start=${last7Days.startDate}&end=${last7Days.endDate}`)
+      .set('authorization', token)
+      .end((err, res) => {
+        expect(res).to.have.status(200);
+        expect(res.body.success).to.equal(true);
+        expect(res.body.data.tripCount).to.equal(6);
+        done(err);
+      });
+  });
+  it('count the number of trips made in last month till date', (done) => {
+    const last30Days = timeFrameRange.lastXDays(30);
+    const { token } = adminAuth;
+    chai
+      .request(app)
+      .get(`/api/v1/trips/timeframe?start=${last30Days.startDate}&end=${last30Days.endDate}`)
+      .set('authorization', token)
+      .end((err, res) => {
+        expect(res).to.have.status(200);
+        expect(res.body.success).to.equal(true);
+        expect(res.body.data.tripCount).to.equal(9);
+        done(err);
+      });
+  });
+  it('should not count number made without start date', (done) => {
+    const { token } = adminAuth;
+    const end = timeFrameRange.endXDay();
+    const today = new Date();
+    chai
+      .request(app)
+      .get(`/api/v1/trips/timeframe?&end=${end}`)
+      .set('authorization', token)
+      .end((err, res) => {
+        expect(res).to.have.status(400);
+        expect(res.body.success).to.equal(false);
+        expect(res.body.data.start).to.equal('Start date is required');
+        done();
+      });
+  });
+  it('should not count number of trips made with invalid start date', (done) => {
+    const { token } = adminAuth;
+    const yesterday = timeFrameRange.lastXDays(1);
+    chai
+      .request(app)
+      .get(`/api/v1/trips/timeframe?start=${'no date'}&end=${yesterday.endDate}`)
+      .set('authorization', token)
+      .end((err, res) => {
+        expect(res).to.have.status(400);
+        expect(res.body.success).to.equal(false);
+        expect(res.body.data.start).to.equal('Invalid start date.');
+        done();
+      });
+  });
+  it('should not count number of trips without end date', (done) => {
+    const { token } = adminAuth;
+    const yesterday = timeFrameRange.lastXDays(1);
+    chai
+      .request(app)
+      .get(`/api/v1/trips/timeframe?start=${yesterday.startDate}`)
+      .set('authorization', token)
+      .end((err, res) => {
+        expect(res).to.have.status(400);
+        expect(res.body.success).to.equal(false);
+        expect(res.body.data.end).to.equal('end date is required');
+        done();
+      });
+  });
+  it('should not count number of trips with an invalid end date', (done) => {
+    const { token } = adminAuth;
+    const yesterday = timeFrameRange.lastXDays(1);
+    chai
+      .request(app)
+      .get(`/api/v1/trips/timeframe?start=${yesterday.startDate}&end=${'no date'}`)
+      .set('authorization', token)
+      .end((err, res) => {
+        expect(res).to.have.status(400);
+        expect(res.body.success).to.equal(false);
+        expect(res.body.data.end).to.equal('Invalid end date');
+        done();
+      });
+  });
+  it('should not count number of trips if start date is in the future', (done) => {
+    const { token } = adminAuth;
+    const yesterday = timeFrameRange.lastXDays(1);
+    const future = timeFrameRange.nextXDay(2);
+    chai
+      .request(app)
+      .get(`/api/v1/trips/timeframe?start=${future}&end=${yesterday.endDate}`)
+      .set('authorization', token)
+      .end((err, res) => {
+        expect(res).to.have.status(400);
+        expect(res.body.success).to.equal(false);
+        expect(res.body.data.start).to.equal('Date must be today or before today');
+        done();
+      });
+  });
+  it('should not count number of trips if end date is not in the future or today', (done) => {
+    const { token } = adminAuth;
+    const yesterday = timeFrameRange.lastXDays(1);
+    const future = timeFrameRange.nextXDay(2);
+    chai
+      .request(app)
+      .get(`/api/v1/trips/timeframe?start=${yesterday.startDate}&end=${yesterday.startDate}`)
+      .set('authorization', token)
+      .end((err, res) => {
+        expect(res).to.have.status(400);
+        expect(res.body.success).to.equal(false);
+        expect(res.body.data.end).to.equal('Date must be today or after');
+        done();
+      });
+  });
+
+});
+
+

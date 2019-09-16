@@ -7,7 +7,8 @@ import verify from '../middlewares/AuthMiddlewares';
 import {
   tripRequestSchema,
   tripRequestStatusSchema,
-  editTripRequestSchema
+  editTripRequestSchema,
+  timeframeSchema
 } from '../validation/tripSchema';
 
 const tripRoutes = Router();
@@ -45,5 +46,11 @@ tripRoutes.patch(
 );
 
 tripRoutes.get('/mostvisited', Token.verifyToken, TripController.getMostVisitedBranch);
+tripRoutes.get(
+  '/timeframe',
+  Token.verifyToken,
+  validator(timeframeSchema),
+  TripController.countTripsByTimeframe
+);
 
 export default tripRoutes;

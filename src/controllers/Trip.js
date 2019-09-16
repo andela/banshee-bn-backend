@@ -1,7 +1,9 @@
-import { Op } from 'sequelize';
+import Sequelize from 'sequelize';
 import db from '../database/models';
 import Response from '../helpers/Response';
+import date from '../utils/date';
 
+const { Op } = Sequelize;
 const {
   Trip, Branch, User, Stop, Accomodation, Location
 } = db;
@@ -423,6 +425,30 @@ class TripController {
         new Response(false, 500, error.message)
       );
     }
+  }
+  static async countTripsByTimeframe(req, res) {
+    const { start, end } = req.query;
+    const { payload } = req.payload;
+    const formatStartDate = date.format(start);
+    const formatEnDate = date.format(end);
+    const tripCount = await Trip.count({
+      where: {
+        userId: payload.id,
+        createdAt: {
+          [Op.between]: [start, end]
+        }
+      }
+    });
+    const message = formatStartDate !== formatEnDate ?
+      `Number of trip requests between ${formatStartDate} and ${formatEnDate}` :
+      `Number trip requests for ${formatEnDate}`;
+    const response = new Response(
+      true,
+      200,
+      message,
+      { tripCount }
+    );
+    return res.status(response.code).json(response);
   }
 }
 

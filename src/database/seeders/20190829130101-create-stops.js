@@ -41,7 +41,25 @@ module.exports = {
       destinationBranchId: '1bf9f868-2a59-45ae-8f68-ad68095ca0ac',
       accomodationId: '3dd3b34a-7554-425e-c688-36afda199619',
       tripId: 'db17ddb2-a6ba-49f5-9715-e0e81eb7720a'
-    }
+    },
+    {
+      id: '0467cec6-44cb-456a-8b08-d53f925f3239',
+      destinationBranchId: '7b717bff-9202-4c44-9848-80ec876b6fdc',
+      accomodationId: '3dd3b34a-7554-425e-c688-36afda199619',
+      tripId: '0467cec6-44cb-456a-8b08-d53f925f3239'
+    },
+     {
+      id: '2d1ce275-f5c1-45c3-bed9-4cbd2ffa4769',
+      destinationBranchId: 'dbbe4992-4091-4914-a266-38ecdcf42083',
+      accomodationId: '3dd3b34a-7554-425e-c688-36afda199619',
+      tripId: 'db17ddb2-a6ba-49f5-9715-e0e81eb7720a'
+    },
+    {
+      id: '3789518f-93b0-4f97-9cdf-1ac5a32cf5c2',
+      destinationBranchId: '7b717bff-9202-4c44-9848-80ec876b6fdc',
+      accomodationId: 'b1a81334-fbf4-4160-83bf-e58f9063f7cf',
+      tripId: 'db17ddb2-a6ba-49f5-9715-e0e81eb7720a'
+    },
   ]),
   down: queryInterface => queryInterface.bulkDelete('Stops', null, {})
 };
