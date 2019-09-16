@@ -57,6 +57,20 @@ const createAccomodation = [
     .trim()
     .isLength({ min: 10, max: 100 })
     .withMessage('Address should be between 10 and 100 characters'),
+  check('cost')
+    .optional()
+    .trim()
+    .isNumeric()
+    .withMessage('Invalid cost format'),
+  check('amenities')
+    .optional()
+    .custom((value) => {
+      if (!Array.isArray(value)) {
+        return false;
+      }
+      return true;
+    })
+    .withMessage('Invalid amenities format'),
 ];
 
 const addRoom = [

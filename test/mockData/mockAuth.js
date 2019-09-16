@@ -388,12 +388,18 @@ const nonManage = {
   email: 'ghaddafi@gmail.com',
   password: 'password2019',
   code: 'BAREFOOT'
-}
+};
 const managerLogin = {
   id: 'd885cb0d-8520-4ee1-bab7-d3097adadc32',
   companyId: 'a6e35eb9-8c59-4c7d-b8d4-ae724aa7fb61',
   email: 'managing.director@gmail.com',
   role: 'manager'
+};
+
+const admin = {
+  email: 'banshee.admin@gmail.com',
+  password: 'password2019',
+  code: 'NOMP0024'
 };
 
 const users = {
@@ -446,7 +452,8 @@ const users = {
   nonManager,
   nonManage,
   travelAdmin,
-  managerLogin
+  managerLogin,
+  admin
 };
 
 export default users;

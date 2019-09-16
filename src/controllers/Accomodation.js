@@ -9,7 +9,9 @@ cloudinary.v2.config({
   api_key: process.env.CLOUDINARY_API,
   api_secret: process.env.CLOUDINARY_SECRET
 });
-const { Accomodation, Room, Booking, User } = db;
+const {
+  Accomodation, Room, Booking, User
+} = db;
 
 /**
  * Accomodation class
@@ -22,20 +24,13 @@ class AccomodationController {
    * @returns {object} objectu
    */
   static async createAccomodation(req, res) {
-    const {
-      name, branchId, capacity, address
-    } = req.body;
-
     try {
       const image = req.file ? await cloudinary.uploader.upload(req.file.path) : null;
       const imgurl = image ? image.public_id : null;
       const { dataValues } = await Accomodation.create({
-        name,
-        branchId,
-        capacity,
+        ...req.body,
         status: 'available',
-        imgurl,
-        address
+        imgurl
       });
       return res.status(200).json(new Response(
         true,
