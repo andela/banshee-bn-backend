@@ -1,5 +1,7 @@
 import Response from '../helpers/Response';
 import modifyUserNotificationOpt from '../helpers/modifyUserNotificationOpt';
+import removeUserNotification from '../helpers/removeUserNotification';
+import updateUserNotification from '../helpers/updateUserNotification';
 
 /** */
 class NotificationOpt {
@@ -56,6 +58,37 @@ class NotificationOpt {
     );
 
     return res.status(response.code).send(response);
+  }
+
+  /**
+   * @description Mark a users notification as read
+   * @param {Object} req request object
+   * @param {Object} res response object
+   * @returns {Object} Object
+   */
+  static async readAllNotifications(req, res) {
+    const { payload: { email } } = req.payload;
+    try {
+      const notifications = await removeUserNotification(email);
+      if (notifications.length < 1) {
+        return res.status(200).json(
+          new Response(true, 200, 'No notifications found')
+        );
+      }
+
+      notifications.forEach(async (notification) => {
+        const recipients = notification.recipients.filter((emailInArray) => emailInArray !== email);
+        await updateUserNotification(recipients, notification);
+      });
+
+      return res.status(200).json(
+        new Response(true, 200, 'Successfully mark all user notifications as read', notifications)
+      );
+    } catch (error) {
+      return res.status(500).json(
+        new Response(false, 500, error.message)
+      );
+    }
   }
 }
 

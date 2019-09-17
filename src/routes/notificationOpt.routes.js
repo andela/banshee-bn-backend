@@ -19,4 +19,10 @@ notificationOptRoute.patch(
   NotificationOpt.modifyInAppNotificationOption
 );
 
+notificationOptRoute.patch(
+  '/read',
+  TokenHelper.verifyAdminToken('travel admin', 'manager'),
+  NotificationOpt.readAllNotifications
+);
+
 export default notificationOptRoute;

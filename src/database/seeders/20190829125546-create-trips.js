@@ -106,7 +106,7 @@ module.exports = {
       returnDate: null,
       reason: 'meeting with company owner',
       status: 'pending'
-    }
+    },
   ]),
   down: queryInterface => queryInterface.bulkDelete('Trips', null, {})
 };

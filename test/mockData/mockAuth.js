@@ -388,12 +388,24 @@ const nonManage = {
   email: 'ghaddafi@gmail.com',
   password: 'password2019',
   code: 'BAREFOOT'
-}
+};
 const managerLogin = {
   id: 'd885cb0d-8520-4ee1-bab7-d3097adadc32',
   companyId: 'a6e35eb9-8c59-4c7d-b8d4-ae724aa7fb61',
   email: 'managing.director@gmail.com',
   role: 'manager'
+};
+const travelAdmin2 = {
+  id: '91542e6f-94bc-4e81-a667-586fb0752f25',
+  email: 'banshee.admin@gmail.com',
+  companyId: 'a6e35eb9-8c59-4c7d-b8d4-ae724aa7fb62',
+  role: 'travel admin',
+};
+const travelAdmin3 = {
+  id: '91542e6f-94bc-4e80-a667-586fb0752f24',
+  companyId: 'a6e35eb9-8c59-4c7d-b8d4-ae724aa7fb62',
+  email: 'ogedengbe123@gmail.com',
+  role: 'travel admin',
 };
 
 const users = {
@@ -446,7 +458,9 @@ const users = {
   nonManager,
   nonManage,
   travelAdmin,
-  managerLogin
+  managerLogin,
+  travelAdmin2,
+  travelAdmin3
 };
 
 export default users;
